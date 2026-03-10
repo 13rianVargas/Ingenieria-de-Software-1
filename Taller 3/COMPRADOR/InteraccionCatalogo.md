@@ -1,3 +1,4 @@
+```mermaid
 flowchart TD
     %% Estilos
     classDef startEnd fill:#1a1a1a,stroke:#333,stroke-width:2px,color:#fff;
@@ -24,3 +25,4 @@ flowchart TD
     I --> J{Acciones sobre el producto} ::: decision
     J -- Duda --> K[Realizar pregunta al vendedor] ::: interaction
     J -- Interés --> L([Agregar al Carrito de Compras]) ::: startEnd
+```

@@ -1,3 +1,4 @@
+```mermaid
 flowchart TD
     %% Estilos
     classDef startEnd fill:#1a1a1a,stroke:#333,stroke-width:2px,color:#fff;
@@ -36,3 +37,4 @@ flowchart TD
     N --> O[Habilitar Calificación de Transacción]
     O --> P[Comprador asigna puntaje 1 a 10<br>y deja comentarios de atención]
     P --> Q([Fin: Ciclo de Compra Terminado]) ::: startEnd
+```
