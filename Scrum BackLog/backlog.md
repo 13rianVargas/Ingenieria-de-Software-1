@@ -1,34 +1,98 @@
-# 1. Explicación de cómo se generó la plantilla
+# 1. Explicación de la generación de la plantilla
 
-La presente plantilla de Product Backlog fue concebida con un enfoque de gestión ágil orientado a la trazabilidad, priorización y planificación iterativa de un proyecto de software. Para su construcción, se recomienda el uso de herramientas colaborativas como Notion, Jira o Google Sheets, debido a que permiten estructurar historias de usuario, mantener visibilidad del avance del producto, gestionar prioridades y facilitar la actualización continua del backlog por parte del Product Owner y del equipo de desarrollo.
+## Herramienta utilizada
 
-Desde la perspectiva metodológica, la estructura se diseñó con base en principios de Scrum y prácticas de Agile Product Management. En particular, se consideraron: la redacción de requerimientos en formato de User Story, la priorización con el modelo MoSCoW, la estimación mediante puntos de historia con la serie de Fibonacci y la asignación de trabajo por sprints para asegurar entregas incrementales. Esta lógica permite que el backlog no sea solo una lista de requerimientos, sino una herramienta viva para ordenar el valor de negocio, reducir incertidumbre y guiar la construcción progresiva del producto.
+Esta plantilla fue generada utilizando **GitHub Copilot** integrado en **Visual Studio Code (VS Code)**, empleando el modelo de lenguaje **Claude** a través del chat de Copilot.
 
-La plantilla fue pensada para cubrir las necesidades mínimas de gestión y seguimiento del backlog: identificación única de cada historia, descripción funcional orientada al usuario, nivel de prioridad, esfuerzo estimado, criterios de aceptación verificables y sprint asignado. Con ello, se facilita la conversación entre negocio y desarrollo, la preparación de sesiones de refinamiento y la planificación de iteraciones enfocadas en un MVP y sus mejoras posteriores.
+## Prompts empleados
 
-Prompt o instrucción lógica utilizada para crear esta estructura:
+### Prompt inicial (estructura base):
 
-```text
-Genera una plantilla de Product Backlog en formato Markdown para un proyecto de desarrollo de software usando enfoque ágil Scrum. La tabla debe incluir las columnas: ID, User Story, Prioridad (MoSCoW), Estimación (Puntos de Historia de Fibonacci), Criterios de Aceptación y Sprint Asignado. La estructura debe servir para priorizar un MVP, organizar el trabajo por iteraciones y documentar historias de usuario con criterios verificables.
-```
+> *"Actúa como un Senior Product Owner y Agile Coach. Necesito que generes un documento técnico estructurado exactamente en tres secciones para presentar la gestión del Product Backlog de un proyecto de software. [...] Crea una tabla en formato Markdown que represente la plantilla del Product Backlog vacía. Las columnas obligatorias deben ser: ID, User Story, Prioridad (MoSCoW), Estimación (Puntos de Historia de Fibonacci), Criterios de Aceptación, y una columna fundamental llamada 'Sprint Asignado'."*
 
-[Pasos del Equipo]
+### Prompt de refinamiento (campos adicionales):
 
-[Espacio para documentar reuniones, discusiones internas, criterios de aprobación y acuerdos del equipo]
+> *"Teniendo en cuenta algunas revisiones que he hecho de ejemplos públicos de product backlogs, me gustaría que siguiendo los parámetros y condiciones establecidas en el prompt inicial, evalúes si sería adecuado incluir en el modelo los campos de **propietario de tarea** y **estado**. De igual manera, desde tu posición como Senior Product Owner, qué otra modificación consideras pertinente para que la plantilla se ajuste lo máximo posible a un contexto empresarial realista."*
+
+### Prompt de implementación:
+
+> *"Ejecuta las modificaciones que planteas para la plantilla en el archivo zavithar_backlog.md, de igual manera, deberás generar un ejemplo realista de la aplicación de esta plantilla de product backlog para un proyecto de software, toma como guía un proyecto de una aplicación móvil enfocada a la vida universitaria."*
+
+## Campos añadidos tras evaluación
+
+Basándose en buenas prácticas de gestión ágil empresarial, se incorporaron:
+
+| Campo | Justificación |
+| --- | --- |
+| **Epic** | Agrupa historias bajo iniciativas mayores para mejor trazabilidad |
+| **Valor de Negocio** | Cuantifica impacto (1-10) para decisiones de priorización ROI |
+| **Dependencias** | Identifica bloqueos entre historias para planificación de sprints |
+| **Responsable** | Coordina implementación sin eliminar responsabilidad colectiva del equipo |
+| **Estado** | Visibilidad del progreso: To Do / In Progress / In Review / Done / Blocked |
+
+---
 
 # 2. Generar la plantilla (Vacía)
 
-| ID                         | User Story                 | Prioridad (MoSCoW)         | Estimación (Puntos de Historia de Fibonacci) | Criterios de Aceptación    | Sprint Asignado            |
-| -------------------------- | -------------------------- | -------------------------- | -------------------------------------------- | -------------------------- | -------------------------- |
-| [Espacio para diligenciar] | [Espacio para diligenciar] | [Espacio para diligenciar] | [Espacio para diligenciar]                   | [Espacio para diligenciar] | [Espacio para diligenciar] |
+| ID | Epic | User Story | Prioridad (MoSCoW) | Valor de Negocio | Estimación (Fibonacci) | Criterios de Aceptación | Dependencias | Responsable | Estado | Sprint Asignado |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [Espacio para diligenciar] | [Espacio para diligenciar] | [Espacio para diligenciar] | [Espacio para diligenciar] | [Espacio para diligenciar] | [Espacio para diligenciar] | [Espacio para diligenciar] | [Espacio para diligenciar] | [Espacio para diligenciar] | [Espacio para diligenciar] | [Espacio para diligenciar] |
+
+### Descripción de campos:
+
+| Campo | Descripción |
+| --- | --- |
+| **ID** | Identificador único de la historia (formato: US-XXX) |
+| **Epic** | Agrupación funcional a la que pertenece la historia |
+| **User Story** | Descripción en formato: "Como [rol], quiero [acción] para [beneficio]" |
+| **Prioridad (MoSCoW)** | Must (obligatorio) / Should (importante) / Could (deseable) / Won't (descartado) |
+| **Valor de Negocio** | Impacto para el usuario/negocio (escala 1-10) |
+| **Estimación (Fibonacci)** | Complejidad técnica: 1, 2, 3, 5, 8, 13, 21 |
+| **Criterios de Aceptación** | Condiciones verificables para considerar la historia terminada |
+| **Dependencias** | IDs de historias que deben completarse previamente |
+| **Responsable** | Miembro del equipo que coordina la implementación |
+| **Estado** | To Do / In Progress / In Review / Done / Blocked |
+| **Sprint Asignado** | Iteración en la que se desarrollará |
 
 # 3. Generar un ejemplo
 
-| ID     | User Story                                                                                                                              | Prioridad (MoSCoW) | Estimación (Puntos de Historia de Fibonacci) | Criterios de Aceptación                                                                                                                                                           | Sprint Asignado |
-| ------ | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
-| US-001 | Como estudiante, quiero iniciar sesión con mi correo institucional para acceder de forma segura a la plataforma universitaria.          | Must               | 5                                            | El sistema valida credenciales institucionales; muestra mensaje de error cuando los datos son inválidos; permite acceso al panel principal al autenticarse correctamente.         | Sprint 1        |
-| US-002 | Como estudiante, quiero visualizar mi horario de clases para consultar mis asignaturas, aulas y horarios desde un solo lugar.           | Must               | 8                                            | El sistema muestra las materias inscritas; presenta día, hora y aula de cada clase; la información se carga correctamente al ingresar al módulo de horario.                       | Sprint 1        |
-| US-003 | Como docente, quiero registrar calificaciones parciales para mantener actualizado el seguimiento académico de mis cursos.               | Must               | 8                                            | El docente puede seleccionar un curso; puede ingresar y guardar notas por estudiante; el sistema confirma el registro exitoso y conserva la información.                          | Sprint 1        |
-| US-004 | Como estudiante, quiero recibir notificaciones sobre cambios de horario o publicación de notas para mantenerme informado oportunamente. | Should             | 5                                            | El sistema genera una notificación cuando hay cambios relevantes; las alertas aparecen en el panel del usuario; el estudiante puede identificar el tipo de novedad recibida.      | Sprint 2        |
-| US-005 | Como coordinador académico, quiero consultar reportes básicos de rendimiento por curso para identificar grupos con bajo desempeño.      | Should             | 13                                           | El sistema permite seleccionar un curso; muestra resumen de promedios y cantidad de estudiantes evaluados; la información puede consultarse sin alterar los registros existentes. | Sprint 2        |
-| US-006 | Como estudiante, quiero actualizar mis datos de contacto para mantener mi información personal al día dentro del sistema.               | Could              | 3                                            | El estudiante puede editar teléfono y dirección de correo alterno; el sistema valida los campos obligatorios; los cambios se guardan y se reflejan al recargar el perfil.         | Sprint 2        |
+## Proyecto: UniLife App - Aplicación Móvil para la Vida Universitaria
+
+**Descripción del producto:** Aplicación móvil multiplataforma (iOS/Android) diseñada para centralizar la experiencia universitaria, permitiendo a estudiantes gestionar su vida académica, conectar con la comunidad y acceder a servicios institucionales desde un solo lugar.
+
+**Equipo Scrum:**
+- Product Owner: María González
+- Scrum Master: Carlos Rodríguez  
+- Developers: Ana Torres (Backend), Luis Pérez (Frontend Mobile), Sandra Muñoz (QA), Diego Vargas (UX/UI)
+
+---
+
+### Product Backlog
+
+| ID | Epic | User Story | Prioridad (MoSCoW) | Valor de Negocio | Estimación (Fibonacci) | Criterios de Aceptación | Dependencias | Responsable | Estado | Sprint Asignado |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| US-001 | Autenticación | Como estudiante, quiero iniciar sesión con mi correo institucional (@universidad.edu) para acceder de forma segura a la aplicación. | Must | 10 | 5 | 1. El sistema valida formato de correo institucional. 2. Integración con OAuth2 de la universidad. 3. Muestra error específico si credenciales son inválidas. 4. Redirige al home tras login exitoso. | - | Ana Torres | Done | Sprint 1 |
+| US-002 | Autenticación | Como estudiante, quiero recuperar mi contraseña mediante correo electrónico para restaurar el acceso a mi cuenta. | Must | 8 | 3 | 1. Envía enlace de recuperación al correo institucional. 2. El enlace expira en 24 horas. 3. Permite establecer nueva contraseña cumpliendo políticas de seguridad. | US-001 | Ana Torres | Done | Sprint 1 |
+| US-003 | Gestión Académica | Como estudiante, quiero visualizar mi horario semanal de clases para organizar mis actividades diarias. | Must | 9 | 8 | 1. Muestra materias inscritas con día, hora y aula. 2. Vista semanal y diaria disponibles. 3. Sincroniza con calendario del dispositivo. 4. Funciona offline con datos cacheados. | US-001 | Luis Pérez | Done | Sprint 1 |
+| US-004 | Gestión Académica | Como estudiante, quiero consultar mis calificaciones parciales y finales para hacer seguimiento a mi rendimiento académico. | Must | 9 | 5 | 1. Muestra notas por materia y periodo. 2. Calcula promedio ponderado automáticamente. 3. Indica estado (aprobado/reprobado/en curso). 4. Notifica cuando se publica nueva nota. | US-001 | Luis Pérez | In Progress | Sprint 1 |
+| US-005 | Notificaciones | Como estudiante, quiero recibir notificaciones push sobre cambios de horario, publicación de notas y eventos importantes para mantenerme informado. | Must | 8 | 8 | 1. Notificaciones categorizadas (académico, eventos, administrativo). 2. Usuario puede configurar qué categorías recibir. 3. Centro de notificaciones con historial. 4. Badge de notificaciones no leídas. | US-001, US-003, US-004 | Ana Torres | To Do | Sprint 2 |
+| US-006 | Campus Virtual | Como estudiante, quiero ver el mapa interactivo del campus para ubicar aulas, bibliotecas y servicios. | Should | 7 | 13 | 1. Mapa con zoom y navegación táctil. 2. Búsqueda por nombre de edificio/aula. 3. Muestra ruta desde ubicación actual. 4. Indica servicios disponibles por edificio. | US-001 | Diego Vargas | To Do | Sprint 2 |
+| US-007 | Comunidad | Como estudiante, quiero unirme a grupos de estudio de mis materias para colaborar con compañeros. | Should | 7 | 8 | 1. Lista grupos disponibles por materia. 2. Permite solicitar unirse o crear grupo nuevo. 3. Chat grupal integrado. 4. Máximo 10 participantes por grupo. | US-001 | Luis Pérez | To Do | Sprint 2 |
+| US-008 | Servicios | Como estudiante, quiero consultar el menú de la cafetería universitaria para planificar mis comidas. | Should | 6 | 3 | 1. Muestra menú del día con precios. 2. Indica horarios de atención. 3. Señala opciones vegetarianas/alérgenos. 4. Permite valorar platos. | US-001 | Diego Vargas | To Do | Sprint 2 |
+| US-009 | Gestión Académica | Como docente, quiero registrar y publicar calificaciones desde mi móvil para agilizar el proceso de evaluación. | Should | 8 | 8 | 1. Lista de estudiantes por curso. 2. Ingreso de notas con validación de rango. 3. Opción de guardar borrador o publicar. 4. Confirmación antes de publicar definitivamente. | US-001, US-004 | Ana Torres | To Do | Sprint 3 |
+| US-010 | Perfil | Como estudiante, quiero editar mi foto de perfil y datos de contacto para personalizar mi cuenta. | Could | 5 | 3 | 1. Permite subir foto desde galería o cámara. 2. Redimensiona automáticamente a 500x500px. 3. Edición de teléfono y correo alternativo. 4. Validación de formatos. | US-001 | Luis Pérez | To Do | Sprint 3 |
+| US-011 | Servicios | Como estudiante, quiero reservar espacios de estudio en biblioteca para asegurar disponibilidad. | Could | 6 | 8 | 1. Vista de disponibilidad por hora. 2. Reserva con máximo 3 horas consecutivas. 3. Confirmación y recordatorio por notificación. 4. Cancelación hasta 1 hora antes. | US-001, US-005 | Diego Vargas | To Do | Sprint 3 |
+| US-012 | Comunidad | Como estudiante, quiero publicar y ver anuncios de compra/venta de libros usados para facilitar intercambios. | Could | 5 | 5 | 1. Publicación con foto, título, precio y descripción. 2. Filtro por carrera/materia. 3. Chat directo con vendedor. 4. Marcar como vendido. | US-001, US-007 | Luis Pérez | To Do | Sprint 4 |
+| US-013 | Gestión Académica | Como estudiante, quiero simular mi promedio académico modificando notas hipotéticas para planificar mi rendimiento. | Won't | 4 | 5 | 1. Permite modificar notas pendientes. 2. Calcula promedio proyectado. 3. Indica créditos necesarios para graduación. | US-004 | - | Backlog | - |
+
+---
+
+### Resumen por Sprint
+
+| Sprint | Historias | Puntos Totales | Epic Principal |
+| --- | --- | --- | --- |
+| Sprint 1 (MVP) | US-001, US-002, US-003, US-004 | 21 | Autenticación + Gestión Académica básica |
+| Sprint 2 | US-005, US-006, US-007, US-008 | 32 | Notificaciones + Campus + Comunidad |
+| Sprint 3 | US-009, US-010, US-011 | 19 | Funcionalidades docente + Servicios |
+| Sprint 4 | US-012 | 5 | Marketplace estudiantil |
+| Backlog | US-013 | 5 | Descartado para release inicial |
