@@ -1,14 +1,17 @@
-VENDEDOR:
+# VENDEDOR:
 
-- ⁠Gestion de invertario
-- ⁠Registro y aprovación
+## - ⁠Gestion de invertario
 
-COMPRADOR:
+## - ⁠Registro y aprovación
 
-- Interacion con catalogo⁠
-- ⁠Proceso de compra
+# COMPRADOR:
 
-ADMINs:
+## - Interacion con catalogo⁠
 
-- Inteligencia y analitica de negocio
-- Proceso de auditoria
+## - ⁠Proceso de compra
+
+# ADMINs:
+
+## - Inteligencia y analitica de negocio
+
+## - Proceso de auditoria

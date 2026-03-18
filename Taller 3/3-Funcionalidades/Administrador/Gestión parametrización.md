@@ -1,9 +1,5 @@
 # Diagrama de Actividades - Gestión parametrización
 
-## Contexto: E-Commerce Administrador Konrad
-
-
-
 ```mermaid
 flowchart TD
 

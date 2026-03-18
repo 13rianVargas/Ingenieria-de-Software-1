@@ -1,4 +1,4 @@
-# Resumen ligero de Releases
+## Resumen ligero de Releases
 
 1. **Release 1 – MVP básico de vendedores y productos**
    - Registro de vendedores con estado pendiente y CRUD público de productos. Plataforma mínima para que el mercado comience a operar.
