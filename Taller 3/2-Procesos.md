@@ -2,7 +2,7 @@
 
 ## - ⁠Gestion de invertario
 
-## - ⁠Registro y aprovación
+## - ⁠Registro y aprobación
 
 # COMPRADOR:
 
