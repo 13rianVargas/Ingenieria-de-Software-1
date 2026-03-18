@@ -1,9 +1,4 @@
-
 # Diagrama de Actividades - Consulta logs
-
-## Contexto: E-Commerce Administrador Konrad
-
-
 
 ```mermaid
 flowchart TD
