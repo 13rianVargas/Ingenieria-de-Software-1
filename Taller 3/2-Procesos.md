@@ -1,17 +1,7 @@
-# VENDEDOR:
+# PROCESOS
 
-## - ⁠Gestion de invertario
+## Vender productos (Vendedor)
 
-## - ⁠Registro y aprobación
+## Consultar y comprar productos (Comprador)
 
-# COMPRADOR:
-
-## - Interacion con catalogo⁠
-
-## - ⁠Proceso de compra
-
-# ADMINs:
-
-## - Inteligencia y analitica de negocio
-
-## - Proceso de auditoria
+## Administración (Admin)
