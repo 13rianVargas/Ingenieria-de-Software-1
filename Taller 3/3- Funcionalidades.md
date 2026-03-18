@@ -4,24 +4,24 @@
 
 ## Vender productos (Vendedor)
 
-### Registro de Vendedor
+### Registro de Vendedor [Juli C]
 
-### Publicar productos
+### Publicar productos [Juli A]
 
 # ==============================
 
 ## Consultar y comprar productos (Comprador)
 
-### Registro de Comprador
+### Registro de Comprador [Juli C]
 
-### Consulta de productos
+### Consulta de productos [Juli A]
 
-### Comprar productos
+### Comprar productos [Brian]
 
 # ==============================
 
 ## Administración (Admin)
 
-### Gestión de solicitudes
+### Gestión de solicitudes [Santi]
 
-### Auditar Sistema
+### Auditar Sistema [Brian]
