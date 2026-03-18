@@ -1,7 +1,5 @@
 # Diagrama de Actividades - Monitoreo auditoria
 
-## Contexto: E-Commerce Administrador Konrad
-
 ```mermaid
 flowchart TD
     A((Inicio)) --> B[Autenticación del administrador]
