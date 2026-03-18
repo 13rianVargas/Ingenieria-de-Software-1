@@ -16,12 +16,12 @@
 
 ### Consulta de productos [Juli A]
 
-### Comprar productos [Brian]
+### Comprar productos [Brian V]
 
 # ==============================
 
 ## Administración (Admin)
 
-### Gestión de solicitudes [Santi]
+### Gestión de solicitudes [Santi R]
 
-### Auditar Sistema [Brian]
+### Auditar Sistema [Brian V]
