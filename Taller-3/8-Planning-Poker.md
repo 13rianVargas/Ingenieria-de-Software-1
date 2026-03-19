@@ -6,11 +6,11 @@
 
 | ID       | Historia de Usuario             | Fibonacci |
 | -------- | ------------------------------- | --------- |
-| HU-MA-01 | Autenticación del administrador | 1         |
-| HU-MA-02 | Acceder al módulo de auditoría  | 1         |
-| HU-MA-03 | Definir criterios de consulta   | 1         |
-| HU-MA-04 | Consultar todos los registros   | 1         |
-| HU-MA-05 | Filtrar registros de auditoría  | 2         |
-| HU-MA-06 | Mostrar listado de registros    | 1         |
-| HU-MA-07 | Ver detalle de un registro      | 1         |
-| HU-MA-08 | Exportar reporte de auditoría   | 3         |
+| HU-01 | Registro de Vendedor | 2 - 3         |
+| HU-02 | Publicar productos  | 1         |
+| HU-03 | Registro de Comprador  | 2        |
+| HU-04 | Consulta de productos   | 5 - 8        |
+| HU-05 | Comprar productos  | 40         |
+| HU-06 |  Auditar Sistema   |  20 (testing) - 13       |
+| HU-07 | Gestión de solicitudes      |  8 - 13        |
+| HU-08 | Tablero de Control      | 3         |
