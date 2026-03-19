@@ -4,8 +4,6 @@
 
 ## 2) Revisar en los diagramas que el primer paso no sea el padre de los pasos siguientes
 
-## 3) Revisar las funcionalidades
+## 3) Incluir en los releases el BAM.
 
-## 4) Incluir en los releases el BAM.
-
-## 5) Crear el AGENT.md para no pasarle a cada rato el contexto a la IA.
+## 4) Crear el AGENT.md para no pasarle a cada rato el contexto a la IA.
