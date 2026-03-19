@@ -4,24 +4,30 @@
 
 ## Vender productos (Vendedor)
 
-### Registro de Vendedor [Juli C]
+### 1. Registro de Vendedor
 
-### Publicar productos [Juli A]
+### 2. Publicar productos
 
 # ==============================
 
 ## Consultar y comprar productos (Comprador)
 
-### Registro de Comprador [Juli C]
+### 3. Registro de Comprador
 
-### Consulta de productos [Juli A]
+### 4. Consulta de productos
 
-### Comprar productos [Brian V]
+### 5. Comprar productos
 
 # ==============================
 
 ## Administración (Admin)
 
-### Gestión de solicitudes [Santi R]
+### 6. Auditar Sistema
 
-### Auditar Sistema [Brian V]
+# ==============================
+
+## Director Comercial
+
+### 7. Gestión de solicitudes
+
+### 8. Tablero de Control (BAM)
