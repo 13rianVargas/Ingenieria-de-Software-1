@@ -7,3 +7,5 @@
 ## 3) Revisar las funcionalidades
 
 ## 4) Incluir en los releases el BAM.
+
+## 5) Crear el AGENT.md para no pasarle a cada rato el contexto a la IA.
