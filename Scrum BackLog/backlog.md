@@ -1,4 +1,4 @@
-# 1. Explicación de la generación de la plantilla
+# 1. Explicación de la generación de la plantilla [Juli^2]
 
 ## Herramienta utilizada
 
@@ -8,7 +8,21 @@ Esta plantilla fue generada utilizando **GitHub Copilot** integrado en **Visual 
 
 ### Prompt inicial (estructura base):
 
-> *"Actúa como un Senior Product Owner y Agile Coach. Necesito que generes un documento técnico estructurado exactamente en tres secciones para presentar la gestión del Product Backlog de un proyecto de software. [...] Crea una tabla en formato Markdown que represente la plantilla del Product Backlog vacía. Las columnas obligatorias deben ser: ID, User Story, Prioridad (MoSCoW), Estimación (Puntos de Historia de Fibonacci), Criterios de Aceptación, y una columna fundamental llamada 'Sprint Asignado'."*
+> *"Actúa como un Senior Product Owner y Agile Coach. Necesito que generes un documento técnico estructurado exactamente en tres secciones para presentar la gestión del Product Backlog de un proyecto de software.
+
+Sigue estrictamente este orden y formato:
+
+**1. Explicación de cómo se generó la plantilla:**
+Redacta un texto profesional explicando las herramientas sugeridas (ej. Notion, Jira o Google Sheets) y la metodología ágil utilizada para concebir la estructura del backlog.
+
+- Incluye textualmente el prompt o la instrucción lógica que se usaría para crear esta estructura.
+- Deja un espacio claramente marcado (usando corchetes `[ ]`) titulado 'Pasos del Equipo' para que nosotros podamos rellenar manualmente las discusiones o pasos internos que tomamos para aprobarla.
+
+**2. Generar la plantilla (Vacía):**
+Crea una tabla en formato Markdown que represente la plantilla del Product Backlog vacía. Las columnas obligatorias deben ser: ID, User Story, Prioridad (MoSCoW), Estimación (Puntos de Historia de Fibonacci), Criterios de Aceptación, y una columna fundamental llamada 'Sprint Asignado' (para reflejar en qué iteración se trabajará). No llenes esta tabla con datos, solo pon `[Espacio para diligenciar]` en la primera fila para mostrar cómo se vería.
+
+**3. Generar un ejemplo:**
+Recrea la misma tabla del punto 2, pero esta vez completamente diligenciada con un ejemplo realista de un proyecto de desarrollo de software (por ejemplo, una aplicación de gestión universitaria). Llena al menos 5 filas de historias de usuario, distribuyéndolas lógicamente entre el 'Sprint 1' (MVP) y el 'Sprint 2' en la columna correspondiente."*
 
 ### Prompt de refinamiento (campos adicionales):
 
@@ -32,7 +46,7 @@ Basándose en buenas prácticas de gestión ágil empresarial, se incorporaron:
 
 ---
 
-# 2. Generar la plantilla (Vacía)
+# 2. Generar la plantilla (Vacía) [Santi]
 
 | ID | Epic | User Story | Prioridad (MoSCoW) | Valor de Negocio | Estimación (Fibonacci) | Criterios de Aceptación | Dependencias | Responsable | Estado | Sprint Asignado |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -54,7 +68,7 @@ Basándose en buenas prácticas de gestión ágil empresarial, se incorporaron:
 | **Estado** | To Do / In Progress / In Review / Done / Blocked |
 | **Sprint Asignado** | Iteración en la que se desarrollará |
 
-# 3. Generar un ejemplo
+# 3. Generar un ejemplo [Brian]
 
 ## Proyecto: UniLife App - Aplicación Móvil para la Vida Universitaria
 
