@@ -1,0 +1,291 @@
+Descripción 
+
+Elabore o documente la especificación de 2 casos de uso del siguiente enunciado dentro de los cuales esté el de registro de solicitud para ser vendedor, no incluya el login.
+
+Complemente la especificación con la elaboración de los prototipos o mockups de los 2 casos de uso seleccionados mostrando coherencia y correspondencia entre lo documentado y lo dibujado.
+
+Para lo anterior básese o tome como formato el llamado "CL-RequerimientosFuncionales-001.docx" que se encuentra en la misma sección de este taller.
+
+
+
+Enunciado:
+
+Se quiere desarrollar el sistema de información E-Commerce para comercial Konrad (venta de productos en línea – por internet),  de acuerdo con el siguiente proceso:
+
+1.      Una persona interesada en ofrecer sus productos, realiza una solicitud registrando sus datos:
+
+1.      Nombres
+
+2.      Apellidos
+
+3.      Número de identificación (Cédula o Nit)
+
+4.      Correo electrónico
+
+5.      País de residencia
+
+6.      Ciudad de residencia
+
+7.      Teléfono
+
+8.      Documentos adjuntos
+
+1.      Fotocopia de la cédula
+
+2.      RUT
+
+3.      Cámara de comercio
+
+4.      Formato de aceptación de consulta a centrales de riesgo (Se podrá descargar de la misma página de registro)
+
+5.      Formato de aceptación de tratamiento de datos personales (Se podrá descargar de la misma página de registro)
+
+El sistema debe verificar el formato correcto de datos, y valida si la persona es natural o jurídica para exigir unos u otros documentos y si todo está correcto la solicitud queda registrada en estado “PENDIENTE” arrojando el número de esta.
+
+2.      El Director comercial del sitio, consulta las solicitudes pendientes por los siguientes criterios
+
+1.      Número de identificación
+
+2.      Estado de la solicitud
+
+3.      Rango de fecha de la solicitud
+
+La consulta debe arrojar la o las solicitudes mostrando las siguientes columnas:
+
+1.      Número de identificación
+
+2.      Apellidos
+
+3.      Nombres
+
+4.      Correo electrónico
+
+5.      Estado
+
+El listado debe permitir ir a revisar el detalle de cada solicitud mostrando la demás información de esta, para ello el sistema debe automáticamente consultar su vida crediticia y judicial del solicitante accediendo de la siguiente forma:
+
+·        Datacrédito: Esta entidad expone un servicio web que debe ser consultado para saber la calificación de la persona; la respuesta está dada por alguno de estas calificaciones:
+
+o   Baja: La persona se encuentra reportada por falta de estar al día en sus obligaciones.
+
+o   Alta: La persona se encuentra reportada como estar al día en sus obligaciones.
+
+o   Advertencia: La persona se encuentra con pocos días en mora y debe ponerse al día.
+
+·        CIFIN: Esta entidad deja un archivo plano cada mes en un FlieSystem de esta entidad con permisos de acceso con el listado de las personas que tiene en su base de datos, este archivo debe ser leído y cargado a una base de datos local para consultar su estado, el cual arroja los mismos resultados que la entidad anterior:
+
+o   Baja: La persona se encuentra reportada por falta de estar al día en sus obligaciones.
+
+o   Alta: La persona se encuentra reportada como estar al día en sus obligaciones.
+
+o   Advertencia: La persona se encuentra con pocos días en mora y debe ponerse al día.
+
+Adicionalmente, el Director debe ingresar a la página de la policía y con el número de identificación consultar los antecedentes judiciales y obtener:
+
+·        Requerido: Tiene orden de arresto por algún delito.
+
+·        No requerido: No tiene nada pendiente con la justicia.
+
+Para lo anterior el Director debe registrar un resultado de la solicitud de acuerdo a las siguientes reglas:
+
+·        RECHAZADA: Si su vida crediticia es Baja en alguna de las entidades o es requerida por la justicia; para lo cual le debe llegar un correo al solicitante comunicándole el porqué de la respuesta. DEVUELTA: Si su vida crediticia está en Advertencia, para lo cual le debe llegar un correo al solicitante comunicándole de la respuesta y explicándole que podrá reactivar la solicitud una vez tenga una calificación Alta.
+
+·        APROBADA: Si su vida crediticia es Alta en las 2 entidades y no es requerido por la justicia.
+
+3.      En cualquiera de los casos, el sistema enviará un correo la persona podrá entrar en la página de E-Commerce para poder consultar su solicitud por su número o su identificación.
+
+Si la solicitud es APROBADA, el sistema enviará por coreo electrónico las credenciales para ingresar a la plataforma, así luego de autenticarse, el solicitante tendrá la opción de hacer el pago de suscripción mensual, semestral o anual para que finalmente pueda ser vendedor formal.
+
+El pago lo puede realizar de 2 formas:
+
+1.      Pagos en línea: Para ello el sistema muestra una página de resumen de la compra, registra si el pagador es persona Natural o Jurídica, número de identificación y entidad bancaria, de esta forma se consumirá un servicio de un intermediario que permitirá ingresar a la página del banco realizar el pago y retornar el número de aprobación.
+
+2.      Tarjeta de crédito: Para ello el sistema mostrará los campos para registrar la información de la tarjeta y realizar el pago.
+
+3.      Por consignación: Para ello el sistema le debe dar la opción de imprimir el recibo de consignación y cuando el solicitante la haya hecho, el banco deja un archivo al final del día en un FileSystem de esta entidad con permisos de acceso con el listado de las personas que han consignado en su base de datos, este archivo debe ser leído y cargado a una base de datos local para consultar su pago.
+
+Cuando el pago quede registrado en el sistema la solicitud queda inmediatamente en estado ACTIVA y el solicitante podrá empezar a publicar productos que desea vender.
+
+4.      Para publicar productos el vendedor debe registrar:
+
+1.      Nombre
+
+2.      Categoría
+
+3.      Subcategoría
+
+4.      Marca
+
+5.      Original / Genérico
+
+6.      Color
+
+7.      Tamaño
+
+8.      Peso
+
+9.      Talla
+
+10.   Nuevo / Usado
+
+11.   Cantidad
+
+12.   Valor
+
+13.   Imágenes
+
+5.      Pasado un día hasta un mes de haber finalizado el periodo de suscripción, el estado de la solicitud deja de ser ACTIVA para pasar EN MORA avisándole por correo electrónico al vendedor que debe cancelar una nueva suscripción, una vez pase el mes y no haya pagado esta, la solicitud queda en estado CANCELADA.
+
+6.      De igual forma sucede si la calificación del vendedor llega a 10 calificaciones por debajo de 3 o si su promedio baja de 5.
+
+7.      Por otro lado, un posible comprador de inscribirse para poder realizar compras.
+
+1.      Nombres
+
+2.      Apellidos
+
+3.      Número de identificación (Cédula o Nit)
+
+4.      Correo electrónico
+
+5.      País de residencia
+
+6.      Ciudad de residencia
+
+7.      Dirección de residencia
+
+8.      Teléfono
+
+9.      Twitter
+
+10.   Instragram
+
+De esta forma el sistema enviará por coreo electrónico las credenciales para ingresar a la plataforma.
+
+8.      Un comprador que esté interesado puede consultar productos por los siguientes criterios
+
+1.      Nombre
+
+2.      Categoría
+
+3.      Subcategoría
+
+4.      Rango de precios
+
+5.      Una palabra contenida en las características
+
+La consulta debe arrojar la o las solicitudes mostrando las siguientes columnas:
+
+1.      Imagen principal
+
+2.      Precio
+
+3.      Algunas de sus características
+
+4.      Categoría
+
+9.      El comprador que esté interesado puede entrar a ver el detalle de un producto, esto significa ver la demás información como imágenes, demás características, reputación del vendedor, comentarios y las preguntas que han realizado los demás interesados.
+
+10.   Lo anterior implica que un comprador que esté interesado pueda realizar preguntas, registrar comentarios sobre un producto en particular y calificar un vendedor en caso de hacer efectiva una compra.
+
+11.   El comprador que esté interesado, podrá ir incluyendo productos a un carrito de compras donde se le mostrará mientras sigue buscando, la cantidad de productos y el total a pagar, adicionalmente puede elegir la opción de recoger los productos o servicio de entrega a domicilio, así, cuando decida pagar lo podrá hacer de las mismas 3 formas que se mencionaron anteriormente:
+
+1.      Pagos en línea: Para ello el sistema muestra una página de resumen de la compra, registra si el pagador es persona Natural o Jurídica, número de identificación y entidad bancaria, de esta forma se consumirá un servicio de un intermediario que permitirá ingresar a la página del banco realizar el pago y retornar el número de aprobación.
+
+2.      Tarjeta de crédito: Para ello el sistema mostrará los campos para registrar la información de la tarjeta y realizar el pago.
+
+3.      Por consignación: Para ello el sistema le debe dar la opción de imprimir el recibo de consignación y cuando el solicitante la haya hecho, el banco deja un archivo al final del día en un FileSystem de esta entidad con permisos de acceso con el listado de las personas que han consignado en su base de datos, este archivo debe ser leído y cargado a una base de datos local para consultar su pago.
+
+El cálculo del total está dado por las siguientes reglas:
+
+1.      Al total de la compra se le debe incrementar un porcentaje por comisión que dependerá de la categoría de cada producto que previamente deberá estar configurado.
+
+2.      Si el comprador decidió entrega a domicilio deberá pagar un costo extra que dependerá de la ciudad y el peso de todos los productos, este porcentaje deberá estar configurado previamente.
+
+3.      También se debe tener en cuenta que algunos productos deben pagar impuesto (IVA) y otros no; este impuesto debe ser configurable.
+
+12.   Una vez realizada la compra, el comprador podrá calificar la transacción con un valor entre 1 y 10, siendo el 1 la peor calificación y 10 la mejor. Adicionalmente podrá también ingresar los comentarios con respecto a la atención del comprador y el servicio de este.
+
+13.   El sistema debe proporcionarle al Director Comercial un tablero de control (BAM) donde muestre los principales KPIs definidos para el negocio dentro de los cuales se encuentran inicialmente:
+
+1.      Producto con mayor venta en el último mes
+
+2.      Categoría con mayores consultas en la última semana
+
+3.      Comportamiento de las suscripciones por periodos de semestres
+
+14.   El sistema debe automáticamente identificar tendencias y enviar correos con promociones o productos destacados a clientes registrados.
+
+1.      Identificar algunos comportamientos de las redes sociales para ofrecer productos
+
+2.      Identificar los productos más consultados para ofrecer promociones
+
+15.   Por último, debe existir un administrador que pueda llevar a cabo las siguientes opciones:
+
+1.      Alimentar la información de parametrización
+
+2.      Consultar y monitorear la auditoría
+
+3.      Consultar los logs de errores
+
+ 
+
+De manera paralela se han identificado criterios de calidad que alinearán los siguientes requerimientos no funcionales que deben cumplirse para tener un sistema acorde a las necesidades de la compañía:
+
+Seguridad:
+
+1.      El sistema deberá manejar un módulo de autenticación y autorización seguro con manejo de usuarios, perfiles o roles, permisos.
+
+2.      Cualquier comunicación debe estar asegurada con protocolo seguro HTTPS.
+
+3.      La contraseña de cumplir con patrón de mínimo 8 caracteres que incluyan por lo menos una mayúscula, una minúscula y un número.
+
+4.      La contraseña debe ser almacenada encriptada con algún algoritmo estándar.
+
+5.      Cualquier correo debe ser certificado y con estampado cronológico.
+
+Desempeño:
+
+1.      El sistema debe estar en capacidad de atender a 200.000 usuarios concurrentes y procesar 1000 TPS (Compras)
+
+2.      Debe estar en capacidad de manejar computación distribuida
+
+3.      El sistema de estar dispuesto en alta disponibilidad en un 99,7%.
+
+4.      Así mismo se debe recuperar ante desastres, por ello debe disponer de un centro de datos alterno.
+
+Interfaz gráfica:
+
+1.      Debe estar en capacidad de cambiar su imagen corporativa de manera parametrizada y a través de contenidos sin la necesidad de mantener un experto en diseño gráfico.
+
+2.      Debe almacenar el concepto de responsive ya que debe ser utilizada desde dispositivos móviles.
+
+Almacenamiento:
+
+1.      Se espera un crecimiento de 200% en el almacenamiento de los documentos, archivos de de carga y la data
+
+2.      Se debe realizar backup diario de la base de datos
+
+Mantenimiento:
+
+1.      Cada acción (CRUD) debe registrar su respectivo movimiento de auditoría con la siguiente información
+
+1.      Acción
+
+2.      Usuario
+
+3.      Fecha
+
+4.      Hora
+
+2.      Cada error producido en el sistema debe quedar registrado en un log
+
+Tecnología:
+
+1.      La tecnología a utilizar debe ser libre de licenciamiento
+
+2.      Los lenguajes, frameworks y librerías deben las últimas versiones estables, reconocidas, con soporte y de buenas prácticas.
+
+Integración:
+
+1.      Cualquier servicio que se tenga que exponer hacia un sistema externo como el de BI, se debe hacer a través de SOAP
