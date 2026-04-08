@@ -1,4 +1,4 @@
-# 1. Explicación de la generación de la plantilla [Juli^2]
+# 1. Explicación de la generación de la plantilla 
 
 ## Herramienta utilizada
 
@@ -46,7 +46,7 @@ Basándose en buenas prácticas de gestión ágil empresarial, se incorporaron:
 
 ---
 
-# 2. Generar la plantilla (Vacía) [Santi]
+# 2. Generar la plantilla (Vacía)
 
 | ID | Epic | User Story | Prioridad (MoSCoW) | Valor de Negocio | Estimación (Fibonacci) | Criterios de Aceptación | Dependencias | Responsable | Estado | Sprint Asignado |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -68,7 +68,7 @@ Basándose en buenas prácticas de gestión ágil empresarial, se incorporaron:
 | **Estado** | To Do / In Progress / In Review / Done / Blocked |
 | **Sprint Asignado** | Iteración en la que se desarrollará |
 
-# 3. Generar un ejemplo [Brian]
+# 3. Generar un ejemplo 
 
 ## Proyecto: UniLife App - Aplicación Móvil para la Vida Universitaria
 
