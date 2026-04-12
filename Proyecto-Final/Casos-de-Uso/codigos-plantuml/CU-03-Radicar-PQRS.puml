@@ -1,0 +1,21 @@
+@startuml
+left to right direction
+actor "Cliente" as C
+actor "Sistema Notificador" as S
+
+package "App Móvil" {
+  usecase "Diligenciar Formulario PQRS" as UC1
+  usecase "Adjuntar Anexo PDF" as UC2
+  usecase "Generar Radicado Automático" as UC3
+  usecase "Enviar Correo Confirmación" as UC4
+  usecase "Registro Automático Cliente" as UC5
+}
+
+C --> UC1
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC1 <.. UC5 : <<extend>> (Si anónimo)
+
+UC4 --> S
+@enduml

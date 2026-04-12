@@ -1,0 +1,16 @@
+@startuml
+left to right direction
+actor "Gestor de PQRS" as G
+
+package "Aplicación Web" {
+  usecase "Generar Reporte PDF" as UC2
+  usecase "Filtrar Bandeja" as UC1
+  usecase "Excluir Enlaces Anexos" as UC3
+  usecase "Descargar Archivo" as UC4
+}
+
+G --> UC2
+UC2 <.. UC1 : <<extend>> (Si filtra)
+UC2 ..> UC3 : <<include>>
+UC2 ..> UC4 : <<include>>
+@enduml

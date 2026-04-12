@@ -1,0 +1,21 @@
+@startuml
+left to right direction
+actor "Gestor de PQRS" as G
+actor "Sistema Notificador" as S
+
+package "Aplicación Web" {
+  usecase "Consultar Detalle Radicado" as UC1
+  usecase "Descargar Anexo PDF" as UC2
+  usecase "Cambiar Estado PQRS" as UC3
+  usecase "Ingresar Justificación" as UC4
+  usecase "Enviar Notificación Cambio" as UC5
+}
+
+G --> UC1
+G --> UC2
+G --> UC3
+UC3 ..> UC4 : <<include>>
+UC3 ..> UC5 : <<include>>
+
+UC5 --> S
+@enduml

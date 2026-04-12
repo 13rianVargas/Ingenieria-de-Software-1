@@ -1,0 +1,22 @@
+@startuml
+left to right direction
+actor "Usuario (Cliente/Gestor)" as U
+actor "Sistema Notificador" as S
+
+package "Seguridad App/Web" {
+  usecase "Cambiar Contraseña" as UC1
+  usecase "Recuperar Contraseña" as UC2
+  usecase "Cerrar Sesión" as UC3
+  usecase "Validar Políticas Seguridad" as UC4
+  usecase "Enviar Correo Recuperación" as UC5
+}
+
+U --> UC1
+U --> UC2
+U --> UC3
+
+UC1 ..> UC4 : <<include>>
+UC2 ..> UC5 : <<include>>
+
+UC5 --> S
+@enduml

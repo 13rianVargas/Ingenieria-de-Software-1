@@ -1,0 +1,20 @@
+@startuml
+left to right direction
+actor "Cliente" as C
+actor "Sistema Notificador" as S
+
+package "App Móvil" {
+  usecase "Registro Manual" as UC1
+  usecase "Registro Automático" as UC2
+  usecase "Generar Contraseña Segura" as UC3
+  usecase "Enviar Correo de Bienvenida" as UC4
+}
+
+C --> UC1
+C --> UC2
+
+UC1 ..> UC3 : <<include>>
+UC2 ..> UC3 : <<include>>
+UC3 ..> UC4 : <<include>>
+UC4 --> S
+@enduml
