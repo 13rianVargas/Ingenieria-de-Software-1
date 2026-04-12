@@ -1,0 +1,19 @@
+@startuml
+left to right direction
+actor "Cliente" as C
+actor "Gestor de PQRS" as G
+
+package "Sistema de Autenticación" {
+  usecase "Ingresar Credenciales" as UC1
+  usecase "Validar Usuario BD" as UC2
+  usecase "Generar Token Sesión" as UC3
+  usecase "Ingresar Credenciales Web" as UC4
+}
+
+C --> UC1
+UC1 ..> UC2 : <<include>>
+UC2 ..> UC3 : <<include>>
+
+G --> UC4
+UC4 ..> UC2 : <<include>>
+@enduml

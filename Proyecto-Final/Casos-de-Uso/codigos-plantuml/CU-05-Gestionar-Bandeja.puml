@@ -1,0 +1,14 @@
+@startuml
+left to right direction
+actor "Gestor de PQRS" as G
+
+package "Aplicación Web" {
+  usecase "Consultar Bandeja Radicados" as UC1
+  usecase "Visualizar Detalles y Anexos" as UC2
+  usecase "Filtrar Bandeja General" as UC3
+}
+
+G --> UC1
+UC1 ..> UC2 : <<include>>
+UC1 <.. UC3 : <<extend>> (Por Estado o Tipo)
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+left to right direction
+
+actor "Cliente" as C
+actor "Gestor de PQRS" as G
+actor "Sistema (Notificador)" as S
+
+package "Sistema de PQRS SuperMarket" {
+  usecase "CU-01 Gestionar Registro" as UC1
+  usecase "CU-02 Autenticarse" as UC2
+  usecase "CU-03 Radicar PQRS" as UC3
+  usecase "CU-04 Consultar PQRS Propias" as UC4
+  usecase "CU-05 Gestionar Bandeja" as UC5
+  usecase "CU-06 Tramitar PQRS" as UC6
+  usecase "CU-07 Generar Reportes" as UC7
+  usecase "CU-08 Gestionar Seguridad" as UC8
+}
+
+C --> UC1
+C --> UC2
+C --> UC3
+C --> UC4
+C --> UC8
+
+G --> UC2
+G --> UC5
+G --> UC6
+G --> UC7
+G --> UC8
+
+UC3 ..> S : <<include>>
+UC6 ..> S : <<include>>
+@enduml

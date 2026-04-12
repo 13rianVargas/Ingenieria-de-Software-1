@@ -1,0 +1,14 @@
+@startuml
+left to right direction
+actor "Cliente" as C
+
+package "App Móvil" {
+  usecase "Consultar Historial Radicados" as UC1
+  usecase "Visualizar Detalles PQRS" as UC2
+  usecase "Filtrar Radicados Propios" as UC3
+}
+
+C --> UC1
+UC1 ..> UC2 : <<include>>
+UC1 <.. UC3 : <<extend>> (Búsqueda específica)
+@enduml
