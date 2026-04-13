@@ -1,7 +1,7 @@
 # CU-03: Radicar PQRS
 
 ## 1. Descripción
-Es el proceso central (core) mediante el cual un Cliente ingresa una nueva Petición, Queja, Reclamo o Sugerencia en la App Móvil, adjuntando la documentación de soporte (PDF) requerida, y el sistema genera automáticamente un número de radicado y lo notifica por correo electrónico.
+Es el proceso central (core) mediante el cual un Cliente ingresa una nueva Petición, Queja, Reclamo o Sugerencia en la App Móvil, pudiendo adjuntar documentación de soporte (PDF) de forma opcional, y el sistema genera automáticamente un número de radicado y lo notifica por correo electrónico.
 
 ## 2. Actores
 * **Cliente:** Actor que inicia la radicación.

@@ -12,10 +12,9 @@ package "App Móvil" {
 }
 
 C --> UC1
-UC1 ..> UC2 : <<include>>
+UC1 <.. UC2 : <<extend>> (Opcional)
 UC1 ..> UC3 : <<include>>
 UC3 ..> UC4 : <<include>>
 UC1 <.. UC5 : <<extend>> (Si anónimo)
-
 UC4 --> S
 @enduml
