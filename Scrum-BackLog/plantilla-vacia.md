@@ -1,5 +1,9 @@
-# 2. Generar la plantilla (Vacía)
+### Product Backlog
 
-| ID                         | User Story                 | Prioridad (MoSCoW)         | Estimación (Puntos de Historia de Fibonacci) | Criterios de Aceptación    | Sprint Asignado            |
-| -------------------------- | -------------------------- | -------------------------- | -------------------------------------------- | -------------------------- | -------------------------- |
-| [Espacio para diligenciar] | [Espacio para diligenciar] | [Espacio para diligenciar] | [Espacio para diligenciar]                   | [Espacio para diligenciar] | [Espacio para diligenciar] |
+| ID  | Epic | User Story | Prioridad (MoSCoW) | Valor de Negocio | Estimación (Fibonacci) | Criterios de Aceptación | Dependencias | Responsable | Estado | Sprint Asignado |
+| --- | ---- | ---------- | ------------------ | ---------------- | ---------------------- | ----------------------- | ------------ | ----------- | ------ | --------------- |
+
+### Resumen por Sprint
+
+| Sprint | Historias | Puntos Totales | Epic Principal |
+| ------ | --------- | -------------- | -------------- |
