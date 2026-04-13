@@ -11,6 +11,6 @@ package "Aplicación Web" {
 
 G --> UC2
 UC2 <.. UC1 : <<extend>> (Si filtra)
-UC2 ..> UC3 : <<include>>
+UC2 ..> UC3 : <<extend>>
 UC2 ..> UC4 : <<include>>
 @enduml
