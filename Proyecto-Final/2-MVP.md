@@ -26,7 +26,7 @@ Estas funcionalidades se implementarán en sprints posteriores, enfocándose en 
 *   **9. Descargar Anexo de PQRS:** Capacidad del gestor para revisar los documentos adjuntos detallados.
 *   **11. Generar Reporte de Radicados (PDF):** Exportación de datos de gestión para auditoría o administración.
 *   **13. Recuperar Contraseña (App/Web):** *Supuesto de mejora.* Restauración de credenciales olvidadas.
-*   **14. Cambiar Contraseña (App):** *Supuesto de mejora.* Mayor nivel de seguridad para la contraseña inicial enviada.
+*   **14. Cambiar Contraseña (App/Web):** *Supuesto de mejora.* Mayor nivel de seguridad para la contraseña inicial enviada al cliente o actualización de credenciales para el gestor.
 *   **15. Cerrar Sesión (App/Web):** *Supuesto de mejora.* Cierre seguro del token de sesión.
 *   **16. Notificación de Cambio de Estado (Correo):** *Supuesto de mejora.* Informar pasivamente al cliente sobre el cambio de estado de su solicitud.
 *   **17. Registro Manual de Cliente (App):** *Supuesto de mejora.* Creación de cuenta en la App de manera independiente al proceso de radicación de una PQRS.

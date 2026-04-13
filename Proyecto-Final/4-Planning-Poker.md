@@ -20,7 +20,7 @@ La tabla presenta la estimación acordada por el equipo tras discutir los retos 
 | **HU-11** | Generar Reporte de Radicados (PDF) | 5 |
 | **HU-12** | Notificación de Confirmación (Correo) | 5 |
 | **HU-13** | Recuperar Contraseña (App/Web) | 3 |
-| **HU-14** | Cambiar Contraseña (App) | 2 |
+| **HU-14** | Cambiar Contraseña (App/Web) | 2 |
 | **HU-15** | Cerrar Sesión (App/Web) | 1 |
 | **HU-16** | Notificación de Cambio de Estado (Correo) | 2 |
 | **HU-17** | Registro Manual de Cliente (App) | 2 |
