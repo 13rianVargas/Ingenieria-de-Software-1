@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Vendedor - E-Commerce Konrad</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .form-wrapper {
+            padding: 30px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-left: 3px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="file"],
+        select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="file"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input[type="text"]:disabled,
+        input[type="email"]:disabled,
+        input[type="tel"]:disabled,
+        select:disabled {
+            background-color: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        input[type="file"] {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .input-helper {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-weight: 400;
+            font-size: 13px;
+        }
+
+        .checkbox-group a {
+            color: #667eea;
+            text-decoration: none;
+            margin-left: 3px;
+        }
+
+        .checkbox-group a:hover {
+            text-decoration: underline;
+        }
+
+        .documents-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            border-left: 4px solid #667eea;
+        }
+
+        .document-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .document-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .document-item input[type="file"] {
+            flex: 1;
+            margin: 0;
+            padding: 0;
+        }
+
+        .document-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            display: block;
+            margin-top: 3px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-submit {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-reset {
+            flex: 1;
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-reset:hover {
+            background: #d0d0d0;
+        }
+
+        .alert-info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #1565c0;
+        }
+
+        .alert-info strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .form-wrapper {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Registro como Vendedor</h1>
+            <p>Completa el formulario para unirte a nuestra plataforma de e-commerce</p>
+        </div>
+
+        <!-- Form Content -->
+        <div class="form-wrapper">
+            <form>
+                <!-- Alert Info -->
+                <div class="alert-info">
+                    <strong>Información importante:</strong>
+                    Todos los campos marcados con <span style="color: #e74c3c;">*</span> son obligatorios para completar el registro.
+                    <br>
+                
+                </div>
+
+                <!-- Radicado Result -->
+                <div id="resultadoRadicado" class="alert-info" style="display: none;">
+                    <strong>Solicitud registrada:</strong>
+                    Su solicitud ha sido registrada en estado <strong>PENDIENTE</strong>.
+                    Número de radicado asignado: <span id="numeroRadicado">RQ-2026-0001</span>.
+                    Se ha enviado un correo certificado con estampado cronológico al correo indicado.
+                </div>
+
+                <!-- Section 1: Información Personal -->
+                <div class="form-section">
+                    <h2 class="form-section-title">Información Personal</h2>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tipo de Documento <span class="required">*</span></label>
+                            <select id="tipoDocumento" onchange="actualizarDocumentosRequeridos()" required>
+                                <option value="">-- Seleccionar tipo --</option>
+                                <option value="cedula">Cédula de Ciudadanía (Persona Natural)</option>
+                                <option value="nit">NIT (Persona Jurídica)</option>
+                            </select>
+                            <span class="input-helper">Selecciona según tu tipo de identificación</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nombres <span class="required">*</span></label>
+                            <input type="text" placeholder="Juan" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Apellidos <span class="required">*</span></label>
+                            <input type="text" placeholder="Pérez García" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Número de Identificación <span class="required">*</span></label>
+                            <input type="text" placeholder="1.234.567.890" required>
+                            <span class="input-helper" id="helperIdentificacion">Ingresa tu cédula o NIT</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Correo Electrónico <span class="required">*</span></label>
+                            <input type="email" placeholder="correo@ejemplo.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Teléfono <span class="required">*</span></label>
+                            <input type="tel" placeholder="+57 3xx xxx xxxx" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Ubicación -->
+                <div class="form-section">
+                    <h2 class="form-section-title">Ubicación</h2>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>País de Residencia <span class="required">*</span></label>
+                            <select required>
+                                <option value="">-- Seleccionar país --</option>
+                                <option value="co">Colombia</option>
+                                <option value="mx">México</option>
+                                <option value="ar">Argentina</option>
+                                <option value="pe">Perú</option>
+                                <option value="ve">Venezuela</option>
+                                <option value="cl">Chile</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Ciudad de Residencia <span class="required">*</span></label>
+                            <input type="text" placeholder="Bogotá" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Documentos Adjuntos -->
+                <div class="form-section">
+                    <h2 class="form-section-title">Documentos Adjuntos</h2>
+
+                    <p style="font-size: 13px; color: #666; margin-bottom: 15px;">
+                        Por favor, adjunta los siguientes documentos en formato PDF o imagen (JPG/PNG). Tamaño máximo: 5 MB por archivo.
+                    </p>
+
+                    <div id="avisoDocumentos" style="display: none; background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 4px; margin-bottom: 15px; font-size: 13px; color: #856404;">
+                        <strong>Nota:</strong> <span id="textoAviso"></span>
+                    </div>
+
+                    <div class="documents-container">
+                        <div class="document-item">
+                            <div style="flex: 1;">
+                                <label style="margin: 0; font-weight: 600;">Fotocopia de Cédula <span class="required">*</span></label>
+                                <span class="document-label">PDF, JPG o PNG (máx. 5 MB)</span>
+                            </div>
+                            <input type="file" accept=".pdf,.jpg,.jpeg,.png" required>
+                        </div>
+
+                        <div class="document-item">
+                            <div style="flex: 1;">
+                                <label style="margin: 0; font-weight: 600;">RUT <span class="required">*</span></label>
+                                <span class="document-label">PDF, JPG o PNG (máx. 5 MB)</span>
+                            </div>
+                            <input type="file" accept=".pdf,.jpg,.jpeg,.png" required>
+                        </div>
+
+                        <div class="document-item" id="itemCamaraComercio" style="display: none;">
+                            <div style="flex: 1;">
+                                <label style="margin: 0; font-weight: 600;">Cámara de Comercio <span class="required">*</span></label>
+                                <span class="document-label">Certificado de existencia y representación legal vigente (máx. 5 MB)</span>
+                            </div>
+                            <input type="file" id="inputCamaraComercio" accept=".pdf,.jpg,.jpeg,.png">
+                        </div>
+
+                        <div class="document-item">
+                            <div style="flex: 1;">
+                                <label style="margin: 0; font-weight: 600;">Aceptación de Consulta a Centrales de Riesgo <span class="required">*</span></label>
+                                <span class="document-label">PDF, JPG o PNG (máx. 5 MB) - <a href="javascript:void(0);" onclick="descargarFormato('centrales-riesgo')">Descargar formato</a></span>
+                            </div>
+                            <input type="file" accept=".pdf,.jpg,.jpeg,.png" required>
+                        </div>
+
+                        <div class="document-item">
+                            <div style="flex: 1;">
+                                <label style="margin: 0; font-weight: 600;">Aceptación de Tratamiento de Datos Personales <span class="required">*</span></label>
+                                <span class="document-label">PDF, JPG o PNG (máx. 5 MB) - <a href="javascript:void(0);" onclick="descargarFormato('datos-personales')">Descargar formato</a></span>
+                            </div>
+                            <input type="file" accept=".pdf,.jpg,.jpeg,.png" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Términos y Condiciones -->
+                <div class="form-section">
+                    <h2 class="form-section-title">Términos y Condiciones</h2>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">
+                            Acepto los <a href="#" target="_blank">términos y condiciones</a> de la plataforma
+                        </label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="privacy" required>
+                        <label for="privacy">
+                            Autorizo el tratamiento de mis datos personales
+                        </label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="newsletter">
+                        <label for="newsletter">
+                            Deseo recibir información sobre promociones y novedades
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="button-group">
+                    <button type="reset" class="btn-reset">Limpiar Formulario</button>
+                    <button type="submit" class="btn-submit">Registrarse</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Función para actualizar documentos requeridos según el tipo de documento
+        function actualizarDocumentosRequeridos() {
+            const tipoDocumento = document.getElementById('tipoDocumento').value;
+            const itemCamaraComercio = document.getElementById('itemCamaraComercio');
+            const inputCamaraComercio = document.getElementById('inputCamaraComercio');
+            const avisoDocumentos = document.getElementById('avisoDocumentos');
+            const textoAviso = document.getElementById('textoAviso');
+            const helperIdentificacion = document.getElementById('helperIdentificacion');
+
+            if (tipoDocumento === 'cedula') {
+                // Persona Natural: No requiere Cámara de Comercio
+                itemCamaraComercio.style.display = 'none';
+                inputCamaraComercio.required = false;
+                avisoDocumentos.style.display = 'block';
+                textoAviso.textContent = 'Como Persona Natural, debes adjuntar: Fotocopia de Cédula, RUT, y los dos formatos de aceptación.';
+                helperIdentificacion.textContent = 'Ingresa tu número de cédula';
+            } else if (tipoDocumento === 'nit') {
+                // Persona Jurídica: Requiere Cámara de Comercio
+                itemCamaraComercio.style.display = 'flex';
+                inputCamaraComercio.required = true;
+                avisoDocumentos.style.display = 'block';
+                textoAviso.textContent = 'Como Persona Jurídica, debes adjuntar: Fotocopia de Cédula, RUT, Cámara de Comercio, y los dos formatos de aceptación.';
+                helperIdentificacion.textContent = 'Ingresa tu número de NIT';
+            } else {
+                // Sin selección
+                itemCamaraComercio.style.display = 'none';
+                inputCamaraComercio.required = false;
+                avisoDocumentos.style.display = 'none';
+                helperIdentificacion.textContent = 'Ingresa tu cédula o NIT';
+            }
+        }
+
+        // Función para descargar formatos sin perder datos
+        function descargarFormato(tipo) {
+            event.preventDefault();
+            
+            let nombreArchivo = '';
+            if (tipo === 'centrales-riesgo') {
+                nombreArchivo = 'Formato-Aceptacion-Centrales-Riesgo.pdf';
+            } else if (tipo === 'datos-personales') {
+                nombreArchivo = 'Formato-Tratamiento-Datos-Personales.pdf';
+            }
+
+            // Crear un elemento de link temporal para simular descarga
+            const enlace = document.createElement('a');
+            enlace.href = 'javascript:void(0);';
+            enlace.download = nombreArchivo;
+            
+            // Mostrar confirmación
+            alert(`El archivo "${nombreArchivo}" se descargará en tu computadora.\n\nTus datos en el formulario se mantienen sin cambios.`);
+            
+            // En una aplicación real, aquí se descargaría el archivo desde el servidor
+            console.log('Descargando: ' + nombreArchivo);
+        }
+
+        // Inicializar estado al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarDocumentosRequeridos();
+
+            const form = document.querySelector('form');
+            const resultadoRadicado = document.getElementById('resultadoRadicado');
+            const numeroRadicado = document.getElementById('numeroRadicado');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                // Simulación de número de radicado asignado
+                const radicadoSimulado = 'RQ-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 9000) + 1000);
+                numeroRadicado.textContent = radicadoSimulado;
+                resultadoRadicado.style.display = 'block';
+                resultadoRadicado.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
