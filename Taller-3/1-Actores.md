@@ -1,4 +1,4 @@
-# ACTORES & SISTEMAS
+# ACTORES
 
 ## Vendedor
 
@@ -6,14 +6,5 @@
 
 ## Director Comercial
 
-## Datacredito
-
 ## Comprador
 
-## Cifin
-
-## Pasarela de Pagos
-
-## Sistema de BI
-
-## Banco
