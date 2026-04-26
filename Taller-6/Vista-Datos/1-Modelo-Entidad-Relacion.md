@@ -73,13 +73,13 @@ entity "DetalleCompra" as DetalleCompra {
   precio_unitario : DECIMAL
 }
 
-Usuario ||--o| SolicitudVendedor : "registra"
-Usuario ||--o{ Suscripcion : "posee"
-Usuario ||--o{ Producto : "publica"
-Usuario ||--o{ Compra : "realiza"
+Usuario ||--o| SolicitudVendedor
+Usuario ||--o{ Suscripcion
+Usuario ||--o{ Producto
+Usuario ||--o{ Compra
 
-Compra ||--|{ DetalleCompra : "contiene"
-Producto ||--o{ DetalleCompra : "es parte de"
+Compra ||--|{ DetalleCompra
+Producto ||--o{ DetalleCompra
 
 @enduml
 ```
