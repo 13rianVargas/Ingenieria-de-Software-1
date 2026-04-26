@@ -5,10 +5,11 @@ Diagrama específico basado en los requerimientos del comprador (Búsqueda, Carr
 ```plantuml
 @startuml
 skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 60
 left to right direction
 
 actor "Comprador" as Comprador
-actor "Pasarela de Pagos" as Pasarela
 
 rectangle "Módulo de Compras" {
   usecase "Buscar Productos" as UC1
@@ -19,17 +20,15 @@ rectangle "Módulo de Compras" {
   usecase "Interactuar (Preguntas/Comentarios)" as UC6
 }
 
-Comprador --> UC1
-Comprador --> UC2
-Comprador --> UC3
-Comprador --> UC4
-Comprador --> UC5
-Comprador --> UC6
+Comprador ---> UC1
+Comprador ---> UC2
+Comprador ---> UC3
+Comprador ---> UC4
+Comprador ---> UC5
+Comprador ---> UC6
 
-UC1 <.. UC2 : <<extend>>
-UC2 <.. UC3 : <<extend>>
-UC3 ..> UC4 : <<include>>
-
-UC4 --> Pasarela
+UC1 <... UC2 : <<extend>>
+UC2 <... UC3 : <<extend>>
+UC3 ...> UC4 : <<include>>
 @enduml
 ```
