@@ -4,6 +4,7 @@ Diagrama específico para las actividades del Director Comercial, incluyendo la 
 
 ```plantuml
 @startuml
+skinparam linetype ortho
 left to right direction
 
 actor "Director Comercial" as Director
