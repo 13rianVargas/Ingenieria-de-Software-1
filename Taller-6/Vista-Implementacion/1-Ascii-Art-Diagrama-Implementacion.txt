@@ -1,0 +1,63 @@
+========================================================================================
+|                BACKEND                     |        WEB FRONTEND        |    MOBILE   |
+========================================================================================
+
+com.konrad.ecommerce.backend        com.konrad.ecommerce.web      com.konrad.ecommerce.mobile
+│                                   │                             │
+├── api                             ├── app                       ├── app
+│   ├── rest                        │   ├── routing               │   ├── navigation
+│   │   ├── auth                    │   ├── auth_guards           │   ├── session
+│   │   ├── solicitudes_vendedor    │   └── theme_runtime         │   └── theme
+│   │   ├── compradores             │                             │
+│   │   ├── catalogo                ├── core                      ├── core
+│   │   ├── carrito_checkout        │   ├── api_client            │   ├── api_client
+│   │   ├── pagos                   │   ├── state_management      │   ├── secure_storage
+│   │   ├── suscripciones           │   ├── interceptors          │   ├── local_db
+│   │   ├── reputacion              │   └── error_handling        │   └── push_notifications
+│   │   ├── director_comercial      │                             │
+│   │   └── administracion          ├── shared                    ├── shared
+│   │                               │   ├── ui_components         │   ├── ui_components
+│   └── soap                        │   ├── forms_validations     │   ├── forms_validations
+│       └── bi_exports              │   └── utils                 │   └── utils
+│                                   │                             │
+├── application                     ├── modules                   ├── features
+│   ├── commands                    │   ├── auth                  │   ├── auth
+│   ├── queries                     │   ├── portal_vendedor       │   ├── comprador
+│   └── workflows                   │   │   ├── registro_solicitud│   │   ├── busqueda
+│                                   │   │   ├── seguimiento       │   │   ├── detalle_producto
+├── domain                          │   │   ├── suscripciones     │   │   ├── carrito
+│   ├── identidad                   │   │   └── publicar_productos│   │   ├── checkout
+│   ├── onboarding_vendedor         │   │                         │   │   └── calificaciones
+│   ├── suscripcion_vendedor        │   ├── portal_comprador      │   │
+│   ├── catalogo_productos          │   │   ├── registro          │   ├── vendedor
+│   ├── compras                     │   │   ├── busqueda_catalogo │   │   ├── estado_solicitud
+│   ├── reputacion                  │   │   ├── detalle_producto  │   │   ├── renovar_suscripcion
+│   ├── analitica_bam               │   │   ├── carrito_checkout  │   │   └── gestionar_productos
+│   ├── promociones                 │   │   └── calificaciones    │   │
+│   └── parametrizacion             │   │                         │   ├── notificaciones
+│                                   │   ├── director_comercial   │   │   ├── alertas_estado
+├── infrastructure                  │   │   ├── bandeja           │   │   └── promociones
+│   ├── persistencia                │   │   ├── validaciones      │   │
+│   │   ├── relacional              │   │   ├── bam_dashboard     ├── resources
+│   │   ├── archivos                │   │   └── tendencias        │   ├── styles
+│   │   └── cache                   │   │                         │   ├── icons
+│   │                               │   ├── administracion       │   └── i18n
+│   ├── integraciones_externas      │   │   ├── parametrizacion   │
+│   │   ├── datacredito_client      │   │   ├── auditoria         │
+│   │   ├── cifin_loader            │   │   └── logs_errores      │
+│   │   ├── consignaciones_loader   │                             │
+│   │   ├── pasarela_pagos          ├── assets                   │
+│   │   ├── correo_certificado      │   ├── styles_responsive     │
+│   │   └── social_trends           │   └── images               │
+│   │                               │                             │
+│   └── batch_jobs                  │                             │
+│                                   │                             │
+└── shared                          │                             │
+    ├── security                    │                             │
+    ├── auditoria                   │                             │
+    ├── logging                     │                             │
+    ├── error_handling              │                             │
+    └── configuracion               │                             │
+
+
+========================================================================================
