@@ -1,0 +1,58 @@
+﻿direction: down
+
+Cliente: Dispositivo Cliente\n(Web / Móvil) {
+  shape: square
+}
+
+Internet: Internet {
+  shape: cloud
+}
+
+Pagos: Pasarela Pagos API (Stripe/PayPal) {
+  shape: cloud
+}
+
+"Data Center Principal": {
+  shape: package
+  LB_Principal: Balanceador de Carga {shape: hexagon}
+  Web_Principal: Cluster Servidores Web {shape: parallelogram}
+  App_Principal: Cluster Servidores App {shape: parallelogram}
+  NAS_Principal: Servidor de Almacenamiento {shape: cylinder}
+  DB_Principal: Cluster Base de Datos {shape: cylinder}
+
+  LB_Principal -> Web_Principal
+  Web_Principal -> App_Principal
+  App_Principal -> DB_Principal
+  App_Principal -> NAS_Principal
+}
+
+"Data Center Alterno (DRP)": {
+  shape: package
+  style.stroke-dash: 5
+  LB_Alterno: Balanceador Alterno {shape: hexagon}
+  Web_Alterno: Cluster Servidores Web Alterno {shape: parallelogram}
+  App_Alterno: Cluster Servidores App Alterno {shape: parallelogram}
+  NAS_Alterno: Servidor de Almacenamiento {shape: cylinder}
+  DB_Alterno: Cluster Base de Datos {shape: cylinder}
+
+  LB_Alterno -> Web_Alterno
+  Web_Alterno -> App_Alterno
+  App_Alterno -> DB_Alterno
+  App_Alterno -> NAS_Alterno
+}
+
+Cliente -> Internet: HTTPS
+Internet -> "Data Center Principal".LB_Principal
+Internet -> "Data Center Alterno (DRP)".LB_Alterno: Failover {
+  style.stroke-dash: 5
+}
+
+"Data Center Principal".DB_Principal -> "Data Center Alterno (DRP)".DB_Alterno: Replicación Síncrona/Asíncrona {
+  style.stroke-dash: 5
+}
+"Data Center Principal".NAS_Principal -> "Data Center Alterno (DRP)".NAS_Alterno: Replicación de Archivos {
+  style.stroke-dash: 5
+}
+
+"Data Center Principal".App_Principal -> Pagos: HTTPS
+"Data Center Alterno (DRP)".App_Alterno -> Pagos: HTTPS

@@ -1,0 +1,105 @@
+direction: down
+
+Cliente: Dispositivo Cliente\n(Web / Móvil) {
+  shape: square
+  Web: Navegador Web (React/Angular)
+  Mobile: App Móvil (Flutter/Kotlin)
+}
+
+Internet: Internet {
+  shape: cloud
+}
+
+Pagos: Pasarela Pagos API (Stripe/PayPal) {
+  shape: cloud
+}
+
+"Data Center Principal": {
+  shape: package
+  LB_Principal: Balanceador de Carga {
+    shape: hexagon
+    Proxy: HAProxy / Nginx {
+      shape: queue
+    }
+  }
+  Web_Principal: Cluster Servidores Web {
+    shape: parallelogram
+    Frontend: Servidor Nginx / Apache
+  }
+  App_Principal: Cluster Servidores App {
+    shape: parallelogram
+    Backend: API Node.js / Java Spring Boot
+  }
+  NAS_Principal: Servidor de Almacenamiento {
+    shape: cylinder
+    Storage: NFS Share {
+      shape: stored_data
+    }
+  }
+  DB_Principal: Cluster Base de Datos {
+    shape: cylinder
+    RDBMS: PostgreSQL {
+      shape: stored_data
+    }
+  }
+
+  LB_Principal -> Web_Principal: HTTP (TCP 80/8080)
+  Web_Principal -> App_Principal: HTTP / REST (TCP 3000/8080)
+  App_Principal -> DB_Principal: SQL (TCP 5432/3306)
+  App_Principal -> NAS_Principal: NFS (TCP 2049)
+}
+
+"Data Center Alterno (DRP)": {
+  shape: package
+  style.stroke-dash: 5
+  LB_Alterno: Balanceador Alterno {
+    shape: hexagon
+    Proxy_Alt: HAProxy / Nginx {
+      shape: queue
+    }
+  }
+  Web_Alterno: Cluster Servidores Web Alterno {
+    shape: parallelogram
+    Frontend_Alt: Servidor Nginx / Apache
+  }
+  App_Alterno: Cluster Servidores App Alterno {
+    shape: parallelogram
+    Backend_Alt: API Node.js / Java Spring Boot
+  }
+  NAS_Alterno: Servidor de Almacenamiento {
+    shape: cylinder
+    Storage_Alt: NFS Share {
+      shape: stored_data
+    }
+  }
+  DB_Alterno: Cluster Base de Datos {
+    shape: cylinder
+    RDBMS_Alt: PostgreSQL {
+      shape: stored_data
+    }
+  }
+
+  LB_Alterno -> Web_Alterno: HTTP (TCP 80/8080)
+  Web_Alterno -> App_Alterno: HTTP / REST (TCP 3000/8080)
+  App_Alterno -> DB_Alterno: SQL (TCP 5432/3306)
+  App_Alterno -> NAS_Alterno: NFS (TCP 2049)
+}
+
+Cliente -> Internet: HTTPS (TCP 443)
+Internet -> "Data Center Principal".LB_Principal: HTTPS (TCP 443)
+Internet -> "Data Center Alterno (DRP)".LB_Alterno: HTTPS (Failover) {
+  style.stroke-dash: 5
+}
+
+"Data Center Principal".DB_Principal -> "Data Center Alterno (DRP)".DB_Alterno: TCP (Replicación DB) {
+  style.stroke-dash: 5
+}
+"Data Center Principal".NAS_Principal -> "Data Center Alterno (DRP)".NAS_Alterno: TCP / rsync (Sincronización NAS) {
+  style.stroke-dash: 5
+}
+
+"Data Center Principal" -> Pagos: {style.stroke: transparent}
+"Data Center Alterno (DRP)" -> Pagos: {style.stroke: transparent}
+
+"Data Center Principal".App_Principal -> Pagos: HTTPS / REST (TCP 443)
+"Data Center Alterno (DRP)".App_Alterno -> Pagos: HTTPS / REST (TCP 443)
