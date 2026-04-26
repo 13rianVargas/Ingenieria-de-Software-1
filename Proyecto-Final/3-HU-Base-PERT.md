@@ -13,7 +13,7 @@ Para realizar la estimación del proyecto mediante Planning Poker, se ha selecci
 > **Quiero** filtrar el listado de mis PQRS radicadas utilizando el número de radicado,  
 > **Para** encontrar rápidamente una solicitud específica sin tener que buscar manualmente en toda la lista.
 
-## 2. Estimación PERT - Juicio de Expertos
+## 2. Estimación PERT 
 
 A continuación, se detalla el desglose de tareas para la HU base y su estimación en horas (O=Optimista, M=Probable, P=Pesimista). Esta estimación total en horas equivaldrá a **1 Punto de Historia** para el equipo.
 
