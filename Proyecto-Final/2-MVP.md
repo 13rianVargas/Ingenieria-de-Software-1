@@ -16,8 +16,8 @@ Este MVP compone el flujo core o crítico del negocio que permite al cliente fin
 *   **12. Notificación de Confirmación (Correo):** Envío automático de correo con las credenciales y el número de radicado.
 
 ---
+## Funcionalidades del MVP (Segunda Salida)
 
-## Incrementos Posteriores (Post-MVP)
 
 Estas funcionalidades se implementarán en sprints posteriores, enfocándose en la usabilidad, filtrado avanzado, exportación y mejoras de seguridad propuestas por el equipo.
 
@@ -25,6 +25,9 @@ Estas funcionalidades se implementarán en sprints posteriores, enfocándose en 
 *   **8. Filtrar Bandeja de Radicados:** Búsqueda avanzada por "Tipo" y "Estado" para el Gestor.
 *   **9. Descargar Anexo de PQRS:** Capacidad del gestor para revisar los documentos adjuntos detallados.
 *   **11. Generar Reporte de Radicados (PDF):** Exportación de datos de gestión para auditoría o administración.
+---
+## Incrementos Posteriores (Post-MVP - Condicionados al tiempo disponible)
+
 *   **13. Recuperar Contraseña (App/Web):** *Supuesto de mejora.* Restauración de credenciales olvidadas.
 *   **14. Cambiar Contraseña (App/Web):** *Supuesto de mejora.* Mayor nivel de seguridad para la contraseña inicial enviada al cliente o actualización de credenciales para el gestor.
 *   **15. Cerrar Sesión (App/Web):** *Supuesto de mejora.* Cierre seguro del token de sesión.
