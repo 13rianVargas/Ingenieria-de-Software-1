@@ -50,7 +50,7 @@ Envío automático de correo electrónico al cliente confirmando la radicación,
 
 # ==============================
 
-## Funcionalidades Adicionales (Supuestos y Criterio del Equipo)
+## Funcionalidades Adicionales (Supuestos y Criterio del Equipo) - Se incluyen únicamente si el tiempo se ajusta. 
 
 ### 13. Recuperar Contraseña (App/Web)
 Permite restablecer el acceso enviando un enlace o nueva contraseña temporal al correo electrónico, asumiendo que el usuario puede olvidar la contraseña autogenerada.
