@@ -1,35 +1,24 @@
-# Documento de Arquitectura de Software
-## E-Commerce Konrad — Sistema de Información de Comercio Electrónico
-
 | Campo | Detalle |
 |---|---|
-| **Proyecto** | E-Commerce para Comercial Konrad |
 | **Institución** | Fundación Universitaria Konrad Lorenz |
-| **Materia** | Ingeniería de Software I |
 | **Grupo** | 51 |
 | **Docente** | López Ospina Carlos Andrés |
-| **Autores** | Ávila Cortés Julián David, Criollo Homez Julián Felipe, Rocha Ramirez Santiago, Vargas Clavijo Brian Steven |
 | **Versión** | 1.0 |
-| **Fecha** | Abril 2026 |
 | **Metodología** | Modelo 4+1 vistas (Kruchten) + Vista de Datos |
 
----
-
-## Historial de Versiones
+## Historial de Versiones {.unnumbered}
 
 | Versión | Fecha | Autores | Descripción |
 |---|---|---|---|
 | 1.0 | Abril 2026 | Ávila, Criollo, Rocha, Vargas | Versión inicial del documento de arquitectura |
 
----
+# Introducción
 
-## 1. Introducción
+## Propósito
 
-### 1.1 Propósito
+Este documento describe la arquitectura del sistema E-Commerce Konrad usando el modelo de 4+1 vistas extendido con Vista de Datos. Está dirigido al docente **López Ospina Carlos Andrés** y al equipo de desarrollo del grupo **51** de Ingeniería de Software I.
 
-Este documento describe la arquitectura del sistema E-Commerce Konrad usando el modelo de 4+1 vistas extendido con Vista de Datos. Está dirigido al equipo académico de Ingeniería de Software I como evidencia del diseño arquitectónico del sistema.
-
-### 1.2 Alcance
+## Alcance
 
 El sistema cubre los siguientes módulos funcionales:
 
@@ -43,7 +32,7 @@ El sistema cubre los siguientes módulos funcionales:
 
 **Fuera de alcance:** implementación de sistemas bancarios externos, plataformas de redes sociales (solo integración de tendencias), infraestructura física de centros de datos.
 
-### 1.3 Glosario
+## Glosario
 
 | Término | Definición |
 |---|---|
@@ -60,7 +49,7 @@ El sistema cubre los siguientes módulos funcionales:
 | **BCrypt** | Algoritmo de hashing de contraseñas. Estándar recomendado por OWASP. |
 | **AOP** | Aspect-Oriented Programming. Paradigma para separar concerns transversales (auditoría, logging) del código de negocio. |
 
-### 1.4 Objetivos Arquitectónicos
+## Objetivos Arquitectónicos
 
 1. **Escalabilidad:** Soportar 200.000 usuarios concurrentes y 1.000 TPS mediante computación distribuida (clusters y balanceadores de carga).
 2. **Alta disponibilidad:** Garantizar uptime del 99,7% con centro de datos alterno y replicación síncrona/asíncrona.
@@ -69,7 +58,7 @@ El sistema cubre los siguientes módulos funcionales:
 5. **Integrabilidad:** Exposición de servicios hacia sistemas BI externos mediante SOAP; consumo de servicios externos mediante REST.
 6. **Libertad de licenciamiento:** Stack 100% open source (OpenJDK, Spring Boot, Angular/React, PostgreSQL, Nginx).
 
-### 1.5 Restricciones Arquitectónicas
+## Restricciones Arquitectónicas
 
 - Stack obligatorio open source: Java (OpenJDK) + Spring Boot (backend), Angular o React (frontend web), PostgreSQL (BD relacional).
 - Comunicaciones externas sobre HTTPS (TCP 443).
@@ -77,13 +66,11 @@ El sistema cubre los siguientes módulos funcionales:
 - Archivos planos de CIFIN y consignaciones bancarias llegan via FileSystem; el sistema los procesa en lotes.
 - Sin licencias propietarias ni frameworks comerciales.
 
----
-
-## 2. Vista de Casos de Uso
+# Vista de Casos de Uso
 
 La vista de casos de uso establece los requisitos funcionales arquitectónicamente significativos, es decir, los que tienen mayor impacto en las decisiones de diseño del sistema.
 
-### 2.1 Actores
+## Actores
 
 | Actor | Descripción |
 |---|---|
@@ -92,13 +79,13 @@ La vista de casos de uso establece los requisitos funcionales arquitectónicamen
 | **Director Comercial** | Rol interno que revisa solicitudes de vendedores, gestiona aprobaciones y consulta el tablero BAM. |
 | **Administrador del Sistema** | Rol técnico que parametriza el sistema, consulta auditoría y monitorea logs de error. |
 
-### 2.2 Diagrama General de Casos de Uso
+## Diagrama General de Casos de Uso
 
 ![Figura 1 — Diagrama General de Casos de Uso](images/cu-00-general.png)
 
 *Figura 1 — Diagrama General de Casos de Uso*
 
-### 2.3 Casos de Uso Arquitectónicamente Significativos
+## Casos de Uso Arquitectónicamente Significativos
 
 Los siguientes casos de uso son significativos para la arquitectura porque impactan decisiones de diseño, integraciones o mecanismos de concurrencia:
 
@@ -109,13 +96,11 @@ Los siguientes casos de uso son significativos para la arquitectura porque impac
 | CU-04 | Gestión Director Comercial | Consulta concurrente a dos fuentes de riesgo externas + consulta manual judicial + reglas de negocio con múltiples estados. |
 | CU-05 | Administrar Sistema | Parametrización sin código, consulta de auditoría centralizada y logs de error: justifica los paquetes `shared/auditoria` y `shared/logging`. |
 
----
-
-## 3. Vista Lógica
+# Vista Lógica
 
 La vista lógica describe la descomposición del sistema en módulos, capas y componentes desde una perspectiva estática de responsabilidades.
 
-### 3.1 Nivel 1 — Contenedores Base
+## Nivel 1 — Contenedores Base
 
 Muestra los contenedores principales del sistema sin detalles internos.
 
@@ -123,7 +108,7 @@ Muestra los contenedores principales del sistema sin detalles internos.
 
 *Figura 2 — Vista Lógica Nivel 1: Contenedores Base*
 
-### 3.2 Nivel 2 — Componentes Internos y Protocolos
+## Nivel 2 — Componentes Internos y Protocolos
 
 Muestra las capas internas de cada contenedor y los protocolos de comunicación.
 
@@ -139,7 +124,7 @@ Muestra las capas internas de cada contenedor y los protocolos de comunicación.
 | **Capa de Lógica de Negocio** | Orquesta los procesos de negocio: aprobación de vendedores, cálculo de totales de compra, evaluación de calificaciones, gestión de suscripciones. Invoca servicios externos y auditoria. |
 | **Capa de Persistencia (ORM)** | Abstrae el acceso a PostgreSQL mediante JPA/Hibernate. Gestiona transacciones, consultas y mapeo objeto-relacional. |
 
-### 3.3 Nivel 3 — Componentes Técnicos Detallados
+## Nivel 3 — Componentes Técnicos Detallados
 
 Máximo detalle: librerías, clientes HTTP, ORM, y todos los sistemas externos diferenciados.
 
@@ -147,13 +132,11 @@ Máximo detalle: librerías, clientes HTTP, ORM, y todos los sistemas externos d
 
 *Figura 4 — Vista Lógica Nivel 3: Componentes Técnicos Detallados*
 
----
-
-## 4. Vista de Procesos
+# Vista de Procesos
 
 La vista de procesos describe el comportamiento dinámico del sistema en tiempo de ejecución: flujos concurrentes, interacciones entre actores y mecanismos de comunicación.
 
-### 4.1 Proceso: Registro de Vendedor y Aprobación
+## Proceso: Registro de Vendedor y Aprobación
 
 Flujo completo desde la solicitud del aspirante hasta activación como vendedor con suscripción pagada.
 
@@ -161,7 +144,7 @@ Flujo completo desde la solicitud del aspirante hasta activación como vendedor 
 
 *Figura 5 — Proceso: Registro de Vendedor y Aprobación*
 
-### 4.2 Proceso: Compra de Productos
+## Proceso: Compra de Productos
 
 Flujo desde la búsqueda hasta la calificación post-transacción.
 
@@ -169,7 +152,7 @@ Flujo desde la búsqueda hasta la calificación post-transacción.
 
 *Figura 6 — Proceso: Compra de Productos*
 
-### 4.3 Proceso: Gestión de Solicitudes — Director Comercial
+## Proceso: Gestión de Solicitudes — Director Comercial
 
 Flujo de revisión crediticia y judicial con múltiples swimlanes de integración.
 
@@ -177,21 +160,19 @@ Flujo de revisión crediticia y judicial con múltiples swimlanes de integració
 
 *Figura 7 — Proceso: Gestión de Solicitudes (Director Comercial)*
 
----
-
-## 5. Vista de Despliegue / Física
+# Vista de Despliegue / Física
 
 La vista física describe la distribución del software en la infraestructura de hardware y red.
 
-### 5.1 Topología Nivel 1 — Visión General
+## Topología Nivel 1 — Visión General
 
 Muestra los nodos principales, clusters y el centro de datos alterno (DRP).
 
-![Figura 9 — Vista Física: Topología de Despliegue Nivel 1](images/fisica-nivel1.png)
+![Figura 8 — Vista Física: Topología de Despliegue Nivel 1](images/fisica-nivel1.png)
 
-*Figura 9 — Vista Física: Topología de Despliegue Nivel 1*
+*Figura 8 — Vista Física: Topología de Despliegue Nivel 1*
 
-### 5.2 Topología Nivel 2 — Detalle Técnico
+## Topología Nivel 2 — Detalle Técnico
 
 Detalla componentes internos de cada nodo y protocolos específicos (puertos TCP).
 
@@ -205,26 +186,25 @@ Detalla componentes internos de cada nodo y protocolos específicos (puertos TCP
 | Pasarela de Pagos | Stripe / PayPal (externa) | HTTPS TCP 443 |
 
 **Replicación entre Data Centers:**
+
 - BD Principal → BD Standby: replicación síncrona/asíncrona TCP.
 - NAS Principal → NAS Alterno: sincronización via rsync TCP.
 
-![Figura 10 — Vista Física: Topología de Despliegue Nivel 2 (Detalle Técnico)](images/fisica-nivel2.png)
+![Figura 9 — Vista Física: Topología de Despliegue Nivel 2 (Detalle Técnico)](images/fisica-nivel2.png)
 
-*Figura 10 — Vista Física: Topología de Despliegue Nivel 2 (Detalle Técnico)*
+*Figura 9 — Vista Física: Topología de Despliegue Nivel 2 (Detalle Técnico)*
 
----
-
-## 6. Vista de Implementación
+# Vista de Implementación
 
 La vista de implementación describe la organización del código fuente en módulos, paquetes y dependencias.
 
-### 6.1 Estructura de Paquetes
+## Estructura de Paquetes
 
-![Figura 11 — Vista de Implementación: Estructura de Paquetes](images/implementacion.png)
+![Figura 10 — Vista de Implementación: Estructura de Paquetes](images/implementacion.png)
 
-*Figura 11 — Vista de Implementación: Estructura de Paquetes*
+*Figura 10 — Vista de Implementación: Estructura de Paquetes*
 
-### 6.2 Descripción de Módulos Clave
+## Descripción de Módulos Clave
 
 | Módulo / Paquete | Responsabilidad |
 |---|---|
@@ -237,32 +217,28 @@ La vista de implementación describe la organización del código fuente en mód
 | `shared/logging` | Aspecto transversal: captura y persiste errores del sistema. |
 | `shared/security` | Módulo de autenticación, autorización por roles y cifrado de contraseñas (BCrypt). |
 
----
-
-## 7. Vista de Datos
+# Vista de Datos
 
 La vista de datos describe el modelo de persistencia relacional: entidades, atributos y relaciones.
 
-### 7.1 Modelo Entidad-Relación
+## Modelo Entidad-Relación
 
-![Figura 8 — Modelo Entidad-Relación](images/datos-mer.png)
+![Figura 11 — Modelo Entidad-Relación](images/datos-mer.png)
 
-*Figura 8 — Modelo Entidad-Relación*
+*Figura 11 — Modelo Entidad-Relación*
 
-### 7.2 Descripción de Entidades Principales
+## Descripción de Entidades Principales
 
 | Entidad | Descripción | Atributos clave |
 |---|---|---|
 | **Usuario** | Centraliza todos los actores del sistema (Vendedor, Comprador, Admin, Director). El atributo `rol` determina el perfil. | `clave_hash` (BCrypt), `rol` |
 | **SolicitudVendedor** | Registra el proceso de onboarding del vendedor, incluyendo resultados de verificación crediticia y judicial. | `estado` (PENDIENTE/APROBADA/RECHAZADA/DEVUELTA/ACTIVA), `datacredito_val`, `cifin_val`, `antecedentes_val` |
 | **Suscripcion** | Controla la vigencia del vendedor en la plataforma. El campo `estado` soporta los estados EN MORA y CANCELADA. | `tipo` (mensual/semestral/anual), `estado` |
-| **Producto** | Catálogo de productos publicados por vendedores activos. `docs_url` en `SolicitudVendedor` y las imágenes de `Producto` referencian rutas en el NAS. | `categoria`, `precio`, `stock` |
+| **Producto** | Catálogo de productos publicados por vendedores activos. Las imágenes referencian rutas en el NAS. | `categoria`, `precio`, `stock` |
 | **Compra** | Encabezado de la transacción de compra. | `estado_pago`, `tipo_entrega` |
 | **DetalleCompra** | Ítem por ítem de cada compra (relación M:N entre Compra y Producto). | `cantidad`, `precio_unitario` |
 
----
-
-## 8. Requerimientos No Funcionales
+# Requerimientos No Funcionales
 
 Extraídos del enunciado del sistema y formalizados según categorías funcionales.
 
@@ -276,9 +252,7 @@ Extraídos del enunciado del sistema y formalizados según categorías funcional
 | RNF-06 | Tecnología Libre de Licenciamiento | Media | Stack 100% open source en sus últimas versiones estables con soporte activo. |
 | RNF-07 | Integración SOAP hacia BI | Media | Servicios expuestos hacia sistemas externos de BI deben usar protocolo SOAP/XML. |
 
----
-
-## 9. Trazabilidad RNF ↔ Arquitectura
+# Trazabilidad RNF ↔ Arquitectura
 
 Esta matriz responde directamente a la pregunta del enunciado: ¿en qué vista, en qué capa, en qué componente, en qué clase se está abordando cada RNF?
 
@@ -287,23 +261,21 @@ Esta matriz responde directamente a la pregunta del enunciado: ¿en qué vista, 
 | **RNF-01** Seguridad | Lógica (N3), Física, Implementación, Datos | Infraestructura / Seguridad / BD | `shared/security`, `api/rest/auth`, HTTPS en balanceador, `Usuario.clave_hash` | BCrypt para hash de contraseñas. HTTPS desde cliente hasta balanceador (TCP 443). Roles en `Usuario.rol` restringen acceso por endpoint. |
 | **RNF-02** Desempeño | Física (N1 y N2), Lógica | Infraestructura (clusters) | Cluster Serv. Web, Cluster Serv. App, Cluster BD, Balanceador (HAProxy/Nginx), Data Center DRP | Clusters horizontales absorben 200k usuarios concurrentes. Balanceador distribuye TPS. Failover automático al DRP con replicación síncrona de BD. |
 | **RNF-03** Responsive | Implementación, Casos de Uso | Frontend / Admin | `web/assets/styles_responsive`, `web/modules/administracion/parametrizacion`, CU-05 (Administrar Sistema) | SPA con CSS breakpoints. Panel de parametrización de imagen corporativa sin modificar código. |
-| **RNF-04** Almacenamiento | Física, Implementación, Datos | Infraestructura / Persistencia / NAS | `NAS_Principal`, `NAS_Alterno`, `infrastructure/persistencia/archivos`, `SolicitudVendedor.docs_url`, `Compra` (historial) | Archivos en NAS (no BLOBs en BD). Replicación NAS→NAS_Alterno via rsync. Cluster BD con réplica para backup sin downtime. |
+| **RNF-04** Almacenamiento | Física, Implementación, Datos | Infraestructura / Persistencia / NAS | `NAS_Principal`, `NAS_Alterno`, `infrastructure/persistencia/archivos`, `SolicitudVendedor.docs_url` | Archivos en NAS (no BLOBs en BD). Replicación NAS→NAS_Alterno via rsync. Cluster BD con réplica para backup sin downtime. |
 | **RNF-05** Mantenimiento | Implementación, Lógica, Casos de Uso | Cross-cutting / Negocio / Admin | `shared/auditoria`, `shared/logging`, `web/modules/administracion/auditoria`, `web/modules/administracion/logs_errores` | AOP intercepta toda operación CRUD → escribe en tabla de auditoría. Errores capturados globalmente en `shared/logging` → FileSystem de logs. CU-05 permite consultar desde UI. |
 | **RNF-06** Tecnología | Implementación | Todo el stack | Todo el árbol de paquetes | Spring Boot (Apache License), Angular/React (MIT), PostgreSQL (BSD), Nginx (BSD), BCrypt (open source). Sin licencias propietarias en ninguna capa. |
 | **RNF-07** Integración SOAP | Lógica (N3), Implementación | API / Integración | `api/soap/bi_exports`, componente `[SOAP Endpoints]` del Nivel 3 | SOAP Endpoints independientes de los REST Controllers. Contrato WSDL versionado. Comunicación cifrada HTTPS / SOAP XML (TCP 443). |
 
----
-
-## 10. Referencias
+# Referencias
 
 | Recurso | Ubicación |
 |---|---|
-| Contexto y enunciado del taller | [`Taller-6/0-Contexto-Taller-6.md`](../0-Contexto-Taller-6.md) |
-| RNF formales (Taller 5) | [`Taller-5/1-RNF.md`](../../Taller-5/1-RNF.md) |
-| Cumplimiento RNF detallado | [`Taller-6/Cumplimiento-RNF.md`](../Cumplimiento-RNF.md) |
-| Casos de uso (diagramas) | [`Taller-6/Casos-de-Uso/`](../Casos-de-Uso/) |
-| Vista Lógica (3 niveles) | [`Taller-6/Vista-Logica/`](../Vista-Logica/) |
-| Vista Procesos (3 diagramas) | [`Taller-6/Vista-Procesos/`](../Vista-Procesos/) |
-| Vista Física (D2 N1 y N2) | [`Taller-6/Vista-Fisica/`](../Vista-Fisica/) |
-| Vista Implementación (ASCII + PNG) | [`Taller-6/Vista-Implementacion/`](../Vista-Implementacion/) |
-| Vista Datos (MER PlantUML) | [`Taller-6/Vista-Datos/`](../Vista-Datos/) |
+| Contexto y enunciado del taller | `Taller-6/0-Contexto-Taller-6.md` |
+| RNF formales (Taller 5) | `Taller-5/1-RNF.md` |
+| Cumplimiento RNF detallado | `Taller-6/Cumplimiento-RNF.md` |
+| Casos de uso (diagramas) | `Taller-6/Casos-de-Uso/` |
+| Vista Lógica (3 niveles) | `Taller-6/Vista-Logica/` |
+| Vista Procesos (3 diagramas) | `Taller-6/Vista-Procesos/` |
+| Vista Física (D2 N1 y N2) | `Taller-6/Vista-Fisica/` |
+| Vista Implementación | `Taller-6/Vista-Implementacion/` |
+| Vista Datos (MER PlantUML) | `Taller-6/Vista-Datos/` |
