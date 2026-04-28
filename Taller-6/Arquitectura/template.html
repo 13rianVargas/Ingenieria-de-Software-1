@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"$if(lang)$ lang="$lang$" xml:lang="$lang$"$endif$>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+$for(author-meta)$
+  <meta name="author" content="$author-meta$" />
+$endfor$
+$if(date-meta)$
+  <meta name="dcterms.date" content="$date-meta$" />
+$endif$
+  <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
+  <style>
+    $styles.html()$
+  </style>
+$for(css)$
+  <link rel="stylesheet" href="$css$" />
+$endfor$
+</head>
+<body>
+$if(title)$
+<header id="title-block-header">
+
+  <div class="portada-top">
+    $if(institucion)$<p class="portada-institucion">$institucion$</p>$endif$
+  </div>
+
+  <div class="portada-titulo">
+    <h1 class="title">$title$</h1>
+    <div class="portada-rule"></div>
+    $if(subtitle)$<p class="subtitle">$subtitle$</p>$endif$
+  </div>
+
+  <div class="portada-autores">
+    $for(author)$<p class="author">$author$</p>$endfor$
+  </div>
+
+  <div class="portada-datos">
+    $if(materia)$<p class="portada-dato">$materia$$if(grupo)$ &nbsp;|&nbsp; Grupo $grupo$$endif$</p>$endif$
+    $if(docente)$<p class="portada-dato">Docente: $docente$</p>$endif$
+  </div>
+
+  <div class="portada-bottom">
+    $if(date)$<p class="date">$date$</p>$endif$
+  </div>
+
+</header>
+$endif$
+$if(toc)$
+<nav id="$idprefix$TOC" role="doc-toc">
+$if(toc-title)$
+<h2 id="$idprefix$toc-title">$toc-title$</h2>
+$endif$
+$table-of-contents$
+</nav>
+$endif$
+$body$
+</body>
+</html>
