@@ -1,0 +1,25 @@
+---
+title: "Documento de Arquitectura de Software"
+subtitle: "E-Commerce para Comercial Konrad"
+author:
+  - Ávila Cortés Julián David
+  - Criollo Homez Julián Felipe
+  - Rocha Ramirez Santiago
+  - Vargas Clavijo Brian Steven
+date: "Abril 2026"
+geometry:
+  - top=2.5cm
+  - bottom=2.5cm
+  - left=2.5cm
+  - right=2.5cm
+toc: true
+toc-title: "Tabla de Contenido"
+toc-depth: 2
+colorlinks: true
+numbersections: true
+mainfont: "Helvetica"
+sansfont: "Helvetica"
+monofont: "Courier"
+css:
+  - styles.css
+...
