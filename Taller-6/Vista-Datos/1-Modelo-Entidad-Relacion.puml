@@ -1,0 +1,79 @@
+@startuml
+skinparam linetype ortho
+hide methods
+hide stereotypes
+
+entity "Usuario" as Usuario {
+  * id : INT
+  --
+  tipo_doc : VARCHAR(10)
+  num_doc : VARCHAR(50)
+  nombres : VARCHAR(100)
+  apellidos : VARCHAR(100)
+  correo : VARCHAR(150)
+  clave_hash : VARCHAR(255)
+  rol : VARCHAR(20)
+  fecha_registro : TIMESTAMP
+}
+
+entity "SolicitudVendedor" as SolicitudVendedor {
+  * id : INT
+  --
+  usuario_id : INT <<FK>>
+  radicado : VARCHAR(50)
+  estado : VARCHAR(20)
+  docs_url : JSON
+  datacredito_val : VARCHAR(20)
+  cifin_val : VARCHAR(20)
+  antecedentes_val : BOOLEAN
+}
+
+entity "Suscripcion" as Suscripcion {
+  * id : INT
+  --
+  vendedor_id : INT <<FK>>
+  tipo : VARCHAR(20)
+  fecha_inicio : DATE
+  fecha_fin : DATE
+  estado : VARCHAR(20)
+}
+
+entity "Producto" as Producto {
+  * id : INT
+  --
+  vendedor_id : INT <<FK>>
+  nombre : VARCHAR(150)
+  categoria : VARCHAR(50)
+  precio : DECIMAL
+  stock : INT
+  estado : VARCHAR(20)
+}
+
+entity "Compra" as Compra {
+  * id : INT
+  --
+  comprador_id : INT <<FK>>
+  fecha : TIMESTAMP
+  total : DECIMAL
+  estado_pago : VARCHAR(20)
+  tipo_entrega : VARCHAR(50)
+}
+
+entity "DetalleCompra" as DetalleCompra {
+  * id : INT
+  --
+  compra_id : INT <<FK>>
+  producto_id : INT <<FK>>
+  cantidad : INT
+  precio_unitario : DECIMAL
+}
+
+Usuario ||--o| SolicitudVendedor
+Usuario ||--o{ Suscripcion
+Usuario ||--o{ Producto
+Usuario ||--o{ Compra
+
+Compra ||--|{ DetalleCompra
+Producto ||--o{ DetalleCompra
+
+@enduml
