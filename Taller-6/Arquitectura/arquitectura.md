@@ -66,7 +66,7 @@ La vista de casos de uso establece los requisitos funcionales arquitectónicamen
 
 ## Diagrama General de Casos de Uso
 
-![Figura 1 — Diagrama General de Casos de Uso](images/cu-00-general.png)
+![Figura 1 — Diagrama General de Casos de Uso](images/cu-00-general.png){height=9cm}
 
 *Figura 1 — Diagrama General de Casos de Uso*
 
@@ -97,7 +97,7 @@ Muestra los contenedores principales del sistema sin detalles internos.
 
 Muestra las capas internas de cada contenedor y los protocolos de comunicación.
 
-![Figura 3 — Vista Lógica Nivel 2: Componentes y Protocolos](images/logica-nivel2.png)
+![Figura 3 — Vista Lógica Nivel 2: Componentes y Protocolos](images/logica-nivel2.png){height=8cm}
 
 *Figura 3 — Vista Lógica Nivel 2: Componentes y Protocolos*
 
@@ -125,7 +125,7 @@ La vista de procesos describe el comportamiento dinámico del sistema en tiempo 
 
 Flujo completo desde la solicitud del aspirante hasta activación como vendedor con suscripción pagada.
 
-![Figura 5 — Proceso: Registro de Vendedor y Aprobación](images/procesos-registro-vendedor.png){height=14cm}
+![Figura 5 — Proceso: Registro de Vendedor y Aprobación](images/procesos-registro-vendedor.png){height=8cm}
 
 *Figura 5 — Proceso: Registro de Vendedor y Aprobación*
 
@@ -133,7 +133,7 @@ Flujo completo desde la solicitud del aspirante hasta activación como vendedor 
 
 Flujo desde la búsqueda hasta la calificación post-transacción.
 
-![Figura 6 — Proceso: Compra de Productos](images/procesos-compra.png)
+![Figura 6 — Proceso: Compra de Productos](images/procesos-compra.png){height=8cm}
 
 *Figura 6 — Proceso: Compra de Productos*
 
@@ -141,7 +141,7 @@ Flujo desde la búsqueda hasta la calificación post-transacción.
 
 Flujo de revisión crediticia y judicial con múltiples swimlanes de integración.
 
-![Figura 7 — Proceso: Gestión de Solicitudes (Director Comercial)](images/procesos-director-comercial.png)
+![Figura 7 — Proceso: Gestión de Solicitudes (Director Comercial)](images/procesos-director-comercial.png){height=8cm}
 
 *Figura 7 — Proceso: Gestión de Solicitudes (Director Comercial)*
 
@@ -153,7 +153,7 @@ La vista física describe la distribución del software en la infraestructura de
 
 Muestra los nodos principales, clusters y el centro de datos alterno (DRP).
 
-![Figura 8 — Vista Física: Topología de Despliegue Nivel 1](images/fisica-nivel1.png){height=16cm}
+![Figura 8 — Vista Física: Topología de Despliegue Nivel 1](images/fisica-nivel1.png){height=8cm}
 
 *Figura 8 — Vista Física: Topología de Despliegue Nivel 1*
 
@@ -161,7 +161,7 @@ Muestra los nodos principales, clusters y el centro de datos alterno (DRP).
 
 Detalla componentes internos de cada nodo y protocolos específicos (puertos TCP).
 
-![Figura 9 — Vista Física: Topología de Despliegue Nivel 2 (Detalle Técnico)](images/fisica-nivel2.png){.bigimg height=20cm}
+![Figura 9 — Vista Física: Topología de Despliegue Nivel 2 (Detalle Técnico)](images/fisica-nivel2.png){height=12cm}
 
 *Figura 9 — Vista Física: Topología de Despliegue Nivel 2 (Detalle Técnico)*
 
@@ -182,11 +182,9 @@ La vista de implementación describe la organización del código fuente en mód
 
 ## Estructura de Paquetes
 
-![Figura 10 — Vista de Implementación: Estructura de Paquetes](images/implementacion.png){.bigimg width=100%}
+![Figura 10 — Vista de Implementación: Estructura de Paquetes](images/implementacion.png){height=8cm}
 
 *Figura 10 — Vista de Implementación: Estructura de Paquetes*
-
-<div class="page-break"></div>
 
 ## Descripción de Módulos Clave
 
@@ -207,11 +205,9 @@ La vista de datos describe el modelo de persistencia relacional: entidades, atri
 
 ## Modelo Entidad-Relación
 
-![Figura 11 — Modelo Entidad-Relación](images/datos-mer.png){.bigimg width=100%}
+![Figura 11 — Modelo Entidad-Relación](images/datos-mer.png){height=7cm}
 
 *Figura 11 — Modelo Entidad-Relación*
-
-<div class="page-break"></div>
 
 ## Descripción de Entidades Principales
 

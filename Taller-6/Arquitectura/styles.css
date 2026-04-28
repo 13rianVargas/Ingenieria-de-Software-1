@@ -168,19 +168,19 @@ nav#TOC ul {
 }
 
 nav#TOC > ul > li {
-  padding: 4px 0;
+  padding: 3px 0;
   border-bottom: 1px solid #e8eaef;
-  font-size: 10pt;
+  font-size: 9.5pt;
 }
 
 nav#TOC ul ul {
-  padding-left: 1.4em;
+  padding-left: 1.2em;
 }
 
 nav#TOC ul ul > li {
   border-bottom: none;
-  padding: 2px 0;
-  font-size: 9.5pt;
+  padding: 1px 0;
+  font-size: 9pt;
   color: #555b6e;
 }
 
@@ -232,22 +232,20 @@ h3 {
 
 /* ── Párrafos ────────────────────────────────────────────────────── */
 p {
-  line-height: 1.65;
+  line-height: 1.6;
   text-align: justify;
-  page-break-inside: avoid;
-  margin-bottom: 0.55em;
+  margin-bottom: 0.4em;
 }
 
 /* ── Listas ──────────────────────────────────────────────────────── */
 ul, ol {
   margin-left: 1.4em;
-  line-height: 1.7;
-  margin-bottom: 0.4em;
+  line-height: 1.6;
+  margin-bottom: 0.3em;
 }
 
 li {
-  page-break-inside: avoid;
-  margin-bottom: 0.15em;
+  margin-bottom: 0.1em;
 }
 
 /* ── Tablas generales ───────────────────────────────────────────── */
@@ -287,30 +285,34 @@ tr:nth-child(even) td {
 /* ── Imágenes ────────────────────────────────────────────────────── */
 img {
   max-width: 92%;
-  max-height: 18cm;
+  max-height: 14cm;
   height: auto;
   object-fit: contain;
   display: block;
-  margin: 1em auto;
+  margin: 0.6em auto;
   page-break-inside: avoid;
   break-before: avoid;
 }
 
-/* Imágenes grandes (con .bigimg en el markdown): sin límite de altura,
-   ancho máximo al 100% para aprovechar la página. */
+/* Imágenes grandes (con .bigimg en el markdown) */
 img.bigimg {
   max-width: 100%;
-  max-height: 22cm;
+  max-height: 16cm;
 }
 
 /* ── Leyendas de figura (párrafo solo con em) ───────────────────── */
+/* Pegar caption a la imagen anterior: evitar salto de página antes del caption */
+p:has(> em:only-child) {
+  break-before: avoid;
+}
+
 p > em:only-child {
   display: block;
   text-align: center;
   color: #6c7080;
   font-size: 8.5pt;
   margin-top: -0.4em;
-  margin-bottom: 1em;
+  margin-bottom: 0.6em;
 }
 
 /* ── Links en el body ────────────────────────────────────────────── */
