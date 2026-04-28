@@ -3,7 +3,7 @@
 ## Requisitos
 
 - [Pandoc](https://pandoc.org/installing.html)
-- [WeasyPrint](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html) (`pip install weasyprint`)
+- [WeasyPrint](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html)
 
 ## Comando
 
@@ -13,18 +13,19 @@ Desde la carpeta `Taller-6/Arquitectura/`:
 pandoc arquitectura.md metadata.yaml \
   --template=template.html \
   --toc --toc-depth=2 \
-  --pdf-engine=weasyprint \
-  --css=styles.css \
-  -o arquitectura.pdf
+  --number-sections \
+  --to=html5 \
+  -o tmp_build.html && weasyprint tmp_build.html arquitectura.pdf && rm tmp_build.html
 ```
 
-| Archivos involucrados | Archivo Propósito                           |
-| --------------------- | ------------------------------------------- |
-| arquitectura.md       | Contenido del documento                     |
-| metadata.yaml         | Título, autores, datos del curso            |
-| template.html         | Plantilla HTML personalizada (portada, TOC) |
-| styles.css            | Estilos y paginación PDF                    |
-| images/               | Diagramas en PNG                            |
+| Archivos involucrados         | Archivo Propósito                           |
+| ----------------------------- | ------------------------------------------- |
+| images/                       | Diagramas en PNG                            |
+| arquitectura.md               | Contenido del documento                     |
+| instrucciones-creacion-pdf.md | Esta guía de instrucciones                  |
+| metadata.yaml                 | Título, autores, datos del curso            |
+| styles.css                    | Estilos y paginación PDF                    |
+| template.html                 | Plantilla HTML personalizada (portada, TOC) |
 
 ## Notas
 
