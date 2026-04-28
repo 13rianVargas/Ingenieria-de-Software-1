@@ -1,0 +1,184 @@
+/* PDF export via Pandoc + WeasyPrint */
+
+@page {
+  size: letter;
+  margin: 2.5cm;
+  @bottom-center {
+    content: "E-Commerce Konrad — Documento de Arquitectura";
+    font-size: 0.75em;
+    color: #7f8c8d;
+  }
+  @bottom-right {
+    content: counter(page);
+    font-size: 0.85em;
+  }
+}
+
+/* ── Portada ────────────────────────────────────────────────────── */
+h1.title {
+  text-align: center;
+  font-size: 2.2em;
+  margin-top: 8cm;
+  color: #2c3e50;
+  border: none;
+  page-break-before: avoid;
+}
+
+p.subtitle {
+  text-align: center;
+  font-size: 1.3em;
+  color: #34495e;
+  margin-top: 0.5em;
+  margin-bottom: 1.5em;
+}
+
+p.author {
+  text-align: center;
+  font-size: 1.05em;
+  line-height: 1.8;
+  color: #2c3e50;
+}
+
+p.date {
+  text-align: center;
+  font-size: 1em;
+  color: #7f8c8d;
+  margin-top: 1em;
+  margin-bottom: 6cm;
+  page-break-after: always;
+}
+
+/* ── Separadores horizontales: ocultar ──────────────────────────── */
+hr {
+  display: none;
+}
+
+/* ── Encabezados ────────────────────────────────────────────────── */
+h1 {
+  page-break-before: always;
+  color: #2c3e50;
+  font-size: 1.6em;
+  border-bottom: 2px solid #2980b9;
+  padding-bottom: 6px;
+  margin-top: 0;
+}
+
+/* El primer h1 del body no necesita salto (ya lo hizo page-break-after de .date) */
+h1:first-of-type {
+  page-break-before: avoid;
+}
+
+h2 {
+  color: #2980b9;
+  font-size: 1.2em;
+  margin-top: 1.8em;
+  border-bottom: 1px solid #d5e8f7;
+  padding-bottom: 3px;
+}
+
+h3 {
+  color: #34495e;
+  font-size: 1.05em;
+  margin-top: 1.2em;
+}
+
+/* ── Tabla de portada (primera tabla del documento) ─────────────── */
+/* Aplica a todas las tablas; la portada se ve profesional igual */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.2em;
+  page-break-inside: avoid;
+  font-size: 0.92em;
+}
+
+th, td {
+  border: 1px solid #bdc3c7;
+  padding: 7px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background-color: #eaf2fb;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+tr:nth-child(even) td {
+  background-color: #f8fbfe;
+}
+
+/* ── Imágenes ────────────────────────────────────────────────────── */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.2em auto;
+  page-break-inside: avoid;
+}
+
+/* Evitar que una imagen quede sola en página nueva sin el párrafo anterior */
+p + img, img + p {
+  page-break-before: avoid;
+}
+
+/* ── Figuras (texto en cursiva después de imagen) ───────────────── */
+em {
+  color: #7f8c8d;
+  font-size: 0.9em;
+}
+
+/* ── Listas ──────────────────────────────────────────────────────── */
+ul, ol {
+  margin-left: 1.5em;
+  line-height: 1.7;
+}
+
+li {
+  page-break-inside: avoid;
+  margin-bottom: 0.2em;
+}
+
+/* ── Párrafos ────────────────────────────────────────────────────── */
+p {
+  line-height: 1.65;
+  text-align: justify;
+  page-break-inside: avoid;
+  margin-bottom: 0.6em;
+}
+
+/* ── Código inline y bloques ─────────────────────────────────────── */
+code {
+  background-color: #f0f4f8;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-family: "Courier New", monospace;
+  font-size: 0.88em;
+  color: #c0392b;
+}
+
+pre {
+  background-color: #f8f9fa;
+  border-left: 3px solid #2980b9;
+  padding: 0.8em 1em;
+  overflow-x: auto;
+  page-break-inside: avoid;
+  font-size: 0.85em;
+}
+
+pre code {
+  color: inherit;
+  background: none;
+  padding: 0;
+}
+
+/* ── TOC ─────────────────────────────────────────────────────────── */
+nav#TOC {
+  page-break-after: always;
+}
+
+nav#TOC a {
+  color: #2980b9;
+  text-decoration: none;
+}
