@@ -1,17 +1,3 @@
-| Campo | Detalle |
-|---|---|
-| **Institución** | Fundación Universitaria Konrad Lorenz |
-| **Grupo** | 51 |
-| **Docente** | López Ospina Carlos Andrés |
-| **Versión** | 1.0 |
-| **Metodología** | Modelo 4+1 vistas (Kruchten) + Vista de Datos |
-
-## Historial de Versiones {.unnumbered}
-
-| Versión | Fecha | Autores | Descripción |
-|---|---|---|---|
-| 1.0 | Abril 2026 | Ávila, Criollo, Rocha, Vargas | Versión inicial del documento de arquitectura |
-
 # Introducción
 
 ## Propósito
@@ -60,11 +46,10 @@ El sistema cubre los siguientes módulos funcionales:
 
 ## Restricciones Arquitectónicas
 
-- Stack obligatorio open source: Java (OpenJDK) + Spring Boot (backend), Angular o React (frontend web), PostgreSQL (BD relacional).
+- Stack 100% open source sin licencias propietarias: Java (OpenJDK) + Spring Boot (backend), Angular o React (frontend web), PostgreSQL (BD relacional).
 - Comunicaciones externas sobre HTTPS (TCP 443).
 - Servicios hacia BI externos deben usar SOAP XML.
 - Archivos planos de CIFIN y consignaciones bancarias llegan via FileSystem; el sistema los procesa en lotes.
-- Sin licencias propietarias ni frameworks comerciales.
 
 # Vista de Casos de Uso
 
@@ -81,7 +66,7 @@ La vista de casos de uso establece los requisitos funcionales arquitectónicamen
 
 ## Diagrama General de Casos de Uso
 
-![Figura 1 — Diagrama General de Casos de Uso](images/cu-00-general.png)
+![Figura 1 — Diagrama General de Casos de Uso](images/cu-00-general.png){height=9cm}
 
 *Figura 1 — Diagrama General de Casos de Uso*
 
@@ -91,7 +76,7 @@ Los siguientes casos de uso son significativos para la arquitectura porque impac
 
 | ID | Caso de Uso | Impacto Arquitectónico |
 |---|---|---|
-| CU-01 | Registrar Solicitud de Vendedor | Integración con Datacrédito (WS), CIFIN (FileSystem→BD), validación de tipo de persona, correo certificado. |
+| CU-01 | Registrar Solicitud de Vendedor | Integración con Datacrédito (WS), CIFIN (FileSystem a BD), validación de tipo de persona, correo certificado. |
 | CU-03 | Comprar Productos | Carrito con cálculo en tiempo real, integración pasarela de pagos (Stripe/PayPal), procesamiento consignaciones (archivo bancario). |
 | CU-04 | Gestión Director Comercial | Consulta concurrente a dos fuentes de riesgo externas + consulta manual judicial + reglas de negocio con múltiples estados. |
 | CU-05 | Administrar Sistema | Parametrización sin código, consulta de auditoría centralizada y logs de error: justifica los paquetes `shared/auditoria` y `shared/logging`. |
@@ -112,7 +97,7 @@ Muestra los contenedores principales del sistema sin detalles internos.
 
 Muestra las capas internas de cada contenedor y los protocolos de comunicación.
 
-![Figura 3 — Vista Lógica Nivel 2: Componentes y Protocolos](images/logica-nivel2.png)
+![Figura 3 — Vista Lógica Nivel 2: Componentes y Protocolos](images/logica-nivel2.png){height=8cm}
 
 *Figura 3 — Vista Lógica Nivel 2: Componentes y Protocolos*
 
@@ -140,7 +125,7 @@ La vista de procesos describe el comportamiento dinámico del sistema en tiempo 
 
 Flujo completo desde la solicitud del aspirante hasta activación como vendedor con suscripción pagada.
 
-![Figura 5 — Proceso: Registro de Vendedor y Aprobación](images/procesos-registro-vendedor.png)
+![Figura 5 — Proceso: Registro de Vendedor y Aprobación](images/procesos-registro-vendedor.png){height=8cm}
 
 *Figura 5 — Proceso: Registro de Vendedor y Aprobación*
 
@@ -148,7 +133,7 @@ Flujo completo desde la solicitud del aspirante hasta activación como vendedor 
 
 Flujo desde la búsqueda hasta la calificación post-transacción.
 
-![Figura 6 — Proceso: Compra de Productos](images/procesos-compra.png)
+![Figura 6 — Proceso: Compra de Productos](images/procesos-compra.png){height=8cm}
 
 *Figura 6 — Proceso: Compra de Productos*
 
@@ -156,7 +141,7 @@ Flujo desde la búsqueda hasta la calificación post-transacción.
 
 Flujo de revisión crediticia y judicial con múltiples swimlanes de integración.
 
-![Figura 7 — Proceso: Gestión de Solicitudes (Director Comercial)](images/procesos-director-comercial.png)
+![Figura 7 — Proceso: Gestión de Solicitudes (Director Comercial)](images/procesos-director-comercial.png){height=8cm}
 
 *Figura 7 — Proceso: Gestión de Solicitudes (Director Comercial)*
 
@@ -168,13 +153,17 @@ La vista física describe la distribución del software en la infraestructura de
 
 Muestra los nodos principales, clusters y el centro de datos alterno (DRP).
 
-![Figura 8 — Vista Física: Topología de Despliegue Nivel 1](images/fisica-nivel1.png)
+![Figura 8 — Vista Física: Topología de Despliegue Nivel 1](images/fisica-nivel1.png){height=8cm}
 
 *Figura 8 — Vista Física: Topología de Despliegue Nivel 1*
 
 ## Topología Nivel 2 — Detalle Técnico
 
 Detalla componentes internos de cada nodo y protocolos específicos (puertos TCP).
+
+![Figura 9 — Vista Física: Topología de Despliegue Nivel 2 (Detalle Técnico)](images/fisica-nivel2.png){height=12cm}
+
+*Figura 9 — Vista Física: Topología de Despliegue Nivel 2 (Detalle Técnico)*
 
 | Componente | Tecnología | Puerto |
 |---|---|---|
@@ -185,14 +174,7 @@ Detalla componentes internos de cada nodo y protocolos específicos (puertos TCP
 | Almacenamiento NAS | NFS Share | TCP 2049 |
 | Pasarela de Pagos | Stripe / PayPal (externa) | HTTPS TCP 443 |
 
-**Replicación entre Data Centers:**
-
-- BD Principal → BD Standby: replicación síncrona/asíncrona TCP.
-- NAS Principal → NAS Alterno: sincronización via rsync TCP.
-
-![Figura 9 — Vista Física: Topología de Despliegue Nivel 2 (Detalle Técnico)](images/fisica-nivel2.png)
-
-*Figura 9 — Vista Física: Topología de Despliegue Nivel 2 (Detalle Técnico)*
+**Replicación entre Data Centers:** BD Principal a BD Standby mediante replicación síncrona/asíncrona TCP. NAS Principal a NAS Alterno via rsync TCP.
 
 # Vista de Implementación
 
@@ -200,7 +182,7 @@ La vista de implementación describe la organización del código fuente en mód
 
 ## Estructura de Paquetes
 
-![Figura 10 — Vista de Implementación: Estructura de Paquetes](images/implementacion.png)
+![Figura 10 — Vista de Implementación: Estructura de Paquetes](images/implementacion.png){height=8cm}
 
 *Figura 10 — Vista de Implementación: Estructura de Paquetes*
 
@@ -223,7 +205,7 @@ La vista de datos describe el modelo de persistencia relacional: entidades, atri
 
 ## Modelo Entidad-Relación
 
-![Figura 11 — Modelo Entidad-Relación](images/datos-mer.png)
+![Figura 11 — Modelo Entidad-Relación](images/datos-mer.png){height=7cm}
 
 *Figura 11 — Modelo Entidad-Relación*
 
@@ -232,15 +214,15 @@ La vista de datos describe el modelo de persistencia relacional: entidades, atri
 | Entidad | Descripción | Atributos clave |
 |---|---|---|
 | **Usuario** | Centraliza todos los actores del sistema (Vendedor, Comprador, Admin, Director). El atributo `rol` determina el perfil. | `clave_hash` (BCrypt), `rol` |
-| **SolicitudVendedor** | Registra el proceso de onboarding del vendedor, incluyendo resultados de verificación crediticia y judicial. | `estado` (PENDIENTE/APROBADA/RECHAZADA/DEVUELTA/ACTIVA), `datacredito_val`, `cifin_val`, `antecedentes_val` |
-| **Suscripcion** | Controla la vigencia del vendedor en la plataforma. El campo `estado` soporta los estados EN MORA y CANCELADA. | `tipo` (mensual/semestral/anual), `estado` |
+| **SolicitudVendedor** | Registra el proceso de onboarding del vendedor, incluyendo resultados de verificación crediticia y judicial. | `estado`, `datacredito_val`, `cifin_val`, `antecedentes_val` |
+| **Suscripcion** | Controla la vigencia del vendedor en la plataforma. El campo `estado` soporta EN MORA y CANCELADA. | `tipo` (mensual/semestral/anual), `estado` |
 | **Producto** | Catálogo de productos publicados por vendedores activos. Las imágenes referencian rutas en el NAS. | `categoria`, `precio`, `stock` |
 | **Compra** | Encabezado de la transacción de compra. | `estado_pago`, `tipo_entrega` |
-| **DetalleCompra** | Ítem por ítem de cada compra (relación M:N entre Compra y Producto). | `cantidad`, `precio_unitario` |
+| **DetalleCompra** | Item por item de cada compra (relación M:N entre Compra y Producto). | `cantidad`, `precio_unitario` |
 
 # Requerimientos No Funcionales
 
-Extraídos del enunciado del sistema y formalizados según categorías funcionales.
+A continuación se listan los requerimientos no funcionales del sistema, extraídos del enunciado y formalizados según categorías.
 
 | ID | Nombre | Prioridad | Descripción resumida |
 |---|---|---|---|
@@ -252,30 +234,32 @@ Extraídos del enunciado del sistema y formalizados según categorías funcional
 | RNF-06 | Tecnología Libre de Licenciamiento | Media | Stack 100% open source en sus últimas versiones estables con soporte activo. |
 | RNF-07 | Integración SOAP hacia BI | Media | Servicios expuestos hacia sistemas externos de BI deben usar protocolo SOAP/XML. |
 
-# Trazabilidad RNF ↔ Arquitectura
+# Trazabilidad RNF — Arquitectura
 
-Esta matriz responde directamente a la pregunta del enunciado: ¿en qué vista, en qué capa, en qué componente, en qué clase se está abordando cada RNF?
+La siguiente matriz indica en qué vista, capa y componente se aborda cada requerimiento no funcional.
 
-| RNF | Vista(s) | Capa | Componente / Paquete | Mecanismo concreto |
-|---|---|---|---|---|
-| **RNF-01** Seguridad | Lógica (N3), Física, Implementación, Datos | Infraestructura / Seguridad / BD | `shared/security`, `api/rest/auth`, HTTPS en balanceador, `Usuario.clave_hash` | BCrypt para hash de contraseñas. HTTPS desde cliente hasta balanceador (TCP 443). Roles en `Usuario.rol` restringen acceso por endpoint. |
-| **RNF-02** Desempeño | Física (N1 y N2), Lógica | Infraestructura (clusters) | Cluster Serv. Web, Cluster Serv. App, Cluster BD, Balanceador (HAProxy/Nginx), Data Center DRP | Clusters horizontales absorben 200k usuarios concurrentes. Balanceador distribuye TPS. Failover automático al DRP con replicación síncrona de BD. |
-| **RNF-03** Responsive | Implementación, Casos de Uso | Frontend / Admin | `web/assets/styles_responsive`, `web/modules/administracion/parametrizacion`, CU-05 (Administrar Sistema) | SPA con CSS breakpoints. Panel de parametrización de imagen corporativa sin modificar código. |
-| **RNF-04** Almacenamiento | Física, Implementación, Datos | Infraestructura / Persistencia / NAS | `NAS_Principal`, `NAS_Alterno`, `infrastructure/persistencia/archivos`, `SolicitudVendedor.docs_url` | Archivos en NAS (no BLOBs en BD). Replicación NAS→NAS_Alterno via rsync. Cluster BD con réplica para backup sin downtime. |
-| **RNF-05** Mantenimiento | Implementación, Lógica, Casos de Uso | Cross-cutting / Negocio / Admin | `shared/auditoria`, `shared/logging`, `web/modules/administracion/auditoria`, `web/modules/administracion/logs_errores` | AOP intercepta toda operación CRUD → escribe en tabla de auditoría. Errores capturados globalmente en `shared/logging` → FileSystem de logs. CU-05 permite consultar desde UI. |
-| **RNF-06** Tecnología | Implementación | Todo el stack | Todo el árbol de paquetes | Spring Boot (Apache License), Angular/React (MIT), PostgreSQL (BSD), Nginx (BSD), BCrypt (open source). Sin licencias propietarias en ninguna capa. |
-| **RNF-07** Integración SOAP | Lógica (N3), Implementación | API / Integración | `api/soap/bi_exports`, componente `[SOAP Endpoints]` del Nivel 3 | SOAP Endpoints independientes de los REST Controllers. Contrato WSDL versionado. Comunicación cifrada HTTPS / SOAP XML (TCP 443). |
+| RNF | Vistas | Capa | Componente y Mecanismo |
+|---|---|---|---|
+| **RNF-01** Seguridad | Lógica N3, Física, Implementación, Datos | Infraestructura / Seguridad / BD | `shared/security`, `api/rest/auth`, `Usuario.clave_hash`. BCrypt hash de contraseñas. HTTPS en balanceador (TCP 443). Roles en `Usuario.rol` restringen acceso por endpoint. |
+| **RNF-02** Desempeño | Física N1 y N2, Lógica | Infraestructura (clusters) | Cluster Serv. Web, Cluster Serv. App, Cluster BD, Balanceador HAProxy/Nginx, Data Center DRP. Failover automático con replicación síncrona de BD. |
+| **RNF-03** Responsive | Implementación, Casos de Uso | Frontend / Admin | `web/assets/styles_responsive`, `web/modules/administracion/parametrizacion`, CU-05. SPA con CSS breakpoints. Panel de parametrización sin modificar código. |
+| **RNF-04** Almacenamiento | Física, Implementación, Datos | Infraestructura / Persistencia / NAS | `NAS_Principal`, `NAS_Alterno`, `infrastructure/persistencia/archivos`, `SolicitudVendedor.docs_url`. Archivos en NAS (no BLOBs en BD). Replicación via rsync. |
+| **RNF-05** Mantenimiento | Implementación, Lógica, Casos de Uso | Cross-cutting / Admin | `shared/auditoria`, `shared/logging`, `web/modules/administracion/auditoria`. AOP intercepta todo CRUD. Errores en FileSystem de logs. CU-05 expone consulta desde UI. |
+| **RNF-06** Tecnología | Implementación | Todo el stack | Spring Boot (Apache License), Angular/React (MIT), PostgreSQL (BSD), Nginx (BSD), BCrypt open source. Sin licencias propietarias. |
+| **RNF-07** Integración SOAP | Lógica N3, Implementación | API / Integración | `api/soap/bi_exports`, componente SOAP Endpoints nivel 3. Contrato WSDL versionado. HTTPS/SOAP XML en TCP 443. |
 
 # Referencias
 
-| Recurso | Ubicación |
-|---|---|
-| Contexto y enunciado del taller | `Taller-6/0-Contexto-Taller-6.md` |
-| RNF formales (Taller 5) | `Taller-5/1-RNF.md` |
-| Cumplimiento RNF detallado | `Taller-6/Cumplimiento-RNF.md` |
-| Casos de uso (diagramas) | `Taller-6/Casos-de-Uso/` |
-| Vista Lógica (3 niveles) | `Taller-6/Vista-Logica/` |
-| Vista Procesos (3 diagramas) | `Taller-6/Vista-Procesos/` |
-| Vista Física (D2 N1 y N2) | `Taller-6/Vista-Fisica/` |
-| Vista Implementación | `Taller-6/Vista-Implementacion/` |
-| Vista Datos (MER PlantUML) | `Taller-6/Vista-Datos/` |
+<div class="referencias">
+
+**[1]** P. Kruchten, "The 4+1 View Model of Architecture," *IEEE Software*, vol. 12, no. 6, pp. 42–50, nov. 1995.
+
+**[2]** C. A. López Ospina, "Enunciado Taller 6 — E-Commerce para Comercial Konrad," Fundación Universitaria Konrad Lorenz, Ingeniería de Software I, abr. 2026. [En línea]. Disponible en: [github.com/.../0-Contexto-Taller-6.md](https://github.com/13rianVargas/Ingenieria-de-Software-1/blob/main/Taller-6/0-Contexto-Taller-6.md)
+
+**[3]** J. Ávila, J. Criollo, S. Rocha y B. Vargas, "Requerimientos No Funcionales del Sistema E-Commerce," Taller 5, Ingeniería de Software I, 2026. [En línea]. Disponible en: [github.com/.../Taller-5/1-RNF.md](https://github.com/13rianVargas/Ingenieria-de-Software-1/blob/main/Taller-5/1-RNF.md)
+
+**[4]** J. Ávila, J. Criollo, S. Rocha y B. Vargas, "Cumplimiento de Requerimientos No Funcionales," Taller 6, Ingeniería de Software I, 2026. [En línea]. Disponible en: [github.com/.../Cumplimiento-RNF.md](https://github.com/13rianVargas/Ingenieria-de-Software-1/blob/main/Taller-6/Cumplimiento-RNF.md)
+
+**[5]** J. Ávila, J. Criollo, S. Rocha y B. Vargas, "Artefactos de modelado — diagramas, vistas y modelos," Taller 6, Ingeniería de Software I, 2026. [En línea]. Disponible en: [github.com/13rianVargas/Ingenieria-de-Software-1/tree/main/Taller-6](https://github.com/13rianVargas/Ingenieria-de-Software-1/tree/main/Taller-6)
+
+</div>
