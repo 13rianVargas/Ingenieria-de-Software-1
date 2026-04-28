@@ -7,6 +7,10 @@ author:
   - Rocha Ramirez Santiago
   - Vargas Clavijo Brian Steven
 date: "Abril 2026"
+institucion: "Fundación Universitaria Konrad Lorenz"
+materia: "Ingeniería de Software I"
+grupo: "51"
+docente: "López Ospina Carlos Andrés"
 geometry:
   - top=2.5cm
   - bottom=2.5cm
@@ -15,11 +19,8 @@ geometry:
 toc: true
 toc-title: "Tabla de Contenido"
 toc-depth: 2
-colorlinks: true
+colorlinks: false
 numbersections: true
-mainfont: "Helvetica"
-sansfont: "Helvetica"
-monofont: "Courier"
 css:
   - styles.css
 ...

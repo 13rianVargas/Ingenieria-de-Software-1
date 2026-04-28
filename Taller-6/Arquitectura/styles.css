@@ -1,184 +1,367 @@
 /* PDF export via Pandoc + WeasyPrint */
 
+/*
+ * Paleta charcoal / slate profesional
+ *   primary:   #2b2d42  deep slate  → headings, table headers, borders
+ *   secondary: #555b6e  medium slate → h2, subtitles
+ *   light:     #e8eaef  pale slate  → underlines, even rows
+ *   border:    #a8acba  medium gray → table borders
+ *   muted:     #6c7080  gray        → footer, captions, date
+ */
+
+/* ── Fuentes y base ─────────────────────────────────────────────── */
+body {
+  font-family: "Helvetica Neue", "Helvetica", "Arial", "Noto Sans",
+               "Liberation Sans", sans-serif;
+  font-size: 10.5pt;
+  color: #212529;
+}
+
+/* ── Página ─────────────────────────────────────────────────────── */
 @page {
   size: letter;
   margin: 2.5cm;
-  @bottom-center {
-    content: "E-Commerce Konrad — Documento de Arquitectura";
-    font-size: 0.75em;
-    color: #7f8c8d;
+  @bottom-left {
+    content: "E-Commerce Konrad — Documento de Arquitectura v1.0";
+    font-size: 7.5pt;
+    color: #6c7080;
   }
   @bottom-right {
-    content: counter(page);
-    font-size: 0.85em;
+    content: "Pág. " counter(page) " de " counter(pages);
+    font-size: 7.5pt;
+    color: #6c7080;
   }
 }
 
 /* ── Portada ────────────────────────────────────────────────────── */
+/* El header ocupa exactamente la primera página (22cm de texto usable) */
+header#title-block-header {
+  height: 22cm;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  page-break-after: always;
+}
+
+/* Bloque superior: institución */
+.portada-top {
+  width: 100%;
+  text-align: center;
+  border-bottom: 2px solid #2b2d42;
+  padding-bottom: 0.5cm;
+  padding-top: 0.3cm;
+}
+
+p.portada-institucion {
+  font-size: 11pt;
+  font-weight: 700;
+  color: #2b2d42;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Bloque central: título + regla decorativa + subtítulo */
+.portada-titulo {
+  text-align: center;
+}
+
 h1.title {
   text-align: center;
-  font-size: 2.2em;
-  margin-top: 8cm;
-  color: #2c3e50;
+  font-size: 23pt;
+  color: #2b2d42;
+  font-weight: 700;
   border: none;
+  margin: 0 0 0.3em 0;
+  padding: 0;
   page-break-before: avoid;
+}
+
+.portada-rule {
+  width: 65%;
+  margin: 0.3em auto 0.5em auto;
+  border-top: 1.5px solid #a8acba;
 }
 
 p.subtitle {
   text-align: center;
-  font-size: 1.3em;
-  color: #34495e;
-  margin-top: 0.5em;
-  margin-bottom: 1.5em;
+  font-size: 13pt;
+  color: #555b6e;
+  margin: 0;
+}
+
+/* Bloque autores */
+.portada-autores {
+  text-align: center;
 }
 
 p.author {
   text-align: center;
-  font-size: 1.05em;
-  line-height: 1.8;
-  color: #2c3e50;
+  font-size: 10.5pt;
+  line-height: 1.85;
+  color: #2b2d42;
+  margin: 0;
+}
+
+/* Bloque datos del curso */
+.portada-datos {
+  text-align: center;
+  border-top: 1px solid #e8eaef;
+  border-bottom: 1px solid #e8eaef;
+  padding: 0.4cm 2cm;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+p.portada-dato {
+  font-size: 10pt;
+  color: #555b6e;
+  margin: 0.2em 0;
+  line-height: 1.6;
+}
+
+/* Bloque inferior: fecha */
+.portada-bottom {
+  text-align: center;
+  padding-bottom: 0.3cm;
 }
 
 p.date {
   text-align: center;
-  font-size: 1em;
-  color: #7f8c8d;
-  margin-top: 1em;
-  margin-bottom: 6cm;
-  page-break-after: always;
+  font-size: 10pt;
+  color: #6c7080;
+  letter-spacing: 0.05em;
+  margin: 0;
 }
 
-/* ── Separadores horizontales: ocultar ──────────────────────────── */
+/* ── Separadores horizontales: ocultar (solo los de Pandoc en el body) */
 hr {
   display: none;
+}
+
+/* ── Salto de página forzado (usado en el body del .md) ─────────── */
+.page-break {
+  page-break-before: always;
+  break-before: always;
+}
+
+/* ── TOC ─────────────────────────────────────────────────────────── */
+nav#TOC {
+  page-break-after: always;
+  margin-top: 0.5em;
+}
+
+nav#TOC h2 {
+  color: #2b2d42;
+  border-bottom: 2px solid #2b2d42;
+  font-size: 13pt;
+  margin-bottom: 0.8em;
+  page-break-before: avoid;
+}
+
+nav#TOC ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+nav#TOC > ul > li {
+  padding: 3px 0;
+  border-bottom: 1px solid #e8eaef;
+  font-size: 9.5pt;
+}
+
+nav#TOC ul ul {
+  padding-left: 1.2em;
+}
+
+nav#TOC ul ul > li {
+  border-bottom: none;
+  padding: 1px 0;
+  font-size: 9pt;
+  color: #555b6e;
+}
+
+nav#TOC a {
+  color: #2b2d42;
+  text-decoration: none;
+}
+
+nav#TOC a::after {
+  content: leader(".") " " target-counter(attr(href), page);
+  color: #6c7080;
+  font-size: 9pt;
 }
 
 /* ── Encabezados ────────────────────────────────────────────────── */
 h1 {
   page-break-before: always;
-  color: #2c3e50;
-  font-size: 1.6em;
-  border-bottom: 2px solid #2980b9;
-  padding-bottom: 6px;
+  break-after: avoid;
+  color: #2b2d42;
+  font-size: 14pt;
+  border-bottom: 2px solid #2b2d42;
+  padding-bottom: 5px;
   margin-top: 0;
+  margin-bottom: 0.7em;
 }
 
-/* El primer h1 del body no necesita salto (ya lo hizo page-break-after de .date) */
 h1:first-of-type {
   page-break-before: avoid;
 }
 
 h2 {
-  color: #2980b9;
-  font-size: 1.2em;
-  margin-top: 1.8em;
-  border-bottom: 1px solid #d5e8f7;
+  break-before: avoid;
+  break-after: avoid;
+  color: #555b6e;
+  font-size: 11.5pt;
+  margin-top: 1.6em;
+  margin-bottom: 0.4em;
+  border-bottom: 1px solid #e8eaef;
   padding-bottom: 3px;
 }
 
 h3 {
-  color: #34495e;
-  font-size: 1.05em;
-  margin-top: 1.2em;
+  break-after: avoid;
+  color: #555b6e;
+  font-size: 10.5pt;
+  margin-top: 1em;
+  margin-bottom: 0.3em;
 }
 
-/* ── Tabla de portada (primera tabla del documento) ─────────────── */
-/* Aplica a todas las tablas; la portada se ve profesional igual */
+/* ── Párrafos ────────────────────────────────────────────────────── */
+p {
+  line-height: 1.6;
+  text-align: justify;
+  margin-bottom: 0.4em;
+}
+
+/* ── Listas ──────────────────────────────────────────────────────── */
+ul, ol {
+  margin-left: 1.4em;
+  line-height: 1.6;
+  margin-bottom: 0.3em;
+}
+
+li {
+  margin-bottom: 0.1em;
+}
+
+/* ── Tablas generales ───────────────────────────────────────────── */
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 1.2em;
-  page-break-inside: avoid;
-  font-size: 0.92em;
+  margin-bottom: 1em;
+  page-break-inside: auto;
+  font-size: 9pt;
+}
+
+thead {
+  display: table-header-group;
 }
 
 th, td {
-  border: 1px solid #bdc3c7;
-  padding: 7px 10px;
+  border: 1px solid #a8acba;
+  padding: 5px 8px;
   text-align: left;
   vertical-align: top;
 }
 
 th {
-  background-color: #eaf2fb;
+  background-color: #2b2d42;
+  color: #ffffff;
   font-weight: bold;
-  color: #2c3e50;
+}
+
+tr {
+  page-break-inside: avoid;
 }
 
 tr:nth-child(even) td {
-  background-color: #f8fbfe;
+  background-color: #f5f6f8;
 }
 
 /* ── Imágenes ────────────────────────────────────────────────────── */
 img {
-  max-width: 100%;
+  max-width: 92%;
+  max-height: 14cm;
   height: auto;
+  object-fit: contain;
   display: block;
-  margin: 1.2em auto;
+  margin: 0.6em auto;
   page-break-inside: avoid;
+  break-before: avoid;
 }
 
-/* Evitar que una imagen quede sola en página nueva sin el párrafo anterior */
-p + img, img + p {
-  page-break-before: avoid;
+/* Imágenes grandes (con .bigimg en el markdown) */
+img.bigimg {
+  max-width: 100%;
+  max-height: 16cm;
 }
 
-/* ── Figuras (texto en cursiva después de imagen) ───────────────── */
-em {
-  color: #7f8c8d;
-  font-size: 0.9em;
+/* ── Leyendas de figura (párrafo solo con em) ───────────────────── */
+/* Pegar caption a la imagen anterior: evitar salto de página antes del caption */
+p:has(> em:only-child) {
+  break-before: avoid;
 }
 
-/* ── Listas ──────────────────────────────────────────────────────── */
-ul, ol {
-  margin-left: 1.5em;
-  line-height: 1.7;
-}
-
-li {
-  page-break-inside: avoid;
-  margin-bottom: 0.2em;
-}
-
-/* ── Párrafos ────────────────────────────────────────────────────── */
-p {
-  line-height: 1.65;
-  text-align: justify;
-  page-break-inside: avoid;
+p > em:only-child {
+  display: block;
+  text-align: center;
+  color: #6c7080;
+  font-size: 8.5pt;
+  margin-top: -0.4em;
   margin-bottom: 0.6em;
+}
+
+/* ── Links en el body ────────────────────────────────────────────── */
+a {
+  color: #2b2d42;
+  text-decoration: underline;
+}
+
+/* ── Figure: eliminar márgenes default del browser ──────────────── */
+/* Sin esto, el browser aplica margin: 1em 40px que desborda ~0.74cm */
+figure {
+  margin: 0;
+}
+
+/* ── Ocultar figcaption auto-generada por Pandoc (evita duplicado) ─ */
+figure figcaption {
+  display: none;
+}
+
+/* ── Referencias (formato IEEE con sangría colgante) ────────────── */
+.referencias p {
+  padding-left: 2.5em;
+  text-indent: -2.5em;
+  text-align: left;
+  margin-bottom: 0.7em;
+  line-height: 1.55;
 }
 
 /* ── Código inline y bloques ─────────────────────────────────────── */
 code {
-  background-color: #f0f4f8;
+  background-color: #f0f1f5;
   padding: 1px 4px;
   border-radius: 3px;
-  font-family: "Courier New", monospace;
-  font-size: 0.88em;
+  font-family: "Courier New", "Courier", monospace;
+  font-size: 8.5pt;
   color: #c0392b;
 }
 
 pre {
   background-color: #f8f9fa;
-  border-left: 3px solid #2980b9;
-  padding: 0.8em 1em;
-  overflow-x: auto;
+  border-left: 3px solid #2b2d42;
+  padding: 0.7em 1em;
   page-break-inside: avoid;
-  font-size: 0.85em;
+  font-size: 8pt;
+  white-space: pre-wrap;
 }
 
 pre code {
   color: inherit;
   background: none;
   padding: 0;
-}
-
-/* ── TOC ─────────────────────────────────────────────────────────── */
-nav#TOC {
-  page-break-after: always;
-}
-
-nav#TOC a {
-  color: #2980b9;
-  text-decoration: none;
 }
