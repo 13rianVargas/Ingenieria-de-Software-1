@@ -1,0 +1,78 @@
+# Diagrama de Procesos: Registro de Vendedor y Aprobación
+
+Este diagrama documenta el flujo completo desde que un aspirante envía su solicitud hasta que queda como vendedor activo con suscripción pagada. Involucra cuatro carriles (swimlanes): el aspirante, el sistema E-Commerce, los servicios externos de verificación crediticia y el Director Comercial.
+
+```plantuml
+@startuml
+|Aspirante a Vendedor|
+start
+:Ingresar datos personales\n(Nombres, ID, correo, país, ciudad, teléfono);
+:Descargar formatos legales\n(Consulta centrales de riesgo\nTratamiento de datos);
+:Adjuntar documentación\n(Cédula, RUT, Cámara de Comercio\nFormatos firmados);
+
+|Sistema E-Commerce|
+:Validar formato de datos;
+if (¿Datos y documentos\ncompletos y válidos?) then (No)
+  :Mostrar errores de validación;
+  |Aspirante a Vendedor|
+  :Corregir datos o documentos;
+  |Sistema E-Commerce|
+else (Sí)
+endif
+:Determinar tipo de persona\n(Natural o Jurídica);
+note right
+  Natural: Cédula + RUT + Formatos
+  Jurídica: NIT + RUT + Cámara
+  de Comercio + Formatos
+end note
+:Registrar solicitud\nen estado **PENDIENTE**;
+:Generar número de radicado;
+:Enviar correo certificado\ncon número de radicado;
+
+|Director Comercial|
+:Consultar solicitudes pendientes\n(por ID, estado o fecha);
+:Seleccionar solicitud\ny ver detalle;
+
+|Sistema E-Commerce|
+:Consultar Datacrédito\n(Web Service externo);
+:Leer archivo CIFIN\ndesde FileSystem\n→ cargar a BD local;
+:Consolidar calificaciones\ncrediticias;
+
+|Director Comercial|
+:Consultar antecedentes judiciales\nmanualmente en Policía Nacional;
+:Registrar resultado\n(Requerido / No Requerido);
+
+|Sistema E-Commerce|
+:Evaluar reglas de negocio;
+if (Crédito Baja en alguna\nO requerido por justicia) then (Sí)
+  :Cambiar estado a **RECHAZADA**;
+  :Enviar correo con motivo;
+  stop
+elseif (Crédito Advertencia\nen alguna entidad) then (Sí)
+  :Cambiar estado a **DEVUELTA**;
+  :Enviar correo explicando\ncondición de reactivación;
+  stop
+else (Crédito Alta en ambas\ny No requerido)
+  :Cambiar estado a **APROBADA**;
+  :Generar credenciales de acceso;
+  :Enviar correo con credenciales;
+endif
+
+|Aspirante a Vendedor|
+:Recibir credenciales;
+:Ingresar al sistema;
+:Seleccionar plan de suscripción\n(Mensual / Semestral / Anual);
+:Realizar pago\n(Línea / Tarjeta / Consignación);
+
+|Sistema E-Commerce|
+:Verificar pago\n(pasarela o archivo consignación);
+if (¿Pago confirmado?) then (No)
+  :Mantener solicitud en APROBADA\npendiente de pago;
+  stop
+else (Sí)
+  :Cambiar estado a **ACTIVA**;
+  :Habilitar publicación de productos;
+  stop
+endif
+@enduml
+```
