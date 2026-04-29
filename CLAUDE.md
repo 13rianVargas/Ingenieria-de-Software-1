@@ -23,7 +23,7 @@ Estado: documental hoy + andamiaje vacío para software futuro en
 - `Scrum-Backlog/` — backlog vivo (`Product-Backlog.md` + plantilla).
 - `Taller-3/` — Visual Story Mapping (actores, procesos, HU base, PERT,
   planning poker, capacidad).
-- `Taller-4/` — especificación de 2 casos de uso + mockups HTML.
+- `Taller-4/` — especificación de 2 casos de uso + mockup HTML.
 - `Taller-5/` — 3 RNF con criterios de aceptación.
 - `Taller-6/` — arquitectura multivista (`Diagramas/1..6`) + documento
   publicable en `Arquitectura/` con build a PDF (pandoc + weasyprint).
@@ -46,7 +46,7 @@ RNF → arquitectura ↔ cumplimiento RNF → pruebas → software.
   insertar.
 - Casos de uso: ID + nombre sincronizados con `0-Resumen-Casos-Uso.md`.
 - Cuando una HU/CU/RNF se toque, verificar referencias cruzadas (backlog,
-  cumplimiento RNF, mockups, diagramas).
+  cumplimiento RNF, mockup, diagramas).
 - Conventional Commits, inglés, minúsculas. Sin atribución de IA.
 - No commit automático. No mover/renombrar carpetas sin solicitud.
 - Si llega petición de implementar software en `Proyecto-Final/`: pedir

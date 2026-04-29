@@ -23,21 +23,26 @@ de Comercial Konrad. No son archivos sueltos: forman una cadena de
 trazabilidad **enunciado → backlog → arquitectura → pruebas → software**.
 
 ### `Contexto-Talleres.md` (raíz)
+
 Enunciado del cliente. Fuente de verdad funcional y de requerimientos no
 funcionales (seguridad, desempeño, almacenamiento, integración SOAP, etc.).
 Todos los talleres lo referencian. **No modificar el enunciado** salvo que el
 usuario lo pida.
 
 ### `Scrum-Backlog/`
+
 Backlog de producto vivo del caso.
+
 - `Product-Backlog.md`: HU priorizadas con IDs, estimación, criterios y
   sprint asignado.
 - `Plantilla-Vacia.md`: plantilla base para nuevas filas/HU.
-Mantener columnas y formato. Cualquier HU agregada debe referenciar su
-funcionalidad en `Taller-3/` o `Proyecto-Final/docs/`.
+  Mantener columnas y formato. Cualquier HU agregada debe referenciar su
+  funcionalidad en `Taller-3/` o `Proyecto-Final/docs/`.
 
 ### `Taller-3/` — Visual Story Mapping
+
 Producto del taller: backlog inicial + plan de release + estimaciones.
+
 - `0-Task.md` enunciado.
 - `1-Actores.md`, `2-Procesos.md`, `3-Funcionalidades.md`,
   `3.1-Diagramas.md`: levantamiento.
@@ -47,19 +52,24 @@ Producto del taller: backlog inicial + plan de release + estimaciones.
   estimación y capacidad del equipo.
 - `10-Pendientes.md`: trabajo no cerrado.
 
-### `Taller-4/` — Especificación funcional + Mockups
+### `Taller-4/` — Especificación funcional + Mockup
+
 Detalle de 2 casos de uso (incluye registro de vendedor, excluye login) con
 formato `CL-RequerimientosFuncionales-001`.
+
 - `0-Task.md` enunciado.
-- `MockUps/Registro.html` + `MockUps/images/`: prototipo navegable.
+- `mockup/Registro.html` + `mockup/images/`: prototipo navegable.
 
 ### `Taller-5/` — Requerimientos No Funcionales
+
 - `0-Task.md` enunciado.
 - `1-RNF.md`: 3 RNF con 5–10 criterios de aceptación cada uno, formato
   `CL-RequerimientosNoFuncionales-001`. Insumo directo de `Taller-6`.
 
 ### `Taller-6/` — Arquitectura
+
 Diseño de software multivista + documento consolidado en PDF.
+
 - `0-Task.md` enunciado (vistas: Casos de Uso, Lógica, Despliegue/Física).
 - `1-Cumplimiento-RNF.md`: matriz arquitectura ↔ RNF de Taller-5.
 - `Diagramas/` (cada vista en su subcarpeta):
@@ -93,12 +103,16 @@ Para regenerar PNGs desde `.puml`/`.d2` se usa el script `generar-imagenes.sh`
 en `Taller-6/` (referenciado por las instrucciones).
 
 ### `Taller-7/` — Plan y casos de pruebas
+
 Alcance: un solo caso de uso o HU.
+
 - `0-Task.md` enunciado. Entrega en construcción.
 
 ### `Proyecto-Final/`
+
 Entregable transversal del curso. Acumula la planeación completa **y** el
 software futuro.
+
 - `docs/` documentación académica:
   - `0-Contexto-Proyecto-Final.md` enunciado del proyecto.
   - `1-Funcionalidades.md`, `2-MVP.md`, `3-HU-Base-&-PERT.md`,
@@ -151,6 +165,7 @@ Cuando se materialice el software, cada subdirectorio debe traer su propio
 ## 4) Convenciones
 
 ### Nombres
+
 - Markdown `.md` para nuevos documentos, español, palabras separadas con
   guiones.
 - Prefijo numérico (`0-`, `1-`, `3.1-`, …) refleja orden de lectura. Si se
@@ -159,6 +174,7 @@ Cuando se materialice el software, cada subdirectorio debe traer su propio
   resumen.
 
 ### Diagramas
+
 - Fuente preferida: PlantUML (`.puml`); D2 (`.d2`) para topología física.
 - Cada `.puml` lleva un `.md` hermano con explicación cuando aplique.
 - Renders PNG en `images/` de la carpeta correspondiente.
@@ -166,13 +182,16 @@ Cuando se materialice el software, cada subdirectorio debe traer su propio
   `images/` para renders.
 
 ### Documentación
+
 - Sin emojis en markdown técnico (excepción: callouts ya presentes en
   `0-Task.md`).
 - Títulos concretos, listas legibles, lenguaje técnico entendible.
 - Referencias cruzadas con enlaces relativos (`[texto](../ruta/archivo.md)`).
 
 ### Commits
+
 Conventional Commits, inglés, minúsculas. Sin atribución de IA.
+
 ```
 docs: add nfr acceptance criteria
 docs(taller-6): update logical view diagrams
