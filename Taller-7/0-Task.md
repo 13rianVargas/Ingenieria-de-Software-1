@@ -1,3 +1,5 @@
+> 📌 **Nota:** El contexto general de los talleres se encuentra en [Contexto-Talleres.md](../Contexto-Talleres.md)
+
 Elabore o documente el plan y casos de pruebas con un alcance de un solo caso de uso o historia de usuario:
 
 Plan de Pruebas

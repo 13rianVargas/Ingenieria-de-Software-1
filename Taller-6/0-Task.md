@@ -1,3 +1,5 @@
+> 📌 **Nota:** El contexto general de los talleres se encuentra en [Contexto-Talleres.md](../Contexto-Talleres.md)
+
 Elabore o documente el diseño de la arquitectura plasmando las vistas de:
 
 Casos de uso
