@@ -1,3 +1,5 @@
+> 📌 **Nota:** El contexto general de los talleres se encuentra en [Contexto-Talleres.md](../Contexto-Talleres.md)
+
 De acuerdo al siguiente alcance definido por el cliente, documente todo el proceso realizado en clases para:
 
 1. Product Backlog (Diagrama de casos de uso)
