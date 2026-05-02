@@ -1,0 +1,17 @@
+Actividad,Lider de Pruebas,Analista de Pruebas,Revisor de Documento
+Diseño del Plan de Pruebas,R,C,I
+Diseño de Casos de Prueba,A,R,I
+Configuracion GitHub Issues (labels / milestones),R,I,I
+Creacion de issues test-case,A,R,I
+Ejecucion de casos de prueba,A,R,I
+Reporte de defectos (bug-report),A,R,I
+Revision de evidencias,R,C,I
+Generacion del documento,R,I,A
+Revision final del documento,A,C,R
+Entrega academica,R,I,I
+
+Leyenda:
+R = Responsable (ejecuta)
+A = Aprobador (valida y aprueba)
+C = Consultado (aporta criterio)
+I = Informado (recibe resultado)
