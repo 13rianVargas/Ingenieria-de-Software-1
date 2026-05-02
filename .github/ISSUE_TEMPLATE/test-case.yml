@@ -1,0 +1,183 @@
+name: Caso de Prueba
+description: Plantilla estructurada para casos de prueba funcionales — E-Commerce Comercial Konrad
+title: "[TC-NN] HU-XXX — descripcion corta"
+labels: ["test-case", "status:pending"]
+assignees: []
+body:
+  - type: input
+    id: tc-id
+    attributes:
+      label: ID del Caso de Prueba
+      description: Identificador unico del caso. Formato TC-NN.
+      placeholder: TC-01
+    validations:
+      required: true
+
+  - type: input
+    id: hu-origen
+    attributes:
+      label: HU origen
+      description: ID de la Historia de Usuario del backlog.
+      placeholder: "HU-1 Registro de Vendedor"
+    validations:
+      required: true
+
+  - type: input
+    id: cu-origen
+    attributes:
+      label: Caso de Uso (si aplica)
+      description: ID del CU del Taller-4 o Proyecto Final.
+      placeholder: "CU-01 — Gestionar Registro"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: tipo-prueba
+    attributes:
+      label: Tipo de Prueba
+      options:
+        - functional
+        - regression
+        - smoke
+        - exploratory
+        - nfr-performance
+        - nfr-security
+        - nfr-usability
+    validations:
+      required: true
+
+  - type: dropdown
+    id: prioridad
+    attributes:
+      label: Prioridad
+      options:
+        - alta
+        - media
+        - baja
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severidad
+    attributes:
+      label: Severidad esperada si falla
+      options:
+        - critical
+        - major
+        - minor
+        - trivial
+    validations:
+      required: true
+
+  - type: textarea
+    id: precondiciones
+    attributes:
+      label: Precondiciones
+      description: Estado del sistema antes de ejecutar. Usuario logueado, fixtures cargados, datos previos necesarios.
+      placeholder: |
+        - El vendedor NO tiene cuenta previa en el sistema.
+        - La pagina de registro esta disponible.
+        - Los formatos descargables (aceptacion de datos, consulta centrales) estan disponibles.
+    validations:
+      required: true
+
+  - type: textarea
+    id: datos-prueba
+    attributes:
+      label: Datos de Prueba
+      description: Valores de entrada exactos. No usar "datos validos" generico — poner los valores reales.
+      placeholder: |
+        Nombre: Juan Carlos
+        Apellido: Perez Lopez
+        Cedula: 1020304050
+        Correo: jcperez@gmail.com
+        Pais: Colombia
+        Ciudad: Bogota
+        Telefono: 3001234567
+        Documentos: cedula.pdf, rut.pdf, camara_comercio.pdf, formato_centrales.pdf, formato_datos.pdf
+    validations:
+      required: true
+
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos
+      description: Una accion por paso. Numerados. Sin ambiguedad.
+      placeholder: |
+        1. Navegar a la pagina de registro de vendedores.
+        2. Completar campos: nombres, apellidos, numero de identificacion, correo, pais, ciudad, telefono.
+        3. Seleccionar tipo de persona (natural).
+        4. Descargar y adjuntar fotocopia cedula.
+        5. Descargar y adjuntar RUT.
+        6. Descargar y adjuntar camara de comercio.
+        7. Adjuntar formato firmado de aceptacion de consulta a centrales de riesgo.
+        8. Adjuntar formato firmado de tratamiento de datos personales.
+        9. Hacer click en "Enviar solicitud".
+    validations:
+      required: true
+
+  - type: textarea
+    id: resultado-esperado
+    attributes:
+      label: Resultado Esperado
+      description: Comportamiento observable concreto y verificable. Sin "el sistema funciona correctamente".
+      placeholder: |
+        El sistema registra la solicitud en estado PENDIENTE.
+        Se muestra en pantalla el numero de solicitud generado.
+        El vendedor recibe correo de confirmacion con el numero de solicitud.
+    validations:
+      required: true
+
+  - type: textarea
+    id: resultado-obtenido
+    attributes:
+      label: Resultado Obtenido
+      description: Completar al momento de ejecutar la prueba.
+      placeholder: Pendiente de ejecucion.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: estado
+    attributes:
+      label: Estado de Ejecucion
+      options:
+        - pending
+        - in-progress
+        - passed
+        - failed
+        - blocked
+        - skipped
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: ambiente
+    attributes:
+      label: Ambiente
+      options:
+        - dev
+        - qa
+        - staging
+        - prod
+    validations:
+      required: true
+
+  - type: input
+    id: navegador
+    attributes:
+      label: Navegador / Dispositivo
+      description: Solo si la prueba es de UI o multiplataforma.
+      placeholder: "Chrome 124 / Windows 11"
+    validations:
+      required: false
+
+  - type: textarea
+    id: evidencias
+    attributes:
+      label: Evidencias
+      description: Capturas de pantalla, logs, videos. Arrastrar archivos aqui o pegar links.
+      placeholder: Adjuntar capturas al ejecutar.
+    validations:
+      required: false

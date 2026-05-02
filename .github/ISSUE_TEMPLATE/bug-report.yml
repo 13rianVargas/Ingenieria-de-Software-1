@@ -1,0 +1,140 @@
+name: Reporte de Defecto
+description: Plantilla para reportar defectos encontrados durante la ejecucion de casos de prueba — E-Commerce Comercial Konrad
+title: "[BUG-NN] TC-XX — descripcion del defecto"
+labels: ["bug", "status:pending"]
+assignees: []
+body:
+  - type: input
+    id: bug-id
+    attributes:
+      label: ID del Defecto
+      description: Identificador unico del bug. Formato BUG-NN.
+      placeholder: BUG-01
+    validations:
+      required: true
+
+  - type: input
+    id: tc-origen
+    attributes:
+      label: Caso de Prueba que detecto el defecto
+      description: ID del issue del test case. Incluir link al issue (#NN).
+      placeholder: "TC-03 (ver #12)"
+    validations:
+      required: true
+
+  - type: input
+    id: hu-afectada
+    attributes:
+      label: HU afectada
+      description: ID de la Historia de Usuario involucrada.
+      placeholder: "HU-1 Registro de Vendedor"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severidad
+    attributes:
+      label: Severidad
+      description: Impacto del defecto sobre el sistema.
+      options:
+        - critical
+        - major
+        - minor
+        - trivial
+    validations:
+      required: true
+
+  - type: dropdown
+    id: prioridad
+    attributes:
+      label: Prioridad de Correccion
+      options:
+        - alta
+        - media
+        - baja
+    validations:
+      required: true
+
+  - type: dropdown
+    id: reproducibilidad
+    attributes:
+      label: Reproducibilidad
+      options:
+        - siempre
+        - intermitente
+        - una vez
+    validations:
+      required: true
+
+  - type: textarea
+    id: pasos-reproducir
+    attributes:
+      label: Pasos para Reproducir
+      description: Minimos pasos necesarios para que el defecto ocurra. Numerados.
+      placeholder: |
+        1. Navegar a la pagina de registro de vendedores.
+        2. Completar todos los campos obligatorios con datos validos.
+        3. Adjuntar solo 4 de los 5 documentos requeridos (omitir formato de datos).
+        4. Hacer click en "Enviar solicitud".
+    validations:
+      required: true
+
+  - type: textarea
+    id: resultado-esperado
+    attributes:
+      label: Resultado Esperado
+      description: Comportamiento correcto segun el caso de prueba origen.
+      placeholder: El sistema muestra un mensaje de error indicando que el formato de tratamiento de datos personales es obligatorio y no permite enviar la solicitud.
+    validations:
+      required: true
+
+  - type: textarea
+    id: resultado-obtenido
+    attributes:
+      label: Resultado Obtenido
+      description: Lo que realmente ocurrio.
+      placeholder: El sistema acepta la solicitud sin el documento y la registra en estado PENDIENTE.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: ambiente
+    attributes:
+      label: Ambiente donde se reproduce
+      options:
+        - dev
+        - qa
+        - staging
+        - prod
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / Stack Trace
+      description: Pegar en bloque de codigo. No resumir el error.
+      render: text
+      placeholder: |
+        ERROR 2026-05-01 10:23:41 - NullPointerException at DocumentValidator.java:142
+        ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround
+      description: Solucion temporal si existe. Dejar vacio si no hay.
+      placeholder: No existe workaround conocido.
+    validations:
+      required: false
+
+  - type: textarea
+    id: evidencia
+    attributes:
+      label: Evidencia
+      description: Capturas, video corto (.mp4 < 10MB), payload de request. Arrastrar archivos aqui.
+      placeholder: Adjuntar capturas del comportamiento incorrecto.
+    validations:
+      required: false
