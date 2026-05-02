@@ -1,2 +1,10 @@
 .DS_Store
 .claude/
+
+# Python — entornos virtuales
+.venv/
+__pycache__/
+*.pyc
+
+# Artefactos generados (regenerar con generar-docx.py)
+Taller-7/PlanDePruebas/plan-de-pruebas.docx
