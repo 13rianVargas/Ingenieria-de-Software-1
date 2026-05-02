@@ -26,7 +26,7 @@ Puntos verificados directamente del enunciado del taller:
   previo.
 - Plantillas: el enunciado autoriza usar las del aula virtual u **otro
   formato**. La plantilla provista (`PMOInformatica - Plantilla de Plan de
-  Pruebas de Software.doc`) es referencia, no obligación literal.
+Pruebas de Software.doc`) es referencia, no obligación literal.
 - Documentación de casos de prueba: el enunciado sugiere Excel o, mejor, una
   herramienta de gestión (Mantis, Jira u otra).
 
@@ -95,28 +95,28 @@ fusionarse, suprimirse o reordenarse según el alcance académico real.
 Recursos ya producidos que alimentan el Plan y los Casos de Prueba.
 Permiten reaprovechar trazabilidad sin reinventar contenido.
 
-| Insumo | Ubicación | Uso esperado |
-|---|---|---|
-| Enunciado funcional del cliente | [Contexto-Talleres.md](../Contexto-Talleres.md) | Resumen ejecutivo, alcance funcional |
-| HU base con actividades | [Taller-3/6-HU-Base.md](../Taller-3/6-HU-Base.md) | Selección de las 2 HU |
-| Backlog priorizado | [Scrum-Backlog/Product-Backlog.md](../Scrum-Backlog/Product-Backlog.md) | Verificar IDs y criterios de aceptación |
-| Especificación funcional CU | [Taller-4/](../Taller-4/) | Insumo para escenarios y precondiciones |
-| RNF y criterios | [Taller-5/1-RNF.md](../Taller-5/1-RNF.md) | Pruebas no funcionales / criterios de aceptación |
-| Arquitectura multivista | [Taller-6/Arquitectura/arquitectura.md](../Taller-6/Arquitectura/arquitectura.md) | Entornos, dependencias, riesgos |
-| Casos de uso del Proyecto Final | [Proyecto-Final/docs/casos-de-uso/](../Proyecto-Final/docs/casos-de-uso/) | Alternativa o complemento a HU |
+| Insumo                          | Ubicación                                                                         | Uso esperado                                     |
+| ------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------ |
+| Enunciado funcional del cliente | [Contexto-Talleres.md](../Contexto-Talleres.md)                                   | Resumen ejecutivo, alcance funcional             |
+| HU base con actividades         | [Taller-3/6-HU-Base.md](../Taller-3/6-HU-Base.md)                                 | Selección de las 2 HU                            |
+| Backlog priorizado              | [Scrum-Backlog/Product-Backlog.md](../Scrum-Backlog/Product-Backlog.md)           | Verificar IDs y criterios de aceptación          |
+| Especificación funcional CU     | [Taller-4/](../Taller-4/)                                                         | Insumo para escenarios y precondiciones          |
+| RNF y criterios                 | [Taller-5/1-RNF.md](../Taller-5/1-RNF.md)                                         | Pruebas no funcionales / criterios de aceptación |
+| Arquitectura multivista         | [Taller-6/Arquitectura/arquitectura.md](../Taller-6/Arquitectura/arquitectura.md) | Entornos, dependencias, riesgos                  |
+| Casos de uso del Proyecto Final | [Proyecto-Final/docs/casos-de-uso/](../Proyecto-Final/docs/casos-de-uso/)         | Alternativa o complemento a HU                   |
 
 ## 5. Decisiones tomadas y pendientes
 
 ### 5.1 Decisiones tomadas
 
-| Tema | Resultado |
-|---|---|
-| Formato de salida | `.docx` (no `.doc` legacy) |
-| Pipeline de generación | `python-docx` programático |
-| Herramienta de gestión de casos | GitHub Issues con estructura QA explícita (sección 6) |
-| Estructura del documento | Cubierta por sección 3 (plantilla PMO adaptada, no copia 1:1) |
-| Estilos visuales | Paleta charcoal/slate del Taller-6 |
-| Idioma y convenciones | Español, sin emojis, conforme `AGENTS.md` raíz |
+| Tema                            | Resultado                                                     |
+| ------------------------------- | ------------------------------------------------------------- |
+| Formato de salida               | `.docx` (no `.doc` legacy)                                    |
+| Pipeline de generación          | `python-docx` programático                                    |
+| Herramienta de gestión de casos | GitHub Issues con estructura QA explícita (sección 6)         |
+| Estructura del documento        | Cubierta por sección 3 (plantilla PMO adaptada, no copia 1:1) |
+| Estilos visuales                | Paleta charcoal/slate del Taller-6                            |
+| Idioma y convenciones           | Español, sin emojis, conforme `AGENTS.md` raíz                |
 
 **Por qué `python-docx` y no pandoc**:
 
@@ -137,21 +137,15 @@ Permiten reaprovechar trazabilidad sin reinventar contenido.
   contenido (`contenido/*.md` o `contenido.yaml`) del renderizado
   (`generar-docx.py`).
 
-### 5.2 Definiciones pendientes
+### 5.2 Definiciones — cerradas
 
-Quedan tres puntos abiertos. Se inclinan a la opción más simple, pero la
-elección final se cierra antes de redactar contenido.
+Todas las pendientes quedan resueltas.
 
-1. **Selección de las 2 HU** para casos de prueba. Criterio guía: elegir
-   las que tengan **más insumos ya construidos** (CU especificado en
-   Taller-4, mockups, criterios en backlog, RNF aplicables) para maximizar
-   reutilización y minimizar redacción nueva.
-2. **Profundidad del Plan de Pruebas**: cubrir solo 1 HU (mínimo del
-   enunciado) o las 2 HU usadas para casos de prueba. Inclinación
-   tentativa: alinear el plan con las mismas 2 HU para coherencia.
-3. **Tipos de prueba a cubrir**: funcionales obligatorias. Decidir si se
-   suman no funcionales (rendimiento, seguridad, usabilidad) reusando
-   RNF del Taller-5.
+| Tema | Resultado |
+|---|---|
+| Selección de HU | HU-1 Registro de Vendedor + HU-2 Publicar Productos |
+| Profundidad del Plan de Pruebas | Cubre las 2 HU (coherencia con casos de prueba) |
+| Tipos de prueba | Solo funcionales (obligatorias) |
 
 ## 6. GitHub Issues — Estructura QA precisa
 
@@ -179,24 +173,24 @@ Ubicación: `.github/ISSUE_TEMPLATE/test-case.yml` (raíz del repositorio).
 
 Campos requeridos, en orden de aparición en el formulario:
 
-| Campo | Tipo input | Obligatorio | Contenido esperado |
-|---|---|---|---|
-| ID del caso | input | sí | Formato `TC-NN` (ej. `TC-01`, `TC-02`) |
-| HU origen | input | sí | ID del backlog (ej. `HU-005`) |
-| Caso de uso | input | no | ID del CU del Taller-4 / Proyecto Final si aplica |
-| Tipo de prueba | dropdown | sí | `functional`, `regression`, `nfr-performance`, `nfr-security`, `nfr-usability`, `smoke`, `exploratory` |
-| Prioridad | dropdown | sí | `alta`, `media`, `baja` |
-| Severidad esperada si falla | dropdown | sí | `critical`, `major`, `minor`, `trivial` |
-| Precondiciones | textarea | sí | Estado del sistema antes de ejecutar (usuario logueado, fixtures cargados, etc.) |
-| Datos de prueba | textarea | sí | Valores de entrada exactos (no genéricos): usuarios, inputs, payloads |
-| Pasos | textarea | sí | Numerados `1.`, `2.`, `3.`. Una sola acción por paso |
-| Resultado esperado | textarea | sí | Comportamiento observable concreto, verificable, sin "el sistema funciona bien" |
-| Resultado obtenido | textarea | no | Llenar al ejecutar |
-| Estado de ejecución | dropdown | sí | `pending`, `in-progress`, `passed`, `failed`, `blocked`, `skipped` |
-| Ambiente | dropdown | sí | `dev`, `qa`, `staging`, `prod` |
-| Navegador / dispositivo | input | no | Solo si UI o multiplataforma (`Chrome 120 / Android 14`) |
-| Tester asignado | input | no | Reforzar con `assignees` del issue |
-| Evidencias | textarea | no | Capturas y logs adjuntos por drag-and-drop |
+| Campo                       | Tipo input | Obligatorio | Contenido esperado                                                                                     |
+| --------------------------- | ---------- | ----------- | ------------------------------------------------------------------------------------------------------ |
+| ID del caso                 | input      | sí          | Formato `TC-NN` (ej. `TC-01`, `TC-02`)                                                                 |
+| HU origen                   | input      | sí          | ID del backlog (ej. `HU-005`)                                                                          |
+| Caso de uso                 | input      | no          | ID del CU del Taller-4 / Proyecto Final si aplica                                                      |
+| Tipo de prueba              | dropdown   | sí          | `functional`, `regression`, `nfr-performance`, `nfr-security`, `nfr-usability`, `smoke`, `exploratory` |
+| Prioridad                   | dropdown   | sí          | `alta`, `media`, `baja`                                                                                |
+| Severidad esperada si falla | dropdown   | sí          | `critical`, `major`, `minor`, `trivial`                                                                |
+| Precondiciones              | textarea   | sí          | Estado del sistema antes de ejecutar (usuario logueado, fixtures cargados, etc.)                       |
+| Datos de prueba             | textarea   | sí          | Valores de entrada exactos (no genéricos): usuarios, inputs, payloads                                  |
+| Pasos                       | textarea   | sí          | Numerados `1.`, `2.`, `3.`. Una sola acción por paso                                                   |
+| Resultado esperado          | textarea   | sí          | Comportamiento observable concreto, verificable, sin "el sistema funciona bien"                        |
+| Resultado obtenido          | textarea   | no          | Llenar al ejecutar                                                                                     |
+| Estado de ejecución         | dropdown   | sí          | `pending`, `in-progress`, `passed`, `failed`, `blocked`, `skipped`                                     |
+| Ambiente                    | dropdown   | sí          | `dev`, `qa`, `staging`, `prod`                                                                         |
+| Navegador / dispositivo     | input      | no          | Solo si UI o multiplataforma (`Chrome 120 / Android 14`)                                               |
+| Tester asignado             | input      | no          | Reforzar con `assignees` del issue                                                                     |
+| Evidencias                  | textarea   | no          | Capturas y logs adjuntos por drag-and-drop                                                             |
 
 Título obligatorio del issue: `[TC-NN] HU-XXX — descripción corta`.
 
@@ -204,21 +198,21 @@ Título obligatorio del issue: `[TC-NN] HU-XXX — descripción corta`.
 
 Ubicación: `.github/ISSUE_TEMPLATE/bug-report.yml`.
 
-| Campo | Tipo input | Obligatorio | Contenido esperado |
-|---|---|---|---|
-| ID del defecto | input | sí | `BUG-NN` |
-| Caso de prueba origen | input | sí | `TC-NN` que detectó el defecto |
-| HU afectada | input | sí | `HU-XXX` |
-| Severidad | dropdown | sí | `critical`, `major`, `minor`, `trivial` |
-| Prioridad de corrección | dropdown | sí | `alta`, `media`, `baja` |
-| Reproducibilidad | dropdown | sí | `siempre`, `intermitente`, `una vez` |
-| Pasos para reproducir | textarea | sí | Numerados, mínimos para reproducir |
-| Resultado esperado | textarea | sí | Igual al del TC origen |
-| Resultado obtenido | textarea | sí | Diferencia concreta observada |
-| Ambiente | dropdown | sí | `dev`, `qa`, `staging`, `prod` |
-| Logs / stack trace | textarea | no | Bloque de código con traza |
-| Workaround | textarea | no | Solución temporal si existe |
-| Evidencia | textarea | no | Capturas, video corto, payload |
+| Campo                   | Tipo input | Obligatorio | Contenido esperado                      |
+| ----------------------- | ---------- | ----------- | --------------------------------------- |
+| ID del defecto          | input      | sí          | `BUG-NN`                                |
+| Caso de prueba origen   | input      | sí          | `TC-NN` que detectó el defecto          |
+| HU afectada             | input      | sí          | `HU-XXX`                                |
+| Severidad               | dropdown   | sí          | `critical`, `major`, `minor`, `trivial` |
+| Prioridad de corrección | dropdown   | sí          | `alta`, `media`, `baja`                 |
+| Reproducibilidad        | dropdown   | sí          | `siempre`, `intermitente`, `una vez`    |
+| Pasos para reproducir   | textarea   | sí          | Numerados, mínimos para reproducir      |
+| Resultado esperado      | textarea   | sí          | Igual al del TC origen                  |
+| Resultado obtenido      | textarea   | sí          | Diferencia concreta observada           |
+| Ambiente                | dropdown   | sí          | `dev`, `qa`, `staging`, `prod`          |
+| Logs / stack trace      | textarea   | no          | Bloque de código con traza              |
+| Workaround              | textarea   | no          | Solución temporal si existe             |
+| Evidencia               | textarea   | no          | Capturas, video corto, payload          |
 
 Título obligatorio: `[BUG-NN] TC-XX — descripción del defecto`.
 
@@ -227,15 +221,15 @@ Título obligatorio: `[BUG-NN] TC-XX — descripción del defecto`.
 Crear todos antes de abrir el primer issue. Ningún issue de QA puede
 existir sin la combinación mínima.
 
-| Categoría | Labels | Color sugerido |
-|---|---|---|
-| Tipo de issue | `test-case`, `bug` | azul, rojo |
-| Prioridad | `priority:alta`, `priority:media`, `priority:baja` | rojo, amarillo, verde |
-| Severidad | `severity:critical`, `severity:major`, `severity:minor`, `severity:trivial` | gris en escala |
-| Estado | `status:pending`, `status:in-progress`, `status:passed`, `status:failed`, `status:blocked`, `status:skipped` | naranja, azul, verde, rojo, negro, gris |
-| Tipo de prueba | `test:functional`, `test:regression`, `test:nfr`, `test:smoke`, `test:exploratory` | morado |
-| Trazabilidad HU | `HU-001`, `HU-002`, … (uno por HU) | celeste |
-| Ambiente | `env:dev`, `env:qa`, `env:staging`, `env:prod` | amarillo |
+| Categoría       | Labels                                                                                                       | Color sugerido                          |
+| --------------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------- |
+| Tipo de issue   | `test-case`, `bug`                                                                                           | azul, rojo                              |
+| Prioridad       | `priority:alta`, `priority:media`, `priority:baja`                                                           | rojo, amarillo, verde                   |
+| Severidad       | `severity:critical`, `severity:major`, `severity:minor`, `severity:trivial`                                  | gris en escala                          |
+| Estado          | `status:pending`, `status:in-progress`, `status:passed`, `status:failed`, `status:blocked`, `status:skipped` | naranja, azul, verde, rojo, negro, gris |
+| Tipo de prueba  | `test:functional`, `test:regression`, `test:nfr`, `test:smoke`, `test:exploratory`                           | morado                                  |
+| Trazabilidad HU | `HU-001`, `HU-002`, … (uno por HU)                                                                           | celeste                                 |
+| Ambiente        | `env:dev`, `env:qa`, `env:staging`, `env:prod`                                                               | amarillo                                |
 
 Combinación **mínima** en un test case:
 `test-case` + `HU-XXX` + `priority:*` + `severity:*` + `status:*` +
@@ -270,12 +264,12 @@ Reglas de operación:
 
 ### 6.7 Convenciones de nombres
 
-| Elemento | Patrón | Ejemplo |
-|---|---|---|
-| Test case (título issue) | `[TC-NN] HU-XXX — descripción corta` | `[TC-03] HU-005 — registro vendedor con email duplicado` |
-| Bug (título issue) | `[BUG-NN] TC-XX — descripción defecto` | `[BUG-01] TC-03 — sistema permite email duplicado` |
-| Branch (si se automatiza) | `test/TC-NN-descripcion` | `test/TC-03-email-duplicado` |
-| Commit que ejecuta o cierra | `test(TC-NN): resultado` | `test(TC-03): passed` |
+| Elemento                    | Patrón                                 | Ejemplo                                                  |
+| --------------------------- | -------------------------------------- | -------------------------------------------------------- |
+| Test case (título issue)    | `[TC-NN] HU-XXX — descripción corta`   | `[TC-03] HU-005 — registro vendedor con email duplicado` |
+| Bug (título issue)          | `[BUG-NN] TC-XX — descripción defecto` | `[BUG-01] TC-03 — sistema permite email duplicado`       |
+| Branch (si se automatiza)   | `test/TC-NN-descripcion`               | `test/TC-03-email-duplicado`                             |
+| Commit que ejecuta o cierra | `test(TC-NN): resultado`               | `test(TC-03): passed`                                    |
 
 ### 6.8 Workflow de ejecución
 
@@ -283,7 +277,7 @@ Reglas de operación:
    `pending`. Asignar HU label, milestone, prioridad y tipo de prueba.
 2. **Asignar**: añadir `assignees`. Mover a columna `Por ejecutar`.
 3. **Ejecutar**: cambiar label a `status:in-progress`. Mover a `En
-   ejecución`.
+ejecución`.
 4. **Documentar resultado**: comentario en el issue con resultado
    obtenido y evidencia (capturas, logs).
 5. **Pass**: cambiar label a `status:passed`. Cerrar issue. Mueve a `Pass`
@@ -373,7 +367,7 @@ Secuencia tentativa, sin compromisos de fechas.
    paginación).
 10. **Documentación del comando de build** (análoga a
     `instrucciones-creacion-pdf.md` del Taller-6).
-11. **Revisión cruzada** contra `AGENTS.md §6` (checklist de calidad) y
+11. **Revisión cruzada** contra `AGENTS.md` (checklist de calidad) y
     contra el enunciado.
 
 ## 9. Riesgos y dependencias del propio plan
