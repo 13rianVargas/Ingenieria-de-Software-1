@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exposición PSP y TSP</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #1e1e24; 
+            color: #ffffff; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            margin: 0; 
+            text-align: center;
+        }
+        h1 { 
+            font-size: 3.5rem; 
+            margin-bottom: 10px; 
+            letter-spacing: 2px;
+        }
+        p { 
+            font-size: 1.3rem; 
+            margin-bottom: 50px; 
+            color: #b0b0b0; 
+        }
+        .btn-container { 
+            display: flex; 
+            gap: 30px; 
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn { 
+            text-decoration: none; 
+            padding: 25px 50px; 
+            font-size: 1.5rem; 
+            border-radius: 12px; 
+            color: white; 
+            font-weight: bold; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .btn-psp { 
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
+            border: 2px solid #3b6ac3; 
+        }
+        .btn-tsp { 
+            background: linear-gradient(135deg, #e65c00 0%, #F9D423 100%); 
+            border: 2px solid #ff8833; 
+        }
+        .btn:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 25px rgba(0,0,0,0.5); 
+        }
+    </style>
+</head>
+<body>
+    <h1>Exposición PSP y TSP</h1>
+    <p>Ingeniería de Software 1 - Selección de Presentación</p>
+    <div class="btn-container">
+        <a href="psp.html" class="btn btn-psp">📘 Iniciar Presentación PSP</a>
+        <a href="tsp.html" class="btn btn-tsp">📙 Iniciar Presentación TSP</a>
+    </div>
+</body>
+</html>

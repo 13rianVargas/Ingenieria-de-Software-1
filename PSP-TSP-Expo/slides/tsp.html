@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TSP - Team Software Process</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: #120505 !important; /* Forzar fondo oscuro cálido */
+            overflow: hidden;
+        }
+
+        /* --- DESTRUIR EL FONDO BLANCO DE REVEAL --- */
+        .reveal-viewport {
+            background: transparent !important;
+            background-color: transparent !important;
+        }
+
+        /* --- FONDO DINÁMICO: ORBES DE FUEGO/CÁLIDOS --- */
+        .bg-animation {
+            position: absolute;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: #120505;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px); /* Efecto difuminado brutal */
+            z-index: 0;
+        }
+        .orb-1 {
+            top: -10%; left: -10%; width: 50vw; height: 50vw;
+            background: #ff512f;
+            opacity: 0.35;
+            animation: float1 25s infinite ease-in-out alternate;
+        }
+        .orb-2 {
+            bottom: -20%; right: -10%; width: 60vw; height: 60vw;
+            background: #dd2476;
+            opacity: 0.3;
+            animation: float2 30s infinite ease-in-out alternate;
+        }
+        .orb-3 {
+            top: 30%; left: 40%; width: 45vw; height: 45vw;
+            background: #f09819;
+            opacity: 0.25;
+            animation: float3 20s infinite ease-in-out alternate;
+        }
+
+        @keyframes float1 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(20%, 20%) scale(1.2); } }
+        @keyframes float2 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-20%, -10%) scale(1.1); } }
+        @keyframes float3 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-10%, 20%) scale(1.3); } }
+        /* ----------------------------------------------- */
+
+        .reveal {
+            font-family: 'Poppins', sans-serif !important;
+            color: #ffffff;
+        }
+
+        /* Controles y progreso visibles */
+        .reveal .controls, .reveal .progress {
+            z-index: 100;
+        }
+
+        /* Glassmorphism Panel */
+        .glass-panel {
+            background: rgba(20, 10, 12, 0.6); 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 183, 77, 0.2);
+            padding: 60px 80px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 0 30px rgba(255, 183, 77, 0.05);
+            width: 100%;
+            height: 100%;
+            min-height: 80vh;
+            box-sizing: border-box;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .glass-panel-center {
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Tipografía MASIVA (Resolución 1600x900) */
+        .reveal h1, .reveal h2, .reveal h3 {
+            font-family: 'Poppins', sans-serif;
+            text-transform: none;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+            margin-top: 0;
+        }
+        
+        .reveal h1 { font-size: 5em; line-height: 1.1; margin-bottom: 20px; text-align: center; }
+        .reveal h2 { 
+            font-size: 3.2em; 
+            color: #ffb74d; 
+            border-bottom: 2px solid rgba(255, 183, 77, 0.3);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        .reveal h3 { font-size: 2em; color: #ffe0b2; font-weight: 400; margin-bottom: 20px;}
+        .reveal p, .reveal li { font-size: 1.8em; line-height: 1.5; color: #e8e8e8; }
+        .reveal li { margin-bottom: 20px; }
+
+        /* Layout asimétrico */
+        .two-cols { display: flex; align-items: center; justify-content: space-between; gap: 60px; flex: 1;}
+        .col-text { flex: 1.5; min-width: 0; }
+        .col-img { flex: 1; min-width: 0; display: flex; justify-content: center; align-items: center; }
+
+        /* Imágenes inmersivas */
+        .reveal img {
+            border-radius: 20px;
+            max-height: 500px; 
+            width: 100%;
+            object-fit: cover;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            border: 2px solid rgba(255, 183, 77, 0.3);
+            margin: 0;
+        }
+
+        .highlight-green { color: #00e676; font-weight: 600; text-align: center;}
+        .highlight-red { color: #ff5252; font-weight: 600; text-align: center;}
+        
+        /* Botón de navegación */
+        .nav-btn {
+            display: inline-block;
+            margin-top: 50px;
+            padding: 20px 50px;
+            background: linear-gradient(45deg, #e65100, #ff9800);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 12px;
+            border: none;
+            transition: all 0.3s;
+            font-size: 1.8em;
+            font-weight: 600;
+            box-shadow: 0 10px 20px rgba(230, 81, 0, 0.4);
+        }
+        .nav-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 25px rgba(230, 81, 0, 0.6);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fondo CSS Puro (Cero scripts que se rompan) -->
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="reveal">
+        <div class="slides">
+            
+            <section>
+                <div class="glass-panel glass-panel-center">
+                    <h1>Team Software Process</h1>
+                    <h3 style="font-size: 3em; font-weight: 600; color: #ffb74d;">(TSP)</h3>
+                    <p style="font-size: 2.2em; margin-top: 30px;">Equipos de Alto Rendimiento</p>
+                    <p style="margin-top: 50px; opacity: 0.5; font-size: 1.5em;">Ingeniería de Software 1</p>
+                </div>
+            </section>
+
+            <section>
+                <div class="glass-panel">
+                    <h2>Principios: Reglas y Disciplina</h2>
+                    <div class="two-cols">
+                        <div class="col-text">
+                            <ul>
+                                <li class="fragment"><strong>Metas de equipo:</strong> Establecer planes realistas colectivamente durante el "Launch" (Lanzamiento).</li>
+                                <li class="fragment"><strong>Inspecciones formales por pares:</strong> Detectar defectos mediante revisiones estructuradas.</li>
+                            </ul>
+                        </div>
+                        <div class="col-img fragment">
+                            <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80" alt="Trabajo en equipo">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="glass-panel">
+                    <h2>Principios: Lineamientos</h2>
+                    <div class="two-cols">
+                        <div class="col-text">
+                            <ul>
+                                <li class="fragment"><strong>Evaluación basada en métricas:</strong> Monitorear avance objetivamente para acciones correctivas tempranas.</li>
+                                <li class="fragment"><strong>Liderazgo distribuido:</strong> Asignar roles específicos fomentando autonomía.</li>
+                            </ul>
+                        </div>
+                        <div class="col-img fragment">
+                            <img src="https://images.unsplash.com/photo-1552581234-26160f608093?auto=format&fit=crop&w=800&q=80" alt="Liderazgo">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="glass-panel">
+                    <h2>Ciclo de Vida (TSP)</h2>
+                    <p style="margin-bottom: 20px; font-weight: 300; font-size: 2em; color: #ffb74d;">Escala la disciplina de PSP mediante un flujo iterativo.</p>
+                    <ul>
+                        <li class="fragment"><strong>Fase 0 - Lanzamiento (Launch):</strong> Estrategia guiada por un Coach.</li>
+                        <li class="fragment"><strong>Ciclos de Desarrollo:</strong> Planeación y validación en <em>Daily Stand-ups</em>.</li>
+                        <li class="fragment"><strong>Ejecución PSP + Integración:</strong> Desarrollo individual + Pruebas de sistema.</li>
+                        <li class="fragment"><strong>Postmortem:</strong> Análisis final formal de métricas y lecciones aprendidas.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="glass-panel">
+                    <h2>Roles en TSP</h2>
+                    <p style="margin-bottom: 30px; font-size: 2em;">Equipos autodirigidos asumiendo posiciones gerenciales.</p>
+                    <div class="two-cols">
+                        <div class="col-text">
+                            <ul>
+                                <li class="fragment"><strong>Team Leader:</strong> Facilita reuniones, no impone.</li>
+                                <li class="fragment"><strong>Gestor de Planificación:</strong> Controla el cronograma.</li>
+                                <li class="fragment"><strong>Gestor de Desarrollo:</strong> Coordina la estrategia técnica.</li>
+                                <li class="fragment"><strong>Gestores de Calidad/Soporte:</strong> Analistas de defectos.</li>
+                            </ul>
+                        </div>
+                        <div class="col-img fragment">
+                            <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80" alt="Roles y equipo">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="glass-panel">
+                    <h2>Artefactos Clave</h2>
+                    <div class="two-cols">
+                        <div class="col-text" style="flex: 1;">
+                            <ul>
+                                <li class="fragment"><strong>Plan de Lanzamiento (Launch Plan).</strong></li>
+                                <li class="fragment"><strong>Especificación del Sistema.</strong></li>
+                                <li class="fragment"><strong>Reporte de Estado (Status Report).</strong></li>
+                                <li class="fragment"><strong>Registros de Inspección Formal.</strong></li>
+                            </ul>
+                        </div>
+                        <div class="col-img fragment" style="flex: 1;">
+                             <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80" alt="Artefactos TSP">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="glass-panel">
+                    <h2 style="text-align: center; border-bottom: none;">Características</h2>
+                    <div class="two-cols" style="align-items: stretch; gap: 40px; margin-top: 20px;">
+                        <div class="col-text fragment" style="background: rgba(0, 230, 118, 0.1); padding: 40px; border-radius: 20px; border: 1px solid rgba(0, 230, 118, 0.3);">
+                            <h3 class="highlight-green">Fortalezas</h3>
+                            <ul>
+                                <li>Alta calidad de producto.</li>
+                                <li>Incremento de productividad.</li>
+                                <li>Visibilidad de riesgos en tiempo real.</li>
+                            </ul>
+                        </div>
+                        <div class="col-text fragment" style="background: rgba(255, 82, 82, 0.1); padding: 40px; border-radius: 20px; border: 1px solid rgba(255, 82, 82, 0.3);">
+                            <h3 class="highlight-red">Debilidades</h3>
+                            <ul>
+                                <li>Falla si se ignora el PSP.</li>
+                                <li>Alto costo en Coaches.</li>
+                                <li>Burocracia para equipos pequeños.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="glass-panel">
+                    <h2>Proyectos en TSP</h2>
+                    <p style="margin-bottom: 20px; font-size: 2em;">El plan del equipo es la suma de los planes individuales (PSP).</p>
+                    <ul>
+                        <li class="fragment"><strong>Tipos comunes:</strong> Proyectos multiciclo o de mejora de procesos.</li>
+                        <li class="fragment"><strong>Gestión de Calidad:</strong> Densidad de defectos y revisiones a nivel equipo.</li>
+                        <li class="fragment"><strong>Requisito vital:</strong> Cada miembro debe estar capacitado en PSP.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="glass-panel">
+                    <h2>Certificaciones (SEI)</h2>
+                    <p style="margin-bottom: 30px; color: #ffb74d; font-size: 2em;">Garantía institucional para despliegues a gran escala.</p>
+                    <ul>
+                        <li class="fragment"><strong>TSP Executive / Mentor:</strong> Formación directiva para facilitar la adopción organizacional.</li>
+                        <li class="fragment"><strong>TSP Coach:</strong> Credencial rigurosa. Experto que modera el "Lanzamiento".</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="glass-panel glass-panel-center">
+                    <h2 style="text-align: center; border: none; margin-bottom: 10px; font-size: 5em;">¡Gracias!</h2>
+                    <p style="font-size: 2.5em; margin-top: 20px;">¿Preguntas sobre TSP?</p>
+                    <br>
+                    <a href="index.html" class="nav-btn">Volver al Menú Principal</a>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script>
+        // Configuración robusta de Reveal.js
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: true,
+            hash: false,        // Desactiva el uso del hash en la URL para evitar bloqueos del navegador
+            history: false,     // Desactiva el historial para evitar advertencias de rastreo
+            transition: 'slide', 
+            width: 1600,        
+            height: 900,        
+            margin: 0.05, 
+            minScale: 0.2, 
+            maxScale: 1.5
+        });
+    </script>
+</body>
+</html>
