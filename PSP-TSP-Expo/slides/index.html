@@ -93,6 +93,11 @@
 
         .muted-text { opacity: 0.7; font-size: 0.75em; font-weight: 300; display: block; margin-top: 5px; }
 
+        /* Links en h2 - estilo limpio sin decoración */
+        a h2 { color: inherit; text-decoration: none; }
+        a h2:hover { opacity: 0.8; transition: opacity 0.3s ease; }
+        a { text-decoration: none; color: inherit; }
+
         /* =========================================
            3. UI DE REVEAL.JS (Z-INDEX Y BARRA INFERIOR)
            ========================================= */
@@ -367,7 +372,7 @@
 
             <section class="theme-psp">
                 <div class="glass-panel">
-                    <h2 class="slide-elem delay-1" href="ejemplopsp.html">Herramientas PSP</h2>
+                    <a href="ejemplopsp.html"><h2 class="slide-elem delay-1">Herramientas PSP</h2></a>
                     <div class="card-grid">
                         <div class="concept-card slide-elem delay-2">
                             <h4 style="color: #00d2ff;"><i data-lucide="calculator"></i> Calculadora PROBE</h4>
@@ -550,7 +555,7 @@
 
             <section class="theme-tsp">
                 <div class="glass-panel">
-                    <h2 class="slide-elem delay-1" href="ejemplotsp.html">Herramientas TSP</h2>
+                    <a href="ejemplotsp.html"><h2 class="slide-elem delay-1">Herramientas TSP</h2></a>
                     <div class="card-grid">
                         <div class="concept-card slide-elem delay-2">
                             <h4 style="color: #ffb74d;"><i data-lucide="layers"></i> Agregadores de Métricas</h4>
