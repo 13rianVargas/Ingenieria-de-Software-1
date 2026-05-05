@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PSP — Personal Software Process</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --font-sans: 'IBM Plex Sans', sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+      --bg: #f8f7f4;
+      --surface: #ffffff;
+      --surface2: #f1efe8;
+      --border: rgba(0,0,0,0.10);
+      --border-strong: rgba(0,0,0,0.18);
+      --text-primary: #1a1a18;
+      --text-secondary: #5f5e5a;
+      --text-muted: #888780;
+      --blue: #185FA5;
+      --blue-light: #E6F1FB;
+      --blue-dark: #0C447C;
+      --blue-text: #042C53;
+      --green-light: #EAF3DE;
+      --green-dark: #27500A;
+      --amber-light: #FAEEDA;
+      --amber-dark: #633806;
+      --red-light: #FCEBEB;
+      --red-dark: #791F1F;
+      --gray-light: #F1EFE8;
+      --gray-dark: #444441;
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .app-shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 24px 60px;
+    }
+
+    /* HEADER */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 0.5px solid var(--border-strong);
+    }
+    .logo {
+      width: 42px;
+      height: 42px;
+      background: var(--blue);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 500;
+      font-size: 13px;
+      flex-shrink: 0;
+      letter-spacing: 0.03em;
+    }
+    .header-info h1 {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .header-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .inline-edit {
+      background: none;
+      border: none;
+      border-bottom: 1px dashed var(--border-strong);
+      padding: 1px 4px;
+      font-size: inherit;
+      color: inherit;
+      font-family: inherit;
+      width: auto;
+    }
+    .inline-edit:focus {
+      outline: none;
+      border-bottom-color: var(--blue);
+      background: var(--blue-light);
+      border-radius: 2px;
+    }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .tab {
+      padding: 7px 14px;
+      font-size: 12px;
+      font-family: var(--font-sans);
+      border: 0.5px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      background: var(--surface);
+      color: var(--text-secondary);
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .tab i { font-size: 14px; }
+    .tab:hover:not(.active) { background: var(--surface2); color: var(--text-primary); }
+    .tab.active { background: var(--blue); color: white; border-color: var(--blue); }
+
+    /* PANELS */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* CARDS */
+    .card {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      margin-bottom: 14px;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* SECTION TITLE */
+    .section-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 12px;
+    }
+
+    /* METRICS */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .metric-card {
+      background: var(--surface2);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+    }
+    .metric-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+    .metric-value { font-size: 22px; font-weight: 500; color: var(--text-primary); }
+    .metric-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+    /* FORMS */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 10px; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    label { font-size: 11px; color: var(--text-secondary); font-weight: 500; letter-spacing: 0.02em; }
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      font-size: 13px;
+      padding: 7px 10px;
+      border: 0.5px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      background: var(--surface2);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      width: 100%;
+      transition: border-color 0.15s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--blue);
+      background: #fff;
+    }
+    textarea { resize: vertical; min-height: 64px; line-height: 1.5; }
+
+    /* TABLES */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-align: left;
+      padding: 6px 8px;
+      border-bottom: 0.5px solid var(--border-strong);
+      background: var(--surface2);
+    }
+    th:first-child { border-radius: var(--radius-sm) 0 0 0; }
+    th:last-child { border-radius: 0 var(--radius-sm) 0 0; }
+    td {
+      padding: 8px 8px;
+      border-bottom: 0.5px solid var(--border);
+      color: var(--text-primary);
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--surface2); }
+    td input.inline-edit { width: 100%; min-width: 50px; }
+    td select {
+      font-size: 12px;
+      padding: 3px 6px;
+      background: var(--surface2);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+    }
+    td input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--blue); }
+
+    /* BADGES */
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: var(--radius-sm);
+      font-weight: 500;
+    }
+    .badge-blue { background: var(--blue-light); color: var(--blue-dark); }
+    .badge-green { background: var(--green-light); color: var(--green-dark); }
+    .badge-amber { background: var(--amber-light); color: var(--amber-dark); }
+    .badge-red { background: var(--red-light); color: var(--red-dark); }
+    .badge-gray { background: var(--gray-light); color: var(--gray-dark); }
+
+    /* BUTTONS */
+    .btn {
+      padding: 7px 14px;
+      font-size: 12px;
+      font-family: var(--font-sans);
+      border: 0.5px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      background: var(--surface);
+      color: var(--text-primary);
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .btn:hover { background: var(--surface2); }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--blue); color: white; border-color: var(--blue); }
+    .btn-primary:hover { background: var(--blue-dark); }
+    .btn-sm { padding: 3px 9px; font-size: 11px; }
+    .btn-danger { background: var(--red-light); color: var(--red-dark); border-color: #F7C1C1; }
+
+    /* SCRIPT STEPS */
+    .script-step {
+      border-left: 2px solid #B5D4F4;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      background: var(--surface2);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      cursor: text;
+      transition: background 0.15s;
+    }
+    .script-step:hover { background: var(--surface); border-left-color: var(--blue); }
+    .script-step[contenteditable="true"]:focus { outline: none; background: #fff; border-left-color: var(--blue); }
+    .step-num { font-size: 11px; color: var(--blue); font-weight: 500; margin-bottom: 3px; font-family: var(--font-mono); }
+    .step-text { font-size: 13px; color: var(--text-primary); line-height: 1.6; }
+
+    /* VAR BOXES */
+    .var-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .var-box {
+      background: var(--surface2);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+    }
+    .var-name { font-size: 11px; color: var(--text-secondary); margin-bottom: 3px; }
+    .var-val { font-size: 15px; font-weight: 500; color: var(--text-primary); }
+
+    /* FORMULA BOX */
+    .formula-box {
+      background: var(--surface2);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      margin-top: 10px;
+    }
+    .formula-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; font-family: var(--font-mono); }
+    .formula-result { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+    .formula-result span { color: var(--blue); }
+
+    .note { font-size: 12px; color: var(--text-muted); font-style: italic; margin-top: 8px; }
+    .divider { border: none; border-top: 0.5px solid var(--border); margin: 12px 0; }
+
+    .actions { display: flex; align-items: center; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+
+    @media (max-width: 700px) {
+      .metrics-grid { grid-template-columns: 1fr 1fr; }
+      .form-row-3 { grid-template-columns: 1fr 1fr; }
+      .var-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">PSP</div>
+    <div class="header-info">
+      <h1>Personal Software Process — Herramienta de Demostración</h1>
+      <div class="header-meta">
+        Proyecto: <input class="inline-edit" id="proj-name" value="Sistema de Inventario v1.0">
+        &nbsp;·&nbsp;
+        Estudiante: <input class="inline-edit" id="student-name" value="Juan Pérez">
+        &nbsp;·&nbsp;
+        Fecha: <input class="inline-edit" id="proj-date" value="Mayo 2026">
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('summary', this)"><i class="ti ti-layout-grid"></i> Project Plan Summary</div>
+    <div class="tab" onclick="switchTab('process', this)"><i class="ti ti-list-check"></i> Process Script</div>
+    <div class="tab" onclick="switchTab('planning', this)"><i class="ti ti-calendar-stats"></i> Planning Script</div>
+    <div class="tab" onclick="switchTab('devpost', this)"><i class="ti ti-code"></i> Dev &amp; Postmortem</div>
+    <div class="tab" onclick="switchTab('timelog', this)"><i class="ti ti-clock"></i> Time Log</div>
+    <div class="tab" onclick="switchTab('defectlog', this)"><i class="ti ti-bug"></i> Defect Log</div>
+  </div>
+
+  <!-- ===== PROJECT PLAN SUMMARY ===== -->
+  <div class="panel active" id="panel-summary">
+    <p class="section-title">Project Plan Summary (PPS)</p>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">LOC Estimadas</div>
+        <div class="metric-value"><input class="inline-edit" value="320" style="font-size:22px; font-weight:500; width:70px;"></div>
+        <div class="metric-sub">líneas de código</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Tiempo Total Plan</div>
+        <div class="metric-value"><input class="inline-edit" value="840" style="font-size:22px; font-weight:500; width:70px;"></div>
+        <div class="metric-sub">minutos</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Defectos Inyectados</div>
+        <div class="metric-value"><input class="inline-edit" value="12" style="font-size:22px; font-weight:500; width:55px;"></div>
+        <div class="metric-sub">defectos plan</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Defectos Removidos</div>
+        <div class="metric-value"><input class="inline-edit" value="12" style="font-size:22px; font-weight:500; width:55px;"></div>
+        <div class="metric-sub">defectos plan</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Distribución de tiempo por fase
+        <span class="badge badge-blue">Plan vs Real</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Fase</th>
+            <th>Plan (min)</th>
+            <th>Real (min)</th>
+            <th>Diferencia</th>
+            <th>% del Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Planning</td><td><input class="inline-edit" value="60" style="width:55px;"></td><td><input class="inline-edit" value="70" style="width:55px;"></td><td style="color:#3B6D11; font-weight:500;">+10</td><td>7.9%</td></tr>
+          <tr><td>Design</td><td><input class="inline-edit" value="120" style="width:55px;"></td><td><input class="inline-edit" value="135" style="width:55px;"></td><td style="color:#3B6D11; font-weight:500;">+15</td><td>15.2%</td></tr>
+          <tr><td>Design Review</td><td><input class="inline-edit" value="40" style="width:55px;"></td><td><input class="inline-edit" value="35" style="width:55px;"></td><td style="color:#BA7517; font-weight:500;">-5</td><td>3.9%</td></tr>
+          <tr><td>Code</td><td><input class="inline-edit" value="300" style="width:55px;"></td><td><input class="inline-edit" value="340" style="width:55px;"></td><td style="color:#3B6D11; font-weight:500;">+40</td><td>38.3%</td></tr>
+          <tr><td>Code Review</td><td><input class="inline-edit" value="60" style="width:55px;"></td><td><input class="inline-edit" value="50" style="width:55px;"></td><td style="color:#BA7517; font-weight:500;">-10</td><td>5.6%</td></tr>
+          <tr><td>Test</td><td><input class="inline-edit" value="200" style="width:55px;"></td><td><input class="inline-edit" value="220" style="width:55px;"></td><td style="color:#3B6D11; font-weight:500;">+20</td><td>24.8%</td></tr>
+          <tr><td>Postmortem</td><td><input class="inline-edit" value="60" style="width:55px;"></td><td><input class="inline-edit" value="38" style="width:55px;"></td><td style="color:#BA7517; font-weight:500;">-22</td><td>4.3%</td></tr>
+          <tr style="background: var(--surface2);">
+            <td style="font-weight:500;">Total</td>
+            <td style="font-weight:500;">840</td>
+            <td style="font-weight:500;">888</td>
+            <td style="font-weight:500; color:#BA7517;">+48</td>
+            <td style="font-weight:500;">100%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Métricas de calidad del proceso</div>
+      <div class="var-grid">
+        <div class="var-box"><div class="var-name">Yield revisión de diseño</div><div class="var-val"><input class="inline-edit" value="75%" style="font-size:15px; font-weight:500; width:60px;"></div></div>
+        <div class="var-box"><div class="var-name">Yield revisión de código</div><div class="var-val"><input class="inline-edit" value="83%" style="font-size:15px; font-weight:500; width:60px;"></div></div>
+        <div class="var-box"><div class="var-name">Yield total antes de pruebas</div><div class="var-val"><input class="inline-edit" value="91%" style="font-size:15px; font-weight:500; width:60px;"></div></div>
+        <div class="var-box"><div class="var-name">LOC/hora real</div><div class="var-val"><input class="inline-edit" value="21.6" style="font-size:15px; font-weight:500; width:60px;"></div></div>
+        <div class="var-box"><div class="var-name">Defectos/KLOC</div><div class="var-val"><input class="inline-edit" value="37.5" style="font-size:15px; font-weight:500; width:60px;"></div></div>
+        <div class="var-box"><div class="var-name">% defectos en pruebas</div><div class="var-val"><input class="inline-edit" value="9%" style="font-size:15px; font-weight:500; width:60px;"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PROCESS SCRIPT ===== -->
+  <div class="panel" id="panel-process">
+    <p class="section-title">Process Script — PSP0 (flujo del proceso)</p>
+    <div class="card">
+      <p style="font-size:13px; color:var(--text-secondary); margin-bottom:14px;">Propósito: Define la secuencia de pasos que el desarrollador sigue en cada programa. <strong>Haz clic en cualquier paso para editarlo en tiempo real.</strong></p>
+      <div class="script-step" contenteditable="true">
+        <div class="step-num">Fase 1 · Planning</div>
+        <div class="step-text">Obtener los requerimientos del programa. Estimar el tamaño (LOC) usando datos históricos personales. Calcular el tiempo requerido con la tasa de productividad propia (LOC/hr). Registrar el plan en el Project Plan Summary. Si no hay datos históricos, usar estimación analógica.</div>
+      </div>
+      <div class="script-step" contenteditable="true">
+        <div class="step-num">Fase 2 · Design</div>
+        <div class="step-text">Producir el diseño lógico completo del programa antes de escribir código. Documentar la solución usando pseudocódigo, diagramas de flujo o lógica estructurada. Registrar el tiempo utilizado en el Time Log. No iniciar la codificación hasta tener el diseño finalizado.</div>
+      </div>
+      <div class="script-step" contenteditable="true">
+        <div class="step-num">Fase 3 · Code</div>
+        <div class="step-text">Implementar el diseño siguiendo los estándares de codificación definidos. Registrar todos los defectos encontrados durante la codificación en el Defect Log, incluyendo tipo, fase de inyección y tiempo de corrección. Registrar el tiempo en el Time Log.</div>
+      </div>
+      <div class="script-step" contenteditable="true">
+        <div class="step-num">Fase 4 · Compile</div>
+        <div class="step-text">Compilar el programa. Corregir todos los errores de compilación. Registrar cada defecto encontrado y removido en el Defect Log con su tipo (tipos 10–100 de Humphrey). No continuar a la fase de pruebas hasta lograr compilación limpia.</div>
+      </div>
+      <div class="script-step" contenteditable="true">
+        <div class="step-num">Fase 5 · Test</div>
+        <div class="step-text">Ejecutar las pruebas definidas en el plan de pruebas. Corregir todos los defectos encontrados registrándolos en el Defect Log. Repetir hasta pasar todas las pruebas exitosamente. Registrar tiempo en el Time Log. Documentar los casos de prueba utilizados.</div>
+      </div>
+      <div class="script-step" contenteditable="true">
+        <div class="step-num">Fase 6 · Postmortem</div>
+        <div class="step-text">Completar el Project Plan Summary con los datos reales del programa. Calcular métricas de calidad (yield, defectos/KLOC) y productividad (LOC/hr). Identificar áreas de mejora. Almacenar todos los datos en la base de datos personal del proceso para calibrar estimaciones futuras.</div>
+      </div>
+      <p class="note">* Haz clic en cualquier paso para editar su contenido durante la presentación.</p>
+    </div>
+  </div>
+
+  <!-- ===== PLANNING SCRIPT ===== -->
+  <div class="panel" id="panel-planning">
+    <p class="section-title">Planning Script — estimación y planificación</p>
+    <div class="card">
+      <div class="card-title">Paso 1 · Descripción del programa</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre del programa</label>
+          <input type="text" value="Módulo de registro de inventario">
+        </div>
+        <div class="form-group">
+          <label>Lenguaje de programación</label>
+          <select><option>Java</option><option>Python</option><option>C++</option><option>JavaScript</option><option>C#</option></select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Descripción del requerimiento</label>
+        <textarea>Sistema que permite registrar entradas y salidas de productos en un almacén, con control de stock mínimo y generación de alertas automáticas cuando el inventario está por debajo del umbral definido.</textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Paso 2 · Estimación de tamaño — Método PROBE</div>
+      <div class="form-row-3">
+        <div class="form-group">
+          <label>Categoría de objeto</label>
+          <select><option>Calculación</option><option>Datos</option><option>I/O</option><option>Lógica</option><option>Interfaz</option></select>
+        </div>
+        <div class="form-group">
+          <label>Complejidad estimada</label>
+          <select><option>Muy pequeño (VS)</option><option>Pequeño (S)</option><option selected>Medio (M)</option><option>Grande (L)</option><option>Muy grande (VL)</option></select>
+        </div>
+        <div class="form-group">
+          <label>LOC proxy estimadas</label>
+          <input type="number" value="320" id="loc-proxy" oninput="calcProbe()">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>β₀ — intercepto regresión histórica</label>
+          <input type="number" value="12.5" id="beta0" step="0.1" oninput="calcProbe()">
+        </div>
+        <div class="form-group">
+          <label>β₁ — pendiente regresión histórica</label>
+          <input type="number" value="0.91" id="beta1" step="0.01" oninput="calcProbe()">
+        </div>
+      </div>
+      <div class="formula-box">
+        <div class="formula-label">Estimación = β₀ + β₁ × LOC_proxy</div>
+        <div class="formula-result" id="probe-result">= 12.5 + 0.91 × 320 = <span>303.7 LOC estimadas</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Paso 3 · Estimación de tiempo</div>
+      <div class="form-row-3">
+        <div class="form-group">
+          <label>Productividad histórica (LOC/hr)</label>
+          <input type="number" value="21.6" id="prod" step="0.1" oninput="calcTime()">
+        </div>
+        <div class="form-group">
+          <label>LOC estimadas (de PROBE)</label>
+          <input type="number" value="303.7" id="loc-est-time" step="1" oninput="calcTime()">
+        </div>
+        <div class="form-group">
+          <label>Tiempo total estimado (hrs)</label>
+          <input type="number" value="14.06" id="time-result" step="0.01" style="font-weight:500;">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Intervalo de confianza 70%</label>
+          <input type="text" value="11.2 — 18.9 hrs">
+        </div>
+        <div class="form-group">
+          <label>Fecha de entrega comprometida</label>
+          <input type="date" value="2026-05-20">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DEVELOPMENT & POSTMORTEM ===== -->
+  <div class="panel" id="panel-devpost">
+    <p class="section-title">Development Script &amp; Postmortem Script</p>
+    <div class="card">
+      <div class="card-title">
+        Development Script — checklist de ejecución
+        <span class="badge badge-blue">Fase de desarrollo</span>
+      </div>
+      <table>
+        <thead><tr><th>Paso</th><th>Actividad</th><th>Completado</th><th>Notas</th></tr></thead>
+        <tbody>
+          <tr><td style="font-family:var(--font-mono); font-size:12px; color:var(--blue);">D1</td><td>Revisar el diseño antes de codificar</td><td><input type="checkbox" checked></td><td><input class="inline-edit" value="Diseño aprobado" style="width:170px;"></td></tr>
+          <tr><td style="font-family:var(--font-mono); font-size:12px; color:var(--blue);">D2</td><td>Seguir estándares de codificación PSP</td><td><input type="checkbox" checked></td><td><input class="inline-edit" value="PSP Coding Standard v1.1" style="width:170px;"></td></tr>
+          <tr><td style="font-family:var(--font-mono); font-size:12px; color:var(--blue);">D3</td><td>Registrar defectos en tiempo real en Defect Log</td><td><input type="checkbox" checked></td><td><input class="inline-edit" value="4 defectos en esta fase" style="width:170px;"></td></tr>
+          <tr><td style="font-family:var(--font-mono); font-size:12px; color:var(--blue);">D4</td><td>Registrar tiempo en Time Log por sesión</td><td><input type="checkbox" checked></td><td><input class="inline-edit" value="340 min total registrados" style="width:170px;"></td></tr>
+          <tr><td style="font-family:var(--font-mono); font-size:12px; color:var(--blue);">D5</td><td>Realizar code review con checklist personal</td><td><input type="checkbox" checked></td><td><input class="inline-edit" value="Checklist de revisión completada" style="width:170px;"></td></tr>
+          <tr><td style="font-family:var(--font-mono); font-size:12px; color:var(--blue);">D6</td><td>Ejecutar todas las pruebas unitarias planificadas</td><td><input type="checkbox"></td><td><input class="inline-edit" value="En progreso" style="width:170px;"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Postmortem Script — análisis de cierre
+        <span class="badge badge-green">Fase de cierre</span>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>LOC reales entregadas</label>
+          <input type="number" value="338">
+        </div>
+        <div class="form-group">
+          <label>LOC reutilizadas</label>
+          <input type="number" value="45">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Total defectos inyectados</label>
+          <input type="number" value="12">
+        </div>
+        <div class="form-group">
+          <label>Total defectos removidos</label>
+          <input type="number" value="12">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label>Lecciones aprendidas</label>
+        <textarea>El tiempo de diseño fue subestimado. Se encontraron defectos de lógica durante la revisión de código que pudieron haberse detectado con un diseño más detallado. En el siguiente programa se asignará un 20% más de tiempo a la fase de diseño.</textarea>
+      </div>
+      <div class="form-group">
+        <label>Plan de mejora para el siguiente programa</label>
+        <textarea>Usar tabla de verificación de diseño más rigurosa. Aplicar la Defect Checklist completa antes de comenzar el code review. Actualizar datos históricos de productividad con los valores reales de este programa.</textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TIME LOG ===== -->
+  <div class="panel" id="panel-timelog">
+    <p class="section-title">Time Recording Log</p>
+    <div class="card">
+      <div class="card-title">
+        Registro de tiempo por sesión
+        <button class="btn btn-primary btn-sm" onclick="addTimeRow()"><i class="ti ti-plus"></i> Agregar entrada</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Interrup. (min)</th>
+            <th>Delta (min)</th>
+            <th>Fase</th>
+            <th>Comentarios</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="time-tbody">
+          <tr>
+            <td><input class="inline-edit" value="2026-05-01" style="width:88px;"></td>
+            <td><input class="inline-edit" value="08:00" style="width:45px;"></td>
+            <td><input class="inline-edit" value="09:05" style="width:45px;"></td>
+            <td><input class="inline-edit" value="5" style="width:35px;"></td>
+            <td><span class="badge badge-blue">60</span></td>
+            <td><select><option selected>Planning</option><option>Design</option><option>Design Review</option><option>Code</option><option>Code Review</option><option>Compile</option><option>Test</option><option>Postmortem</option></select></td>
+            <td><input class="inline-edit" value="Estimación de tamaño y tiempo" style="width:180px;"></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeRow(this)">×</button></td>
+          </tr>
+          <tr>
+            <td><input class="inline-edit" value="2026-05-02" style="width:88px;"></td>
+            <td><input class="inline-edit" value="09:00" style="width:45px;"></td>
+            <td><input class="inline-edit" value="11:15" style="width:45px;"></td>
+            <td><input class="inline-edit" value="0" style="width:35px;"></td>
+            <td><span class="badge badge-blue">135</span></td>
+            <td><select><option>Planning</option><option selected>Design</option><option>Design Review</option><option>Code</option><option>Code Review</option><option>Compile</option><option>Test</option><option>Postmortem</option></select></td>
+            <td><input class="inline-edit" value="Diseño lógico del módulo de inventario" style="width:180px;"></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeRow(this)">×</button></td>
+          </tr>
+          <tr>
+            <td><input class="inline-edit" value="2026-05-03" style="width:88px;"></td>
+            <td><input class="inline-edit" value="14:00" style="width:45px;"></td>
+            <td><input class="inline-edit" value="14:35" style="width:45px;"></td>
+            <td><input class="inline-edit" value="0" style="width:35px;"></td>
+            <td><span class="badge badge-blue">35</span></td>
+            <td><select><option>Planning</option><option>Design</option><option selected>Design Review</option><option>Code</option><option>Code Review</option><option>Compile</option><option>Test</option><option>Postmortem</option></select></td>
+            <td><input class="inline-edit" value="Revisión de pseudocódigo" style="width:180px;"></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeRow(this)">×</button></td>
+          </tr>
+          <tr>
+            <td><input class="inline-edit" value="2026-05-05" style="width:88px;"></td>
+            <td><input class="inline-edit" value="08:30" style="width:45px;"></td>
+            <td><input class="inline-edit" value="14:10" style="width:45px;"></td>
+            <td><input class="inline-edit" value="30" style="width:35px;"></td>
+            <td><span class="badge badge-blue">310</span></td>
+            <td><select><option>Planning</option><option>Design</option><option>Design Review</option><option selected>Code</option><option>Code Review</option><option>Compile</option><option>Test</option><option>Postmortem</option></select></td>
+            <td><input class="inline-edit" value="Implementación completa del módulo" style="width:180px;"></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeRow(this)">×</button></td>
+          </tr>
+          <tr>
+            <td><input class="inline-edit" value="2026-05-05" style="width:88px;"></td>
+            <td><input class="inline-edit" value="14:10" style="width:45px;"></td>
+            <td><input class="inline-edit" value="15:00" style="width:45px;"></td>
+            <td><input class="inline-edit" value="0" style="width:35px;"></td>
+            <td><span class="badge badge-blue">50</span></td>
+            <td><select><option>Planning</option><option>Design</option><option>Design Review</option><option>Code</option><option selected>Code Review</option><option>Compile</option><option>Test</option><option>Postmortem</option></select></td>
+            <td><input class="inline-edit" value="Revisión personal del código" style="width:180px;"></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeRow(this)">×</button></td>
+          </tr>
+          <tr>
+            <td><input class="inline-edit" value="2026-05-06" style="width:88px;"></td>
+            <td><input class="inline-edit" value="10:00" style="width:45px;"></td>
+            <td><input class="inline-edit" value="13:40" style="width:45px;"></td>
+            <td><input class="inline-edit" value="0" style="width:35px;"></td>
+            <td><span class="badge badge-blue">220</span></td>
+            <td><select><option>Planning</option><option>Design</option><option>Design Review</option><option>Code</option><option>Code Review</option><option>Compile</option><option selected>Test</option><option>Postmortem</option></select></td>
+            <td><input class="inline-edit" value="Ejecución de pruebas unitarias" style="width:180px;"></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeRow(this)">×</button></td>
+          </tr>
+          <tr>
+            <td><input class="inline-edit" value="2026-05-07" style="width:88px;"></td>
+            <td><input class="inline-edit" value="14:00" style="width:45px;"></td>
+            <td><input class="inline-edit" value="14:38" style="width:45px;"></td>
+            <td><input class="inline-edit" value="0" style="width:35px;"></td>
+            <td><span class="badge badge-blue">38</span></td>
+            <td><select><option>Planning</option><option>Design</option><option>Design Review</option><option>Code</option><option>Code Review</option><option>Compile</option><option>Test</option><option selected>Postmortem</option></select></td>
+            <td><input class="inline-edit" value="Llenado de PPS y análisis final" style="width:180px;"></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeRow(this)">×</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="actions">
+        <span style="font-size:12px; color:var(--text-secondary);">Total registrado:</span>
+        <span class="badge badge-blue" style="font-size:13px; padding:5px 14px;">888 minutos &nbsp;·&nbsp; 14.8 hrs</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DEFECT LOG ===== -->
+  <div class="panel" id="panel-defectlog">
+    <p class="section-title">Defect Recording Log</p>
+    <div class="card">
+      <div class="card-title">
+        Registro de defectos encontrados
+        <button class="btn btn-primary btn-sm" onclick="addDefectRow()"><i class="ti ti-plus"></i> Agregar defecto</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Tipo (Humphrey)</th>
+            <th>Inyectado en</th>
+            <th>Removido en</th>
+            <th>Fix (min)</th>
+            <th>Descripción del defecto</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="defect-tbody">
+          <tr>
+            <td style="font-family:var(--font-mono); font-size:12px; color:var(--blue);">D001</td>
+            <td><input class="inline-edit" value="2026-05-05" style="width:88px;"></td>
+            <td><select><option>10 · Documentación</option><option>20 · Sintaxis</option><option selected>30 · Build / Package</option><option>40 · Asignación</option><option>50 · Interfaz</option><option>60 · Verificación</option><option>70 · Data</option><option>80 · Función</option><option>90 · Sistema</option><option>100 · Ambiente</option></select></td>
+            <td><select><option>Planning</option><option>Design</option><option selected>Code</option><option>Compile</option><option>Test</option></select></td>
+            <td><select><option>Design Review</option><option>Code Review</option><option selected>Compile</option><option>Test</option></select></td>
+            <td><input class="inline-edit" value="3" style="width:40px;"></td>
+            <td><input class="inline-edit" value="Variable no declarada antes de su uso en ciclo for" style="width:220px;"></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeRow(this)">×</button></td>
+          </tr>
+          <tr>
+            <td style="font-family:var(--font-mono); font-size:12px; color:var(--blue);">D002</td>
+            <td><input class="inline-edit" value="2026-05-05" style="width:88px;"></td>
+            <td><select><option>10 · Documentación</option><option>20 · Sintaxis</option><option>30 · Build / Package</option><option>40 · Asignación</option><option>50 · Interfaz</option><option>60 · Verificación</option><option>70 · Data</option><option selected>80 · Función</option><option>90 · Sistema</option><option>100 · Ambiente</option></select></td>
+            <td><select><option>Planning</option><option selected>Design</option><option>Code</option><option>Compile</option><option>Test</option></select></td>
+            <td><select><option>Design Review</option><option selected>Code Review</option><option>Compile</option><option>Test</option></select></td>
+            <td><input class="inline-edit" value="15" style="width:40px;"></td>
+            <td><input class="inline-edit" value="Lógica de validación de stock mínimo invertida (< en vez de >)" style="width:220px;"></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeRow(this)">×</button></td>
+          </tr>
+          <tr>
+            <td style="font-family:var(--font-mono); font-size:12px; color:var(--blue);">D003</td>
+            <td><input class="inline-edit" value="2026-05-06" style="width:88px;"></td>
+            <td><select><option>10 · Documentación</option><option>20 · Sintaxis</option><option>30 · Build / Package</option><option>40 · Asignación</option><option>50 · Interfaz</option><option selected>60 · Verificación</option><option>70 · Data</option><option>80 · Función</option><option>90 · Sistema</option><option>100 · Ambiente</option></select></td>
+            <td><select><option>Planning</option><option>Design</option><option selected>Code</option><option>Compile</option><option>Test</option></select></td>
+            <td><select><option>Design Review</option><option>Code Review</option><option>Compile</option><option selected>Test</option></select></td>
+            <td><input class="inline-edit" value="8" style="width:40px;"></td>
+            <td><input class="inline-edit" value="Condición de borde: inventario=0 no dispara la alerta" style="width:220px;"></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeRow(this)">×</button></td>
+          </tr>
+          <tr>
+            <td style="font-family:var(--font-mono); font-size:12px; color:var(--blue);">D004</td>
+            <td><input class="inline-edit" value="2026-05-05" style="width:88px;"></td>
+            <td><select><option>10 · Documentación</option><option>20 · Sintaxis</option><option>30 · Build / Package</option><option selected>40 · Asignación</option><option>50 · Interfaz</option><option>60 · Verificación</option><option>70 · Data</option><option>80 · Función</option><option>90 · Sistema</option><option>100 · Ambiente</option></select></td>
+            <td><select><option>Planning</option><option>Design</option><option selected>Code</option><option>Compile</option><option>Test</option></select></td>
+            <td><select><option>Design Review</option><option selected>Code Review</option><option>Compile</option><option>Test</option></select></td>
+            <td><input class="inline-edit" value="5" style="width:40px;"></td>
+            <td><input class="inline-edit" value="Variable contador inicializada en 1 en lugar de 0" style="width:220px;"></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeRow(this)">×</button></td>
+          </tr>
+          <tr>
+            <td style="font-family:var(--font-mono); font-size:12px; color:var(--blue);">D005</td>
+            <td><input class="inline-edit" value="2026-05-05" style="width:88px;"></td>
+            <td><select><option>10 · Documentación</option><option>20 · Sintaxis</option><option>30 · Build / Package</option><option>40 · Asignación</option><option selected>50 · Interfaz</option><option>60 · Verificación</option><option>70 · Data</option><option>80 · Función</option><option>90 · Sistema</option><option>100 · Ambiente</option></select></td>
+            <td><select><option>Planning</option><option selected>Design</option><option>Code</option><option>Compile</option><option>Test</option></select></td>
+            <td><select><option selected>Design Review</option><option>Code Review</option><option>Compile</option><option>Test</option></select></td>
+            <td><input class="inline-edit" value="12" style="width:40px;"></td>
+            <td><input class="inline-edit" value="Parámetro de método en orden incorrecto en llamada a función de alerta" style="width:220px;"></td>
+            <td><button class="btn btn-danger btn-sm" onclick="removeRow(this)">×</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:8px; margin-top:14px;">
+        <div class="metric-card"><div class="metric-label">Total defectos</div><div class="metric-value">12</div></div>
+        <div class="metric-card"><div class="metric-label">Removidos antes de pruebas</div><div class="metric-value">11</div></div>
+        <div class="metric-card"><div class="metric-label">Removidos en pruebas</div><div class="metric-value">1</div></div>
+        <div class="metric-card"><div class="metric-label">Tiempo total de corrección</div><div class="metric-value">67 min</div></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end app-shell -->
+
+<script>
+  function switchTab(id, el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('panel-' + id).classList.add('active');
+  }
+
+  function calcProbe() {
+    var b0 = parseFloat(document.getElementById('beta0').value) || 0;
+    var b1 = parseFloat(document.getElementById('beta1').value) || 0;
+    var loc = parseFloat(document.getElementById('loc-proxy').value) || 0;
+    var result = (b0 + b1 * loc).toFixed(1);
+    document.getElementById('probe-result').innerHTML =
+      '= ' + b0 + ' + ' + b1 + ' × ' + loc + ' = <span>' + result + ' LOC estimadas</span>';
+    document.getElementById('loc-est-time').value = result;
+    calcTime();
+  }
+
+  function calcTime() {
+    var prod = parseFloat(document.getElementById('prod').value) || 1;
+    var loc = parseFloat(document.getElementById('loc-est-time').value) || 0;
+    var hrs = (loc / prod).toFixed(2);
+    document.getElementById('time-result').value = hrs;
+  }
+
+  var defectCount = 5;
+  function addDefectRow() {
+    defectCount++;
+    var id = 'D' + String(defectCount).padStart(3, '0');
+    var tbody = document.getElementById('defect-tbody');
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td style="font-family:var(--font-mono); font-size:12px; color:var(--blue);">' + id + '</td>' +
+      '<td><input class="inline-edit" value="2026-05-08" style="width:88px;"></td>' +
+      '<td><select><option>10 · Documentación</option><option>20 · Sintaxis</option><option>30 · Build / Package</option><option>40 · Asignación</option><option>50 · Interfaz</option><option>60 · Verificación</option><option>70 · Data</option><option selected>80 · Función</option><option>90 · Sistema</option><option>100 · Ambiente</option></select></td>' +
+      '<td><select><option>Planning</option><option>Design</option><option selected>Code</option><option>Compile</option><option>Test</option></select></td>' +
+      '<td><select><option>Design Review</option><option>Code Review</option><option selected>Compile</option><option>Test</option></select></td>' +
+      '<td><input class="inline-edit" value="0" style="width:40px;"></td>' +
+      '<td><input class="inline-edit" value="Descripción del nuevo defecto" style="width:220px;"></td>' +
+      '<td><button class="btn btn-danger btn-sm" onclick="removeRow(this)">×</button></td>';
+    tbody.appendChild(tr);
+  }
+
+  function addTimeRow() {
+    var tbody = document.getElementById('time-tbody');
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td><input class="inline-edit" value="2026-05-08" style="width:88px;"></td>' +
+      '<td><input class="inline-edit" value="09:00" style="width:45px;"></td>' +
+      '<td><input class="inline-edit" value="10:00" style="width:45px;"></td>' +
+      '<td><input class="inline-edit" value="0" style="width:35px;"></td>' +
+      '<td><span class="badge badge-blue">60</span></td>' +
+      '<td><select><option>Planning</option><option>Design</option><option>Design Review</option><option selected>Code</option><option>Code Review</option><option>Compile</option><option>Test</option><option>Postmortem</option></select></td>' +
+      '<td><input class="inline-edit" value="Nueva sesión de trabajo" style="width:180px;"></td>' +
+      '<td><button class="btn btn-danger btn-sm" onclick="removeRow(this)">×</button></td>';
+    tbody.appendChild(tr);
+  }
+
+  function removeRow(btn) {
+    btn.closest('tr').remove();
+  }
+</script>
+</body>
+</html>

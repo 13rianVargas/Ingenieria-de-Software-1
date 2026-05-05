@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TSP — Team Software Process</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --font: 'IBM Plex Sans', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --surface2: #eceae4;
+  --border: rgba(0,0,0,0.09);
+  --border-md: rgba(0,0,0,0.14);
+  --text: #1c1c1a;
+  --muted: #6b6a66;
+  --faint: #9a9893;
+  --blue: #1a56a0;
+  --blue-bg: #e8f0fb;
+  --blue-txt: #0d3870;
+  --green: #1a7a4a;
+  --green-bg: #e4f5ec;
+  --green-txt: #0d4a2a;
+  --amber: #a06010;
+  --amber-bg: #fdf0dc;
+  --amber-txt: #6a3a00;
+  --red: #b03030;
+  --red-bg: #fdeaea;
+  --red-txt: #7a1a1a;
+  --purple: #6040b0;
+  --purple-bg: #f0ecfb;
+  --purple-txt: #3a2070;
+  --r: 8px;
+  --rl: 12px;
+}
+body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; min-height: 100vh; }
+
+/* HEADER */
+.header { background: var(--surface); border-bottom: 0.5px solid var(--border-md); padding: 14px 28px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 50; }
+.logo { background: var(--blue); color: #fff; font-size: 12px; font-weight: 500; width: 36px; height: 36px; border-radius: var(--r); display: flex; align-items: center; justify-content: center; flex-shrink: 0; letter-spacing: .04em; }
+.header-info { flex: 1; }
+.header-info h1 { font-size: 15px; font-weight: 500; }
+.header-meta { font-size: 12px; color: var(--muted); display: flex; gap: 16px; flex-wrap: wrap; margin-top: 1px; }
+.header-meta span { display: flex; align-items: center; gap: 4px; }
+.ie { background: none; border: none; border-bottom: 1px dashed var(--border-md); padding: 1px 3px; font: inherit; color: inherit; min-width: 50px; }
+.ie:focus { outline: none; border-bottom-color: var(--blue); background: var(--blue-bg); border-radius: 2px; }
+
+/* TABS */
+.tabs { background: var(--surface); border-bottom: 0.5px solid var(--border-md); padding: 0 28px; display: flex; gap: 0; overflow-x: auto; }
+.tab { padding: 12px 16px; font-size: 12px; font-family: var(--font); cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; transition: all .15s; display: flex; align-items: center; gap: 6px; white-space: nowrap; background: none; border-top: none; border-left: none; border-right: none; }
+.tab i { font-size: 14px; }
+.tab:hover:not(.active) { color: var(--text); background: var(--bg); }
+.tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+/* MAIN */
+.main { padding: 24px 28px 60px; max-width: 1080px; margin: 0 auto; }
+.panel { display: none; } .panel.active { display: block; }
+.section-label { font-size: 10px; font-weight: 500; color: var(--faint); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; }
+
+/* CARDS */
+.card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--rl); padding: 16px 20px; margin-bottom: 14px; }
+.card-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+
+/* GRID */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* METRICS */
+.mrow { display: grid; gap: 10px; margin-bottom: 14px; }
+.mrow.c4 { grid-template-columns: repeat(4,1fr); }
+.mrow.c3 { grid-template-columns: repeat(3,1fr); }
+.mrow.c5 { grid-template-columns: repeat(5,1fr); }
+.met { background: var(--surface2); border-radius: var(--r); padding: 12px 14px; }
+.met-label { font-size: 10px; color: var(--faint); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+.met-val { font-size: 22px; font-weight: 500; }
+.met-val .ie { font-size: 22px; font-weight: 500; width: 80px; }
+.met-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* FORM */
+.fg { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+label { font-size: 10px; color: var(--faint); text-transform: uppercase; letter-spacing: .05em; font-weight: 500; }
+input[type=text], input[type=number], input[type=date], select, textarea {
+  font-size: 13px; padding: 7px 10px; border: 0.5px solid var(--border-md); border-radius: var(--r);
+  background: var(--surface2); color: var(--text); font-family: var(--font); width: 100%; transition: border-color .15s;
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--blue); background: #fff; }
+textarea { resize: vertical; min-height: 60px; }
+
+/* TABLE */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { font-size: 10px; font-weight: 500; color: var(--muted); text-align: left; padding: 7px 10px; border-bottom: 0.5px solid var(--border-md); background: var(--surface2); text-transform: uppercase; letter-spacing: .04em; }
+td { padding: 8px 10px; border-bottom: 0.5px solid var(--border); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #fafaf8; }
+td .ie { min-width: 50px; width: 100%; }
+td select { font-size: 12px; padding: 3px 6px; background: var(--surface2); border: 0.5px solid var(--border-md); border-radius: 5px; font-family: var(--font); color: var(--text); }
+
+/* BADGES */
+.badge { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; padding: 3px 8px; border-radius: 5px; font-weight: 500; white-space: nowrap; }
+.b-blue { background: var(--blue-bg); color: var(--blue-txt); }
+.b-green { background: var(--green-bg); color: var(--green-txt); }
+.b-amber { background: var(--amber-bg); color: var(--amber-txt); }
+.b-red { background: var(--red-bg); color: var(--red-txt); }
+.b-purple { background: var(--purple-bg); color: var(--purple-txt); }
+.b-gray { background: var(--surface2); color: var(--muted); }
+
+/* BUTTONS */
+.btn { padding: 6px 14px; font-size: 12px; font-family: var(--font); border: 0.5px solid var(--border-md); border-radius: var(--r); cursor: pointer; background: var(--surface); color: var(--text); transition: all .15s; display: inline-flex; align-items: center; gap: 5px; }
+.btn:hover { background: var(--surface2); }
+.btn-primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+.btn-primary:hover { background: var(--blue-txt); }
+.btn-sm { padding: 3px 9px; font-size: 11px; }
+.btn-del { background: var(--red-bg); color: var(--red-txt); border-color: #f0c0c0; }
+
+/* STEP */
+.step { border-left: 2px solid var(--blue-bg); padding: 10px 14px; margin-bottom: 8px; background: var(--surface2); border-radius: 0 var(--r) var(--r) 0; cursor: text; transition: all .15s; }
+.step:hover, .step:focus { border-left-color: var(--blue); background: #fff; outline: none; }
+.step-num { font-size: 10px; color: var(--blue); font-weight: 500; margin-bottom: 3px; font-family: var(--mono); }
+
+/* ROLE CARDS */
+.roles-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.role-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--rl); padding: 14px 16px; }
+.role-icon { width: 36px; height: 36px; border-radius: var(--r); display: flex; align-items: center; justify-content: center; margin-bottom: 10px; font-size: 18px; }
+.role-name { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+.role-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* PROGRESS */
+.prog { height: 5px; background: var(--surface2); border-radius: 3px; overflow: hidden; margin-top: 5px; }
+.prog-bar { height: 100%; border-radius: 3px; }
+
+/* CHECKLIST */
+.check-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 0.5px solid var(--border); }
+.check-item:last-child { border-bottom: none; }
+.check-item input[type=checkbox] { margin-top: 2px; width: 15px; height: 15px; accent-color: var(--blue); flex-shrink: 0; cursor: pointer; }
+.check-label { font-size: 13px; flex: 1; }
+.check-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* TIMELINE */
+.tl { padding-left: 22px; position: relative; }
+.tl::before { content: ''; position: absolute; left: 6px; top: 4px; bottom: 4px; width: 1px; background: var(--border-md); }
+.tl-item { position: relative; margin-bottom: 16px; }
+.tl-dot { position: absolute; left: -22px; top: 3px; width: 13px; height: 13px; border-radius: 50%; border: 2px solid var(--border-md); background: var(--surface); }
+.tl-dot.done { background: var(--green); border-color: var(--green); }
+.tl-dot.active { border-color: var(--blue); background: var(--blue-bg); }
+.tl-dot.pending { border-color: var(--border-md); }
+.tl-title { font-size: 13px; font-weight: 500; }
+.tl-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+.note { font-size: 11px; color: var(--faint); font-style: italic; margin-top: 8px; }
+.divider { border: none; border-top: 0.5px solid var(--border); margin: 12px 0; }
+.actions { display: flex; align-items: center; gap: 8px; justify-content: flex-end; margin-top: 10px; }
+
+@media (max-width: 680px) {
+  .mrow.c4, .mrow.c5 { grid-template-columns: 1fr 1fr; }
+  .grid2, .roles-grid { grid-template-columns: 1fr; }
+  .tabs, .header { padding-left: 14px; padding-right: 14px; }
+  .main { padding: 16px 14px 60px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">TSP</div>
+  <div class="header-info">
+    <h1>Team Software Process — Herramienta de Demostración</h1>
+    <div class="header-meta">
+      <span><i class="ti ti-folder" style="font-size:13px;"></i> Proyecto: <input class="ie" value="Portal de Gestión Académica"></span>
+      <span><i class="ti ti-users" style="font-size:13px;"></i> Grupo: <input class="ie" value="51 · Ingeniería de Software I"></span>
+      <span><i class="ti ti-user-check" style="font-size:13px;"></i> Coach: <input class="ie" value="Prof. Sandra Mora"></span>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="go('launch',this)"><i class="ti ti-rocket"></i> Launch Plan</div>
+  <div class="tab" onclick="go('roles',this)"><i class="ti ti-award"></i> Roles</div>
+  <div class="tab" onclick="go('teamplan',this)"><i class="ti ti-layout-grid"></i> Team Plan</div>
+  <div class="tab" onclick="go('quality',this)"><i class="ti ti-shield-check"></i> Calidad</div>
+  <div class="tab" onclick="go('risk',this)"><i class="ti ti-alert-triangle"></i> Riesgos</div>
+  <div class="tab" onclick="go('weekly',this)"><i class="ti ti-report"></i> Status Report</div>
+  <div class="tab" onclick="go('postmortem',this)"><i class="ti ti-flag-check"></i> Postmortem</div>
+</div>
+
+<div class="main">
+
+<!-- ===== LAUNCH PLAN ===== -->
+<div class="panel active" id="panel-launch">
+  <p class="section-label">Launch Plan — estrategia, cronograma, calidad y riesgos definidos en el Día Cero</p>
+
+  <div class="mrow c4">
+    <div class="met"><div class="met-label">Duración del ciclo</div><div class="met-val"><input class="ie" value="16" style="width:45px;font-size:22px;font-weight:500;"> sem</div></div>
+    <div class="met"><div class="met-label">Miembros del equipo</div><div class="met-val"><input class="ie" value="4" style="width:40px;font-size:22px;font-weight:500;"></div></div>
+    <div class="met"><div class="met-label">Horas totales plan</div><div class="met-val"><input class="ie" value="640" style="width:65px;font-size:22px;font-weight:500;"></div></div>
+    <div class="met"><div class="met-label">LOC totales plan</div><div class="met-val"><input class="ie" value="8,400" style="width:75px;font-size:22px;font-weight:500;"></div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Ciclo de vida TSP — fases del Launch</div>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-dot done"></div>
+          <div class="tl-title">Launch <span class="badge b-green" style="margin-left:6px;">Completado</span></div>
+          <div class="tl-desc">Arranque guiado por el Coach. Definición de equipo, visión y compromisos.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot done"></div>
+          <div class="tl-title">Estrategia <span class="badge b-green" style="margin-left:6px;">Completado</span></div>
+          <div class="tl-desc">Formulación del Plan Global. Alcance, objetivos de negocio y métricas base.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot active"></div>
+          <div class="tl-title">Ejecución <span class="badge b-blue" style="margin-left:6px;">En curso</span></div>
+          <div class="tl-desc">Daily stand-ups e integración PSP. Cada miembro aplica su PPI individual.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot pending"></div>
+          <div class="tl-title">Postmortem <span class="badge b-gray" style="margin-left:6px;">Pendiente</span></div>
+          <div class="tl-desc">Auditoría formal de métricas del equipo y lecciones aprendidas del ciclo.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Miembros del equipo</div>
+      <table>
+        <thead><tr><th>Nombre</th><th>Rol TSP</th></tr></thead>
+        <tbody>
+          <tr><td><input class="ie" value="Andrés Mejía" style="width:130px;"></td><td><select><option selected>Team Leader</option><option>Planning Manager</option><option>Quality Manager</option><option>Dev Manager</option><option>Support Manager</option></select></td></tr>
+          <tr><td><input class="ie" value="Laura Pineda" style="width:130px;"></td><td><select><option>Team Leader</option><option>Planning Manager</option><option selected>Quality Manager</option><option>Dev Manager</option><option>Support Manager</option></select></td></tr>
+          <tr><td><input class="ie" value="Carlos Ríos" style="width:130px;"></td><td><select><option>Team Leader</option><option selected>Planning Manager</option><option>Quality Manager</option><option>Dev Manager</option><option>Support Manager</option></select></td></tr>
+          <tr><td><input class="ie" value="Sofía Vargas" style="width:130px;"></td><td><select><option>Team Leader</option><option>Planning Manager</option><option>Quality Manager</option><option selected>Dev Manager</option><option>Support Manager</option></select></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Hitos del cronograma</div>
+    <table>
+      <thead><tr><th>Hito</th><th>Fecha plan</th><th>Fecha real</th><th>Responsable</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>Launch completado</td><td><input class="ie" value="2026-01-15" style="width:95px;"></td><td><input class="ie" value="2026-01-15" style="width:95px;"></td><td><input class="ie" value="Andrés M." style="width:85px;"></td><td><span class="badge b-green">Completado</span></td></tr>
+        <tr><td>Diseño de alto nivel</td><td><input class="ie" value="2026-02-05" style="width:95px;"></td><td><input class="ie" value="2026-02-08" style="width:95px;"></td><td><input class="ie" value="Laura P." style="width:85px;"></td><td><span class="badge b-green">Completado</span></td></tr>
+        <tr><td>Revisión de diseño</td><td><input class="ie" value="2026-02-20" style="width:95px;"></td><td><input class="ie" value="—" style="width:95px;"></td><td><input class="ie" value="Sofía V." style="width:85px;"></td><td><span class="badge b-amber">En curso</span></td></tr>
+        <tr><td>Build 1 integrado</td><td><input class="ie" value="2026-03-15" style="width:95px;"></td><td><input class="ie" value="—" style="width:95px;"></td><td><input class="ie" value="Carlos R." style="width:85px;"></td><td><span class="badge b-gray">Pendiente</span></td></tr>
+        <tr><td>Pruebas de sistema</td><td><input class="ie" value="2026-04-10" style="width:95px;"></td><td><input class="ie" value="—" style="width:95px;"></td><td><input class="ie" value="Equipo" style="width:85px;"></td><td><span class="badge b-gray">Pendiente</span></td></tr>
+        <tr><td>Entrega final</td><td><input class="ie" value="2026-05-05" style="width:95px;"></td><td><input class="ie" value="—" style="width:95px;"></td><td><input class="ie" value="Andrés M." style="width:85px;"></td><td><span class="badge b-gray">Pendiente</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== ROLES ===== -->
+<div class="panel" id="panel-roles">
+  <p class="section-label">Roles TSP — liderazgo distribuido y autogestionado</p>
+
+  <div class="roles-grid">
+    <div class="role-card">
+      <div class="role-icon" style="background:var(--blue-bg);color:var(--blue);"><i class="ti ti-crown"></i></div>
+      <div class="role-name">Team Leader (TL)</div>
+      <div class="role-desc">Facilita las ceremonias del equipo y lo defiende de interrupciones externas. Punto de contacto con el Coach y con la organización.</div>
+      <div style="margin-top:10px;"><label>Asignado a</label><input type="text" value="Andrés Mejía" style="margin-top:4px;"></div>
+    </div>
+    <div class="role-card">
+      <div class="role-icon" style="background:var(--purple-bg);color:var(--purple);"><i class="ti ti-calendar-stats"></i></div>
+      <div class="role-name">Planning Manager (PM)</div>
+      <div class="role-desc">Monitorea el cronograma del equipo y alerta sobre desviaciones. Consolida los Planes Individuales (PPI) en el Plan Global del equipo.</div>
+      <div style="margin-top:10px;"><label>Asignado a</label><input type="text" value="Carlos Ríos" style="margin-top:4px;"></div>
+    </div>
+    <div class="role-card">
+      <div class="role-icon" style="background:var(--green-bg);color:var(--green);"><i class="ti ti-shield-check"></i></div>
+      <div class="role-name">Quality Manager (QM)</div>
+      <div class="role-desc">Audita la densidad de defectos y el Yield del equipo. Mitiga riesgos de calidad y modera las inspecciones formales de código.</div>
+      <div style="margin-top:10px;"><label>Asignado a</label><input type="text" value="Laura Pineda" style="margin-top:4px;"></div>
+    </div>
+    <div class="role-card">
+      <div class="role-icon" style="background:var(--amber-bg);color:var(--amber);"><i class="ti ti-code"></i></div>
+      <div class="role-name">Dev Manager (DM)</div>
+      <div class="role-desc">Coordina la arquitectura técnica y las decisiones de implementación. Apoya la integración de los módulos desarrollados por el equipo.</div>
+      <div style="margin-top:10px;"><label>Asignado a</label><input type="text" value="Sofía Vargas" style="margin-top:4px;"></div>
+    </div>
+    <div class="role-card">
+      <div class="role-icon" style="background:var(--red-bg);color:var(--red);"><i class="ti ti-tool"></i></div>
+      <div class="role-name">Support Manager (SM)</div>
+      <div class="role-desc">Gestiona el entorno de trabajo: repositorio, CI/CD, herramientas de seguimiento y accesos al ambiente de desarrollo y pruebas.</div>
+      <div style="margin-top:10px;"><label>Asignado a</label><input type="text" value="—" style="margin-top:4px;"></div>
+    </div>
+    <div class="role-card" style="background:var(--surface2);border-style:dashed;">
+      <div class="role-icon" style="background:var(--surface);color:var(--muted);"><i class="ti ti-user-star"></i></div>
+      <div class="role-name" style="color:var(--muted);">TSP Coach</div>
+      <div class="role-desc" style="color:var(--muted);">Experto externo que guía al equipo, modera el Launch y sostiene el marco TSP bajo presión. No es miembro del equipo.</div>
+      <div style="margin-top:10px;"><label>Coach asignado</label><input type="text" value="Prof. Sandra Mora" style="margin-top:4px;background:var(--surface);"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px;">
+    <div class="card-title">Normas del equipo</div>
+    <table>
+      <thead><tr><th>Categoría</th><th>Norma acordada en el Launch</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge b-blue">Reuniones</span></td><td><input class="ie" value="Viernes 4:00 pm · duración máx. 1 hora · asistencia obligatoria" style="width:340px;"></td></tr>
+        <tr><td><span class="badge b-green">Comunicación</span></td><td><input class="ie" value="Canal Slack del equipo · respuesta en menos de 4 horas hábiles" style="width:340px;"></td></tr>
+        <tr><td><span class="badge b-purple">Código</span></td><td><input class="ie" value="Pull request obligatorio · mínimo 1 revisor aprobado antes de merge" style="width:340px;"></td></tr>
+        <tr><td><span class="badge b-amber">PSP</span></td><td><input class="ie" value="Todos los miembros registran su Time Log y Defect Log diariamente" style="width:340px;"></td></tr>
+        <tr><td><span class="badge b-red">Conflictos</span></td><td><input class="ie" value="Escalar al TL si no hay acuerdo en 48 horas · Coach decide si persiste" style="width:340px;"></td></tr>
+      </tbody>
+    </table>
+    <p class="note">* Recuerda: un proyecto TSP es inviable si el equipo no está formado en PSP. La calidad grupal depende de la disciplina individual.</p>
+  </div>
+</div>
+
+<!-- ===== TEAM PLAN ===== -->
+<div class="panel" id="panel-teamplan">
+  <p class="section-label">Team Plan — el plan global es la suma de los Planes Individuales (PPI)</p>
+
+  <div class="mrow c4">
+    <div class="met"><div class="met-label">Horas plan (equipo)</div><div class="met-val"><input class="ie" value="640" style="width:60px;font-size:22px;font-weight:500;"></div></div>
+    <div class="met"><div class="met-label">Horas reales (equipo)</div><div class="met-val"><input class="ie" value="412" style="width:60px;font-size:22px;font-weight:500;"></div><div class="met-sub">64.4% completado</div></div>
+    <div class="met"><div class="met-label">LOC plan</div><div class="met-val"><input class="ie" value="8,400" style="width:75px;font-size:22px;font-weight:500;"></div></div>
+    <div class="met"><div class="met-label">LOC reales</div><div class="met-val"><input class="ie" value="5,320" style="width:75px;font-size:22px;font-weight:500;"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Plan por fase — horas plan vs. reales</div>
+    <table>
+      <thead><tr><th>Fase</th><th>Plan (hrs)</th><th>Real (hrs)</th><th>Δ</th><th>% del total</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>Launch / Estrategia</td><td><input class="ie" value="40" style="width:50px;"></td><td><input class="ie" value="42" style="width:50px;"></td><td style="color:var(--amber);font-weight:500;">+2</td><td>6.3%</td><td><span class="badge b-green">Completo</span></td></tr>
+        <tr><td>Diseño de alto nivel</td><td><input class="ie" value="80" style="width:50px;"></td><td><input class="ie" value="88" style="width:50px;"></td><td style="color:var(--amber);font-weight:500;">+8</td><td>12.5%</td><td><span class="badge b-green">Completo</span></td></tr>
+        <tr><td>Revisión de diseño</td><td><input class="ie" value="30" style="width:50px;"></td><td><input class="ie" value="28" style="width:50px;"></td><td style="color:var(--green);font-weight:500;">-2</td><td>4.7%</td><td><span class="badge b-amber">En curso</span></td></tr>
+        <tr><td>Diseño detallado</td><td><input class="ie" value="100" style="width:50px;"></td><td><input class="ie" value="65" style="width:50px;"></td><td style="color:var(--muted);">—</td><td>15.6%</td><td><span class="badge b-amber">En curso</span></td></tr>
+        <tr><td>Codificación</td><td><input class="ie" value="200" style="width:50px;"></td><td><input class="ie" value="120" style="width:50px;"></td><td style="color:var(--muted);">—</td><td>31.3%</td><td><span class="badge b-amber">En curso</span></td></tr>
+        <tr><td>Inspección de código</td><td><input class="ie" value="60" style="width:50px;"></td><td><input class="ie" value="48" style="width:50px;"></td><td style="color:var(--muted);">—</td><td>9.4%</td><td><span class="badge b-amber">En curso</span></td></tr>
+        <tr><td>Integración y pruebas</td><td><input class="ie" value="80" style="width:50px;"></td><td><input class="ie" value="21" style="width:50px;"></td><td style="color:var(--muted);">—</td><td>12.5%</td><td><span class="badge b-gray">Pendiente</span></td></tr>
+        <tr><td>Postmortem</td><td><input class="ie" value="50" style="width:50px;"></td><td><input class="ie" value="0" style="width:50px;"></td><td style="color:var(--muted);">—</td><td>7.8%</td><td><span class="badge b-gray">Pendiente</span></td></tr>
+        <tr style="background:var(--surface2);"><td style="font-weight:500;">Total</td><td style="font-weight:500;">640</td><td style="font-weight:500;">412</td><td style="color:var(--amber);font-weight:500;">+8</td><td style="font-weight:500;">100%</td><td><span class="badge b-amber">64.4%</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Planes Individuales (PPI) — aporte por miembro</div>
+    <table>
+      <thead><tr><th>Miembro</th><th>Rol</th><th>LOC plan</th><th>LOC real</th><th>Hrs plan</th><th>Hrs real</th><th>Yield</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>Andrés Mejía</b></td><td><span class="badge b-blue">Team Leader</span></td>
+          <td><input class="ie" value="1,800" style="width:60px;"></td><td><input class="ie" value="1,120" style="width:60px;"></td>
+          <td><input class="ie" value="160" style="width:45px;"></td><td><input class="ie" value="102" style="width:45px;"></td>
+          <td style="color:var(--green);font-weight:500;">91%</td><td><span class="badge b-amber">En curso</span></td>
+        </tr>
+        <tr>
+          <td><b>Laura Pineda</b></td><td><span class="badge b-green">Quality Mgr</span></td>
+          <td><input class="ie" value="2,400" style="width:60px;"></td><td><input class="ie" value="1,680" style="width:60px;"></td>
+          <td><input class="ie" value="160" style="width:45px;"></td><td><input class="ie" value="108" style="width:45px;"></td>
+          <td style="color:var(--green);font-weight:500;">88%</td><td><span class="badge b-amber">En curso</span></td>
+        </tr>
+        <tr>
+          <td><b>Carlos Ríos</b></td><td><span class="badge b-purple">Planning Mgr</span></td>
+          <td><input class="ie" value="2,200" style="width:60px;"></td><td><input class="ie" value="1,400" style="width:60px;"></td>
+          <td><input class="ie" value="160" style="width:45px;"></td><td><input class="ie" value="106" style="width:45px;"></td>
+          <td style="color:var(--amber);font-weight:500;">79%</td><td><span class="badge b-amber">En curso</span></td>
+        </tr>
+        <tr>
+          <td><b>Sofía Vargas</b></td><td><span class="badge b-amber">Dev Manager</span></td>
+          <td><input class="ie" value="2,000" style="width:60px;"></td><td><input class="ie" value="1,120" style="width:60px;"></td>
+          <td><input class="ie" value="160" style="width:45px;"></td><td><input class="ie" value="96" style="width:45px;"></td>
+          <td style="color:var(--green);font-weight:500;">94%</td><td><span class="badge b-amber">En curso</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note">* El Plan Global del equipo es la suma directa de los PPI de cada miembro. Si un individuo no aplica PSP, el plan colapsa.</p>
+  </div>
+</div>
+
+<!-- ===== CALIDAD ===== -->
+<div class="panel" id="panel-quality">
+  <p class="section-label">Plan de Calidad — Yield y densidad de defectos del equipo</p>
+
+  <div class="mrow c4">
+    <div class="met"><div class="met-label">Yield objetivo</div><div class="met-val" style="color:var(--green);"><input class="ie" value=">90%" style="width:65px;font-size:22px;font-weight:500;color:var(--green);"></div><div class="met-sub">antes de pruebas</div></div>
+    <div class="met"><div class="met-label">Yield actual equipo</div><div class="met-val" style="color:var(--amber);"><input class="ie" value="86.6%" style="width:70px;font-size:22px;font-weight:500;color:var(--amber);"></div></div>
+    <div class="met"><div class="met-label">Def/KLOC objetivo</div><div class="met-val" style="color:var(--blue);"><input class="ie" value="<10" style="width:50px;font-size:22px;font-weight:500;color:var(--blue);"></div></div>
+    <div class="met"><div class="met-label">Def/KLOC actual</div><div class="met-val"><input class="ie" value="15.4" style="width:60px;font-size:22px;font-weight:500;"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Métricas de Yield por miembro — semana actual</div>
+    <table>
+      <thead><tr><th>Miembro</th><th>Def. inyectados</th><th>Removidos antes de pruebas</th><th>Removidos en pruebas</th><th>Yield real</th><th>Def/KLOC</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>Andrés Mejía</td><td><input class="ie" value="18" style="width:45px;"></td><td><input class="ie" value="16" style="width:45px;"></td><td><input class="ie" value="2" style="width:45px;"></td><td style="color:var(--green);font-weight:500;">88.9%</td><td>16.1</td><td><span class="badge b-green">OK</span></td></tr>
+        <tr><td>Laura Pineda</td><td><input class="ie" value="22" style="width:45px;"></td><td><input class="ie" value="20" style="width:45px;"></td><td><input class="ie" value="2" style="width:45px;"></td><td style="color:var(--green);font-weight:500;">90.9%</td><td>11.9</td><td><span class="badge b-green">OK</span></td></tr>
+        <tr><td>Carlos Ríos</td><td><input class="ie" value="28" style="width:45px;"></td><td><input class="ie" value="22" style="width:45px;"></td><td><input class="ie" value="6" style="width:45px;"></td><td style="color:var(--amber);font-weight:500;">78.6%</td><td>20.0</td><td><span class="badge b-amber">Revisar</span></td></tr>
+        <tr><td>Sofía Vargas</td><td><input class="ie" value="14" style="width:45px;"></td><td><input class="ie" value="13" style="width:45px;"></td><td><input class="ie" value="1" style="width:45px;"></td><td style="color:var(--green);font-weight:500;">92.9%</td><td>11.6</td><td><span class="badge b-green">OK</span></td></tr>
+        <tr style="background:var(--surface2);"><td style="font-weight:500;">Equipo</td><td style="font-weight:500;">82</td><td style="font-weight:500;">71</td><td style="font-weight:500;">11</td><td style="font-weight:500;color:var(--amber);">86.6%</td><td style="font-weight:500;">15.4</td><td><span class="badge b-amber">En límite</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Plan de inspecciones formales</div>
+    <table>
+      <thead><tr><th>Artefacto</th><th>Tipo de revisión</th><th>Responsable (QM)</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>Documento HLD</td><td><span class="badge b-purple">Inspección formal</span></td><td><input class="ie" value="Laura Pineda" style="width:110px;"></td><td><span class="badge b-green">Completada</span></td></tr>
+        <tr><td>Diseño detallado</td><td><span class="badge b-blue">Peer review</span></td><td><input class="ie" value="Carlos Ríos" style="width:110px;"></td><td><span class="badge b-amber">En curso</span></td></tr>
+        <tr><td>Código por módulo</td><td><span class="badge b-blue">Code review cruzado</span></td><td><input class="ie" value="Laura Pineda" style="width:110px;"></td><td><span class="badge b-amber">En curso</span></td></tr>
+        <tr><td>Casos de prueba</td><td><span class="badge b-green">Walkthrough</span></td><td><input class="ie" value="Andrés Mejía" style="width:110px;"></td><td><span class="badge b-gray">Pendiente</span></td></tr>
+        <tr><td>Entregable final</td><td><span class="badge b-amber">Inspección + Coach</span></td><td><input class="ie" value="Equipo completo" style="width:110px;"></td><td><span class="badge b-gray">Pendiente</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ===== RIESGOS ===== -->
+<div class="panel" id="panel-risk">
+  <p class="section-label">Gestión de riesgos — identificación y mitigación desde el Launch</p>
+
+  <div class="card">
+    <div class="card-title">
+      Registro de riesgos del proyecto
+      <button class="btn btn-primary btn-sm" onclick="addRisk()"><i class="ti ti-plus"></i> Agregar</button>
+    </div>
+    <table>
+      <thead><tr><th>ID</th><th>Descripción</th><th>Prob.</th><th>Impacto</th><th>Exposición</th><th>Plan de mitigación</th><th>Responsable</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="risk-body">
+        <tr>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--blue);">R01</td>
+          <td><input class="ie" value="Retraso en integración por dependencias no definidas" style="width:190px;"></td>
+          <td><select style="font-size:11px;padding:2px 5px;"><option>Baja</option><option selected>Media</option><option>Alta</option></select></td>
+          <td><select style="font-size:11px;padding:2px 5px;"><option>Bajo</option><option>Medio</option><option selected>Alto</option></select></td>
+          <td><span class="badge b-red">Alto</span></td>
+          <td><input class="ie" value="Definir interfaces en semana 6 antes de codificación" style="width:200px;"></td>
+          <td><input class="ie" value="Laura P." style="width:70px;"></td>
+          <td><select style="font-size:11px;padding:2px 5px;"><option selected>Activo</option><option>Mitigado</option><option>Cerrado</option></select></td>
+          <td><button class="btn btn-del btn-sm" onclick="delRow(this)">×</button></td>
+        </tr>
+        <tr>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--blue);">R02</td>
+          <td><input class="ie" value="Miembro del equipo sin dominio de PSP reduce el Yield global" style="width:190px;"></td>
+          <td><select style="font-size:11px;padding:2px 5px;"><option>Baja</option><option selected>Media</option><option>Alta</option></select></td>
+          <td><select style="font-size:11px;padding:2px 5px;"><option>Bajo</option><option>Medio</option><option selected>Alto</option></select></td>
+          <td><span class="badge b-red">Alto</span></td>
+          <td><input class="ie" value="Sesiones de coaching PSP individual desde el Launch" style="width:200px;"></td>
+          <td><input class="ie" value="Coach" style="width:70px;"></td>
+          <td><select style="font-size:11px;padding:2px 5px;"><option selected>Activo</option><option>Mitigado</option><option>Cerrado</option></select></td>
+          <td><button class="btn btn-del btn-sm" onclick="delRow(this)">×</button></td>
+        </tr>
+        <tr>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--blue);">R03</td>
+          <td><input class="ie" value="Cambio de requisitos después de semana 8" style="width:190px;"></td>
+          <td><select style="font-size:11px;padding:2px 5px;"><option>Baja</option><option selected>Media</option><option>Alta</option></select></td>
+          <td><select style="font-size:11px;padding:2px 5px;"><option>Bajo</option><option selected>Medio</option><option>Alto</option></select></td>
+          <td><span class="badge b-amber">Medio</span></td>
+          <td><input class="ie" value="Congelar alcance en semana 4 con aprobación formal" style="width:200px;"></td>
+          <td><input class="ie" value="Carlos R." style="width:70px;"></td>
+          <td><select style="font-size:11px;padding:2px 5px;"><option selected>Activo</option><option>Mitigado</option><option>Cerrado</option></select></td>
+          <td><button class="btn btn-del btn-sm" onclick="delRow(this)">×</button></td>
+        </tr>
+        <tr>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--blue);">R04</td>
+          <td><input class="ie" value="Yield del equipo cae por debajo del 80%" style="width:190px;"></td>
+          <td><select style="font-size:11px;padding:2px 5px;"><option>Baja</option><option selected>Media</option><option>Alta</option></select></td>
+          <td><select style="font-size:11px;padding:2px 5px;"><option>Bajo</option><option selected>Medio</option><option>Alto</option></select></td>
+          <td><span class="badge b-amber">Medio</span></td>
+          <td><input class="ie" value="Revisión semanal de métricas PSP. Coaching individual" style="width:200px;"></td>
+          <td><input class="ie" value="Laura P." style="width:70px;"></td>
+          <td><select style="font-size:11px;padding:2px 5px;"><option selected>Activo</option><option>Mitigado</option><option>Cerrado</option></select></td>
+          <td><button class="btn btn-del btn-sm" onclick="delRow(this)">×</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note">* Exposición = Probabilidad × Impacto. Alto: P×I ≥ 6 · Medio: 3–4 · Bajo: 1–2.</p>
+  </div>
+</div>
+
+<!-- ===== STATUS REPORT ===== -->
+<div class="panel" id="panel-weekly">
+  <p class="section-label">Status Report semanal — velocidad y densidad de defectos</p>
+
+  <div class="card">
+    <div class="card-title">Encabezado del reporte</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+      <div class="fg"><label>Semana N°</label><input type="number" value="9"></div>
+      <div class="fg"><label>Fecha de reunión</label><input type="date" value="2026-03-14"></div>
+      <div class="fg"><label>Facilitador (TL)</label><input type="text" value="Andrés Mejía"></div>
+      <div class="fg"><label>Asistentes</label><input type="text" value="Todos + Coach"></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Velocidad del equipo esta semana</div>
+      <table>
+        <thead><tr><th>Métrica</th><th>Plan</th><th>Real</th></tr></thead>
+        <tbody>
+          <tr><td>Horas trabajadas</td><td><input class="ie" value="40" style="width:50px;"></td><td><input class="ie" value="38" style="width:50px;"></td></tr>
+          <tr><td>LOC completadas</td><td><input class="ie" value="700" style="width:50px;"></td><td><input class="ie" value="620" style="width:50px;"></td></tr>
+          <tr><td>Módulos finalizados</td><td><input class="ie" value="1" style="width:50px;"></td><td><input class="ie" value="1" style="width:50px;"></td></tr>
+          <tr><td>% avance cronograma</td><td><input class="ie" value="68%" style="width:50px;"></td><td><input class="ie" value="64.4%" style="width:50px;"></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Densidad de defectos esta semana</div>
+      <table>
+        <thead><tr><th>Métrica</th><th>Valor</th></tr></thead>
+        <tbody>
+          <tr><td>Defectos inyectados</td><td><input class="ie" value="9" style="width:60px;"></td></tr>
+          <tr><td>Defectos removidos (antes pruebas)</td><td><input class="ie" value="8" style="width:60px;"></td></tr>
+          <tr><td>Defectos encontrados en pruebas</td><td><input class="ie" value="1" style="width:60px;"></td></tr>
+          <tr><td>Yield de la semana</td><td><span style="font-weight:500;color:var(--amber);">88.9%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Tareas completadas y plan siguiente semana
+      <button class="btn btn-primary btn-sm" onclick="addTask()"><i class="ti ti-plus"></i> Agregar tarea</button>
+    </div>
+    <table>
+      <thead><tr><th>Tarea</th><th>Miembro</th><th>Semana</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="task-body">
+        <tr><td><input class="ie" value="Módulo matrículas — codificación completa" style="width:240px;"></td><td><input class="ie" value="Laura P." style="width:80px;"></td><td><span class="badge b-gray">Sem. 9</span></td><td><span class="badge b-green">Completada</span></td><td><button class="btn btn-del btn-sm" onclick="delRow(this)">×</button></td></tr>
+        <tr><td><input class="ie" value="Revisión diseño módulo calificaciones" style="width:240px;"></td><td><input class="ie" value="Sofía V." style="width:80px;"></td><td><span class="badge b-gray">Sem. 9</span></td><td><span class="badge b-green">Completada</span></td><td><button class="btn btn-del btn-sm" onclick="delRow(this)">×</button></td></tr>
+        <tr><td><input class="ie" value="Definición de endpoints API REST" style="width:240px;"></td><td><input class="ie" value="Carlos R." style="width:80px;"></td><td><span class="badge b-gray">Sem. 9</span></td><td><span class="badge b-amber">Parcial</span></td><td><button class="btn btn-del btn-sm" onclick="delRow(this)">×</button></td></tr>
+        <tr><td><input class="ie" value="Code review módulo matrículas" style="width:240px;"></td><td><input class="ie" value="Carlos R." style="width:80px;"></td><td><span class="badge b-blue">Sem. 10</span></td><td><span class="badge b-gray">Planificada</span></td><td><button class="btn btn-del btn-sm" onclick="delRow(this)">×</button></td></tr>
+        <tr><td><input class="ie" value="Completar API y tests unitarios" style="width:240px;"></td><td><input class="ie" value="Laura P." style="width:80px;"></td><td><span class="badge b-blue">Sem. 10</span></td><td><span class="badge b-gray">Planificada</span></td><td><button class="btn btn-del btn-sm" onclick="delRow(this)">×</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Issues y decisiones de la reunión</div>
+    <div class="fg" style="margin-bottom:10px;">
+      <label>Issues discutidos</label>
+      <textarea>Carlos Ríos reporta falta de claridad en requisito RF-07 para los endpoints. Se solicitó reunión con el cliente esta semana para aclarar el alcance antes de continuar la codificación.</textarea>
+    </div>
+    <div class="fg">
+      <label>Decisiones tomadas por el equipo</label>
+      <textarea>Se aprueba posponer integración del módulo de reportes a semana 12. La fecha de entrega final se mantiene. El Coach aprueba el plan revisado y solicita métricas actualizadas para la próxima reunión.</textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ===== POSTMORTEM ===== -->
+<div class="panel" id="panel-postmortem">
+  <p class="section-label">Postmortem — auditoría formal de métricas y lecciones del ciclo</p>
+
+  <div class="mrow c4">
+    <div class="met"><div class="met-label">LOC plan</div><div class="met-val"><input class="ie" value="8,400" style="width:75px;font-size:22px;font-weight:500;"></div></div>
+    <div class="met"><div class="met-label">LOC real entregadas</div><div class="met-val"><input class="ie" value="8,760" style="width:75px;font-size:22px;font-weight:500;"></div></div>
+    <div class="met"><div class="met-label">Horas plan</div><div class="met-val"><input class="ie" value="640" style="width:60px;font-size:22px;font-weight:500;"></div></div>
+    <div class="met"><div class="met-label">Horas reales</div><div class="met-val"><input class="ie" value="668" style="width:60px;font-size:22px;font-weight:500;"></div></div>
+  </div>
+
+  <div class="mrow c3">
+    <div class="met"><div class="met-label">Yield final del equipo</div><div class="met-val" style="color:var(--green);"><input class="ie" value="91.2%" style="width:70px;font-size:22px;font-weight:500;color:var(--green);"></div><div class="met-sub">Objetivo: >90% ✓</div></div>
+    <div class="met"><div class="met-label">Def/KLOC final</div><div class="met-val" style="color:var(--green);"><input class="ie" value="12.8" style="width:60px;font-size:22px;font-weight:500;color:var(--green);"></div><div class="met-sub">Objetivo: <10 ✗</div></div>
+    <div class="met"><div class="met-label">Defectos críticos post-entrega</div><div class="met-val" style="color:var(--green);"><input class="ie" value="0" style="width:40px;font-size:22px;font-weight:500;color:var(--green);"></div><div class="met-sub">Objetivo: 0 ✓</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Resumen de calidad por miembro — cierre del ciclo</div>
+    <table>
+      <thead><tr><th>Miembro</th><th>Def. totales</th><th>Removidos antes pruebas</th><th>Yield final</th><th>Def/KLOC</th><th>Evaluación</th></tr></thead>
+      <tbody>
+        <tr><td><b>Andrés Mejía</b></td><td><input class="ie" value="24" style="width:45px;"></td><td><input class="ie" value="22" style="width:45px;"></td><td style="color:var(--green);font-weight:500;">91.7%</td><td>13.3</td><td><span class="badge b-green">Cumplió objetivo</span></td></tr>
+        <tr><td><b>Laura Pineda</b></td><td><input class="ie" value="31" style="width:45px;"></td><td><input class="ie" value="29" style="width:45px;"></td><td style="color:var(--green);font-weight:500;">93.5%</td><td>12.9</td><td><span class="badge b-green">Cumplió objetivo</span></td></tr>
+        <tr><td><b>Carlos Ríos</b></td><td><input class="ie" value="38" style="width:45px;"></td><td><input class="ie" value="33" style="width:45px;"></td><td style="color:var(--amber);font-weight:500;">86.8%</td><td>17.2</td><td><span class="badge b-amber">Por debajo del obj.</span></td></tr>
+        <tr><td><b>Sofía Vargas</b></td><td><input class="ie" value="19" style="width:45px;"></td><td><input class="ie" value="18" style="width:45px;"></td><td style="color:var(--green);font-weight:500;">94.7%</td><td>9.5</td><td><span class="badge b-green">Cumplió objetivo</span></td></tr>
+        <tr style="background:var(--surface2);"><td style="font-weight:500;">Equipo</td><td style="font-weight:500;">112</td><td style="font-weight:500;">102</td><td style="font-weight:500;color:var(--green);">91.2%</td><td style="font-weight:500;">12.8</td><td><span class="badge b-green">Yield OK</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">¿Qué salió bien?</div>
+      <textarea style="min-height:100px;">El uso riguroso de PSP por todos los miembros mantuvo la calidad alta. Las inspecciones formales detectaron el 91% de los defectos antes de pruebas. La comunicación fue efectiva y las ceremonias semanales se cumplieron sin excepciones.</textarea>
+    </div>
+    <div class="card">
+      <div class="card-title">¿Qué debe mejorar?</div>
+      <textarea style="min-height:100px;">La estimación de tiempo en Diseño Detallado fue incorrecta (+12 hrs). Carlos necesita reforzar su revisión personal de código (Yield 86.8%). El módulo de reportes empezó tarde por dependencia no detectada en el Launch.</textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Plan de mejora para el próximo ciclo</div>
+    <textarea style="min-height:80px;">Agregar un 15% de buffer en estimaciones de diseño detallado. Implementar sesiones de peer review bisemanal entre Carlos y otro miembro. En el próximo Launch: definir explícitamente el grafo de dependencias entre módulos en la fase de Estrategia.</textarea>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+function go(id, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-' + id).classList.add('active');
+}
+
+var riskN = 4;
+function addRisk() {
+  riskN++;
+  var id = 'R' + String(riskN).padStart(2,'0');
+  var tr = document.createElement('tr');
+  tr.innerHTML =
+    '<td style="font-family:var(--mono);font-size:11px;color:var(--blue);">' + id + '</td>' +
+    '<td><input class="ie" value="Descripción del nuevo riesgo" style="width:190px;"></td>' +
+    '<td><select style="font-size:11px;padding:2px 5px;"><option>Baja</option><option selected>Media</option><option>Alta</option></select></td>' +
+    '<td><select style="font-size:11px;padding:2px 5px;"><option>Bajo</option><option selected>Medio</option><option>Alto</option></select></td>' +
+    '<td><span class="badge b-amber">Medio</span></td>' +
+    '<td><input class="ie" value="Plan de mitigación" style="width:200px;"></td>' +
+    '<td><input class="ie" value="—" style="width:70px;"></td>' +
+    '<td><select style="font-size:11px;padding:2px 5px;"><option selected>Activo</option><option>Mitigado</option><option>Cerrado</option></select></td>' +
+    '<td><button class="btn btn-del btn-sm" onclick="delRow(this)">×</button></td>';
+  document.getElementById('risk-body').appendChild(tr);
+}
+
+function addTask() {
+  var tr = document.createElement('tr');
+  tr.innerHTML =
+    '<td><input class="ie" value="Nueva tarea" style="width:240px;"></td>' +
+    '<td><input class="ie" value="—" style="width:80px;"></td>' +
+    '<td><span class="badge b-blue">Próx. sem.</span></td>' +
+    '<td><span class="badge b-gray">Planificada</span></td>' +
+    '<td><button class="btn btn-del btn-sm" onclick="delRow(this)">×</button></td>';
+  document.getElementById('task-body').appendChild(tr);
+}
+
+function delRow(btn) { btn.closest('tr').remove(); }
+</script>
+</body>
+</html>
