@@ -1,68 +1,625 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exposición PSP y TSP</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PSP y TSP - Ingeniería de Software 1</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: #1e1e24; 
-            color: #ffffff; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100vh; 
-            margin: 0; 
-            text-align: center;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        /* =========================================
+           1. CORE Y FONDO VIVO (ANIMADO 100% CSS)
+           ========================================= */
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #050b14, #1a0b2e, #0b1320, #22081c);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow: hidden;
         }
-        h1 { 
-            font-size: 3.5rem; 
-            margin-bottom: 10px; 
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .reveal-viewport { background: transparent !important; }
+
+        /* Partículas flotantes para dar sensación de "vida" */
+        .particles-container { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+        .particle { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.15); box-shadow: 0 0 20px rgba(255,255,255,0.2); animation: drift linear infinite; }
+        .p1 { width: 100px; height: 100px; left: -10%; top: 20%; animation-duration: 25s; }
+        .p2 { width: 150px; height: 150px; left: -10%; top: 60%; animation-duration: 35s; animation-delay: -5s; }
+        .p3 { width: 80px; height: 80px; left: -10%; top: 80%; animation-duration: 20s; animation-delay: -10s; }
+        .p4 { width: 200px; height: 200px; left: -10%; top: -10%; animation-duration: 40s; animation-delay: -15s; }
+
+        @keyframes drift {
+            0% { transform: translateX(0) translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(120vw) translateY(200px) rotate(360deg); opacity: 0; }
+        }
+
+        /* =========================================
+           2. TIPOGRAFÍA MASIVA Y PANELES
+           ========================================= */
+        .reveal { font-family: 'Poppins', sans-serif !important; color: #ffffff; }
+
+        .glass-panel {
+            background: rgba(10, 15, 30, 0.6);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 60px 80px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), inset 0 0 30px rgba(255, 255, 255, 0.05);
+            width: 100%; height: 100%; min-height: 80vh;
+            box-sizing: border-box; text-align: left;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .glass-panel-center { align-items: center; text-align: center; }
+
+        .reveal h1, .reveal h2, .reveal h3 {
+            font-family: 'Poppins', sans-serif; text-transform: none; font-weight: 700;
+            color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.6); margin-top: 0;
+        }
+        
+        .reveal h1 { font-size: 5.5em; line-height: 1.1; margin-bottom: 20px; text-align: center; }
+        .reveal h2 { 
+            font-size: 4em; /* Más grande */
+            border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 15px; margin-bottom: 40px; text-align: left;
+        }
+        .reveal h3 { font-size: 3.2em; font-weight: 400; margin-bottom: 20px;}
+        
+        .reveal p { font-size: 2.6em; line-height: 1.6; color: #f0f0f0; margin-bottom: 25px; }
+
+        /* Variables de color para PSP (Azul) y TSP (Naranja) */
+        .theme-psp h2 { color: #00d2ff; border-color: rgba(0, 210, 255, 0.3); }
+        .theme-psp .lucide-icon { color: #00d2ff; filter: drop-shadow(0 15px 25px rgba(0, 210, 255, 0.4)); }
+        
+        .theme-tsp h2 { color: #ffb74d; border-color: rgba(255, 183, 77, 0.3); }
+        .theme-tsp .lucide-icon { color: #ffb74d; filter: drop-shadow(0 15px 25px rgba(255, 183, 77, 0.4)); }
+
+        .two-cols { display: flex; align-items: center; justify-content: space-between; gap: 60px; flex: 1;}
+        .col-text { flex: 1.5; min-width: 0; }
+        .col-img { flex: 1; min-width: 0; display: flex; justify-content: center; align-items: center; }
+
+        .icon-container { display: flex; justify-content: center; align-items: center; width: 100%; }
+        .lucide-icon { width: 350px; height: 350px; }
+
+        .muted-text { opacity: 0.7; font-size: 0.75em; font-weight: 300; display: block; margin-top: 5px; }
+
+        /* =========================================
+           3. UI DE REVEAL.JS (Z-INDEX Y BARRA INFERIOR)
+           ========================================= */
+        .reveal .controls { display: none !important; }
+        
+        .reveal .progress { 
+            height: 18px !important; 
+            bottom: 0 !important; 
+            background: rgba(0,0,0,0.8) !important; 
+            z-index: 1000 !important;
+        }
+        .reveal .progress span { 
+            background: linear-gradient(90deg, #00d2ff, #ffb74d) !important; 
+            box-shadow: 0 -2px 15px rgba(0, 210, 255, 0.5); 
+        }
+
+        .reveal .slide-number { 
+            font-size: 34px !important; /* Más grande */
+            font-family: 'Poppins', sans-serif !important; 
+            font-weight: 700 !important;
+            background: rgba(10, 15, 30, 0.9) !important; 
+            color: #fff !important;
+            padding: 15px 25px !important; 
+            border-radius: 12px !important; 
+            border: 2px solid rgba(255, 255, 255, 0.1) !important;
+            right: 40px !important; 
+            bottom: 40px !important; 
+            top: auto !important;
+            z-index: 1000 !important;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
             letter-spacing: 2px;
         }
-        p { 
-            font-size: 1.3rem; 
-            margin-bottom: 50px; 
-            color: #b0b0b0; 
+
+        /* =========================================
+           4. CARGAS DINÁMICAS (CASCADA)
+           ========================================= */
+        .slide-elem { opacity: 0; transform: translateY(60px); }
+        .present .slide-elem { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.3s; }
+        .delay-3 { animation-delay: 0.5s; }
+        .delay-4 { animation-delay: 0.7s; }
+        .delay-5 { animation-delay: 0.9s; }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
         }
-        .btn-container { 
-            display: flex; 
-            gap: 30px; 
-            flex-wrap: wrap;
-            justify-content: center;
+
+        /* =========================================
+           5. NUEVOS COMPONENTES: GRIDS Y FLOWS
+           ========================================= */
+        
+        /* Grid de Cartas */
+        .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; width: 100%; margin-top: 10px; }
+        .concept-card { 
+            background: rgba(0,0,0,0.4); border-radius: 16px; padding: 35px; 
+            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: left;
         }
-        .btn { 
-            text-decoration: none; 
-            padding: 25px 50px; 
-            font-size: 1.5rem; 
-            border-radius: 12px; 
-            color: white; 
-            font-weight: bold; 
-            transition: all 0.3s ease; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        .theme-psp .concept-card { border-top: 3px solid #00d2ff; }
+        .theme-tsp .concept-card { border-top: 3px solid #ffb74d; }
+        .concept-card h4 { font-size: 2.8em; margin: 0 0 15px 0; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 15px;}
+        .concept-card p { font-size: 2.2em; color: #aaa; margin: 0; line-height: 1.4; }
+        .concept-card .lucide { width: 38px; height: 38px; }
+        
+        /* Diagrama de Flujo (Ciclo de Vida) */
+        .flow-wrapper { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 40px; gap: 15px;}
+        .flow-step { 
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); 
+            padding: 30px 20px; border-radius: 16px; text-align: center; flex: 1;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); position: relative;
         }
-        .btn-psp { 
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
-            border: 2px solid #3b6ac3; 
-        }
-        .btn-tsp { 
-            background: linear-gradient(135deg, #e65c00 0%, #F9D423 100%); 
-            border: 2px solid #ff8833; 
-        }
-        .btn:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 15px 25px rgba(0,0,0,0.5); 
-        }
+        .theme-psp .flow-step { border-bottom: 5px solid #00d2ff; }
+        .theme-tsp .flow-step { border-bottom: 5px solid #ffb74d; }
+        .flow-step h4 { margin: 0 0 15px 0; font-size: 2.3em; font-weight: 600; color: #fff;}
+        .flow-step p { margin: 0; font-size: 1.8em; color: #999; line-height: 1.3; }
+        .flow-arrow { display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.2); }
+        .flow-arrow .lucide { width: 45px; height: 45px; }
+
     </style>
 </head>
 <body>
-    <h1>Exposición PSP y TSP</h1>
-    <p>Ingeniería de Software 1 - Selección de Presentación</p>
-    <div class="btn-container">
-        <a href="psp.html" class="btn btn-psp">📘 Iniciar Presentación PSP</a>
-        <a href="tsp.html" class="btn btn-tsp">📙 Iniciar Presentación TSP</a>
+    <!-- Fondo animado dinámico -->
+    <div class="particles-container">
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
+        <div class="particle p4"></div>
     </div>
+
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- PORTADA GLOBAL MINIMALISTA -->
+            <section>
+                <div class="glass-panel glass-panel-center" style="justify-content: center;">
+                    <h1 class="slide-elem delay-1" style="font-size: 5em; font-weight: 300; letter-spacing: 2px;">Calidad de Software</h1>
+                    <div class="slide-elem delay-2" style="display: flex; align-items: center; justify-content: center; gap: 30px; margin: 30px 0;">
+                        <span style="font-size: 6em; font-weight: 700; color: #00d2ff; text-shadow: 0 0 30px rgba(0,210,255,0.4);">PSP</span>
+                        <span style="font-size: 4em; color: rgba(255,255,255,0.2); font-weight: 300;">&amp;</span>
+                        <span style="font-size: 6em; font-weight: 700; color: #ffb74d; text-shadow: 0 0 30px rgba(255,183,77,0.4);">TSP</span>
+                    </div>
+                    <p class="slide-elem delay-3" style="font-size: 1.8em; font-weight: 300; letter-spacing: 5px; text-transform: uppercase; color: #aaa;">De la disciplina individual al alto rendimiento</p>
+                    
+                    <div class="slide-elem delay-4" style="margin-top: 80px; display: flex; flex-direction: column; align-items: center; gap: 15px;">
+                        <p style="font-size: 1.3em; color: #fff; opacity: 0.6; margin: 0; text-transform: uppercase; letter-spacing: 2px;">Grupo 51 • Ingeniería de Software I</p>
+                        <div style="display: flex; gap: 35px; font-size: 1.3em; color: rgba(255,255,255,0.9); font-weight: 300; margin-top: 10px;">
+                            <span>J. Ávila</span> • <span>F. Criollo</span> • <span>S. Rocha</span> • <span>B. Vargas</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==============================
+                 SECCIÓN PSP (AZUL)
+                 ============================== -->
+            
+            <section class="theme-psp">
+                <div class="glass-panel glass-panel-center">
+                    <div class="icon-container slide-elem delay-1"><i data-lucide="user" class="lucide-icon"></i></div>
+                    <h1 class="slide-elem delay-2" style="color: #00d2ff; margin-top: 30px; font-size: 6em;">Personal Software Process</h1>
+                    <p class="slide-elem delay-3" style="font-size: 4em;">(PSP)</p>
+                </div>
+            </section>
+
+            <section class="theme-psp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Principios: Reglas</h2>
+                    <div class="card-grid">
+                        <div class="concept-card slide-elem delay-2">
+                            <h4 style="color: #00d2ff;"><i data-lucide="history"></i> Registro Histórico</h4>
+                            <p>Registrar estrictamente tiempos de desarrollo y defectos inyectados.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-3">
+                            <h4 style="color: #00d2ff;"><i data-lucide="file-code-2"></i> Guiones Estándar</h4>
+                            <p>Estandarizar cada paso para eliminar la improvisación técnica.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-psp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Principios: Lineamientos</h2>
+                    <div class="card-grid">
+                        <div class="concept-card slide-elem delay-2">
+                            <h4 style="color: #00d2ff;"><i data-lucide="target"></i> Estimación PROBE</h4>
+                            <p>Proyectar esfuerzo y tamaño con métricas históricas (PROBE).</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-3">
+                            <h4 style="color: #00d2ff;"><i data-lucide="shield-check"></i> Gestión Yield</h4>
+                            <p>Eliminar errores tempranamente antes de las fases de pruebas.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-psp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Ciclo de Vida (PSP)</h2>
+                    <div class="flow-wrapper slide-elem delay-2">
+                        <div class="flow-step">
+                            <h4>Planeación</h4>
+                            <p>Estimación PROBE y Planificación (PPI)</p>
+                        </div>
+                        <div class="flow-arrow"><i data-lucide="chevron-right"></i></div>
+                        <div class="flow-step">
+                            <h4>Diseño</h4>
+                            <p>Estructuración de lógica y revisión detallada</p>
+                        </div>
+                        <div class="flow-arrow"><i data-lucide="chevron-right"></i></div>
+                        <div class="flow-step">
+                            <h4>Código</h4>
+                            <p>Codificación con rastreo en tiempo real</p>
+                        </div>
+                        <div class="flow-arrow"><i data-lucide="chevron-right"></i></div>
+                        <div class="flow-step">
+                            <h4>Revisión</h4>
+                            <p>Compilación y Checklists pre-pruebas</p>
+                        </div>
+                        <div class="flow-arrow"><i data-lucide="chevron-right"></i></div>
+                        <div class="flow-step">
+                            <h4>Pruebas</h4>
+                            <p>Ejecución y Análisis Postmortem</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-psp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Roles en PSP</h2>
+                    <div class="card-grid">
+                        <div class="concept-card slide-elem delay-2">
+                            <h4 style="color: #00d2ff;"><i data-lucide="user-cog"></i> Desarrollador 360°</h4>
+                            <p>El ingeniero asume todo: arquitecto, codificador y tester.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-3">
+                            <h4 style="color: #00d2ff;"><i data-lucide="clock"></i> Micro-Gerente Personal</h4>
+                            <p>Administra su tiempo y defiende estimaciones con estadísticas.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-psp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Artefactos Clave</h2>
+                    <div class="card-grid">
+                        <div class="concept-card slide-elem delay-2">
+                            <h4 style="color: #00d2ff;"><i data-lucide="timer"></i> Time Log</h4>
+                            <p>Registro exacto del tiempo invertido por fase.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-3">
+                            <h4 style="color: #00d2ff;"><i data-lucide="bug-off"></i> Defect Log</h4>
+                            <p>Inventario de fallos, su inyección y resolución.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-4" style="grid-column: span 2;">
+                            <h4 style="color: #00d2ff;"><i data-lucide="clipboard-list"></i> Plan PPI</h4>
+                            <p>Plan de Proyecto Individual. Línea base del esfuerzo vs. desempeño real.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-psp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1" style="text-align: center; border: none; margin-bottom: 0;">Características</h2>
+                    <div class="two-cols" style="align-items: stretch; gap: 40px; margin-top: 20px;">
+                        <div class="col-text slide-elem delay-2" style="background: rgba(0, 230, 118, 0.1); padding: 40px; border-radius: 20px; border: 1px solid rgba(0, 230, 118, 0.3);">
+                            <h3 style="color: #00e676; text-align: center; font-weight:bold;"><i data-lucide="trending-up" style="display:inline; vertical-align:middle; margin-right:15px; width:45px; height:45px;"></i>Fortalezas</h3>
+                            <ul style="list-style: none; padding: 0; margin-top: 25px;">
+                                <li style="margin-bottom: 25px; font-size: 2.3em;"><span style="color: #00e676;">•</span> <strong style="color: #00e676;">Previsibilidad técnica:</strong> Estimaciones matemáticas y reales.</li>
+                                <li style="margin-bottom: 25px; font-size: 2.3em;"><span style="color: #00e676;">•</span> <strong style="color: #00e676;">Eficiencia de depuración:</strong> Errores eliminados desde la raíz.</li>
+                                <li style="margin-bottom: 25px; font-size: 2.3em;"><span style="color: #00e676;">•</span> <strong style="color: #00e676;">Automejora constante:</strong> Visibilidad sobre debilidades propias.</li>
+                            </ul>
+                        </div>
+                        <div class="col-text slide-elem delay-3" style="background: rgba(255, 82, 82, 0.1); padding: 40px; border-radius: 20px; border: 1px solid rgba(255, 82, 82, 0.3);">
+                            <h3 style="color: #ff5252; text-align: center; font-weight:bold;"><i data-lucide="trending-down" style="display:inline; vertical-align:middle; margin-right:15px; width:45px; height:45px;"></i>Debilidades</h3>
+                            <ul style="list-style: none; padding: 0; margin-top: 25px;">
+                                <li style="margin-bottom: 25px; font-size: 2.3em;"><span style="color: #ff5252;">•</span> <strong style="color: #ff5252;">Carga administrativa:</strong> Agotamiento por logs manuales.</li>
+                                <li style="margin-bottom: 25px; font-size: 2.3em;"><span style="color: #ff5252;">•</span> <strong style="color: #ff5252;">Resistencia al cambio:</strong> Rechazo a medir y documentar cada fallo.</li>
+                                <li style="margin-bottom: 25px; font-size: 2.3em;"><span style="color: #ff5252;">•</span> <strong style="color: #ff5252;">Curva de adopción lenta:</strong> Frustración inicial al adaptarse al rigor.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-psp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Proyectos en PSP</h2>
+                    <div class="card-grid">
+                        <div class="concept-card slide-elem delay-2">
+                            <h4 style="color: #00d2ff;"><i data-lucide="crosshair"></i> Estimación Táctica</h4>
+                            <p>Aplicable a cualquier módulo estimando tamaño (LOC) basado en históricos.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-3">
+                            <h4 style="color: #00d2ff;"><i data-lucide="settings-2"></i> Gestión Dinámica</h4>
+                            <p>Recalcular estimación si el tamaño real difiere >20% del plan.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-4" style="grid-column: span 2; display: flex; align-items: center; justify-content: center; gap: 50px;">
+                            <h4 style="color: #00d2ff; font-size: 2em; margin: 0;">Métricas Críticas:</h4>
+                            <p style="text-align: center; font-size: 2.3em; font-weight: 600; color: #fff;">Yield Personal <span class="muted-text" style="display:inline; font-weight:400; font-size: 0.7em;">(Eliminación pre-compilación)</span></p>
+                            <p style="text-align: center; font-size: 2.3em; font-weight: 600; color: #fff;">A/FR <span class="muted-text" style="display:inline; font-weight:400; font-size: 0.7em;">(Esfuerzo Revisión vs Corrección)</span></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-psp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Herramientas PSP</h2>
+                    <div class="card-grid">
+                        <div class="concept-card slide-elem delay-2">
+                            <h4 style="color: #00d2ff;"><i data-lucide="calculator"></i> Calculadora PROBE</h4>
+                            <p>Procesan históricos con regresiones para proyectar márgenes de confianza.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-3">
+                            <h4 style="color: #00d2ff;"><i data-lucide="list-checks"></i> Trackers de Desempeño</h4>
+                            <p>Digitalizan <em>Time Log</em> y <em>Defect Log</em> generando gráficas (ej. Process Dashboard).</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-psp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Certificaciones PSP</h2>
+                    <div class="card-grid">
+                        <div class="concept-card slide-elem delay-2">
+                            <h4 style="color: #00d2ff;"><i data-lucide="award"></i> PSP Developer</h4>
+                            <p>Domina estimación PROBE, métricas y control de defectos.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-3">
+                            <h4 style="color: #00d2ff;"><i data-lucide="graduation-cap"></i> PSP Instructor</h4>
+                            <p>Autoriza para formar oficialmente a otros ingenieros o empresas en PSP.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==============================
+                 SECCIÓN TSP (NARANJA)
+                 ============================== -->
+                 
+            <section class="theme-tsp">
+                <div class="glass-panel glass-panel-center">
+                    <div class="icon-container slide-elem delay-1"><i data-lucide="users" class="lucide-icon"></i></div>
+                    <h1 class="slide-elem delay-2" style="color: #ffb74d; margin-top: 30px; font-size: 6em;">Team Software Process</h1>
+                    <p class="slide-elem delay-3" style="font-size: 4em;">(TSP)</p>
+                </div>
+            </section>
+
+            <section class="theme-tsp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Principios: Reglas</h2>
+                    <div class="card-grid">
+                        <div class="concept-card slide-elem delay-2">
+                            <h4 style="color: #ffb74d;"><i data-lucide="users"></i> Planificación Colectiva</h4>
+                            <p>Alineación de objetivos y tareas durante el <em>Launch</em>.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-3">
+                            <h4 style="color: #ffb74d;"><i data-lucide="search"></i> Inspecciones Formales</h4>
+                            <p>Revisiones cruzadas y estructuradas del código por pares.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-tsp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Principios: Lineamientos</h2>
+                    <div class="card-grid">
+                        <div class="concept-card slide-elem delay-2">
+                            <h4 style="color: #ffb74d;"><i data-lucide="bar-chart"></i> Métricas de Equipo</h4>
+                            <p>Progreso basado en datos agregados, rectificando sin sesgos emocionales.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-3">
+                            <h4 style="color: #ffb74d;"><i data-lucide="network"></i> Liderazgo Distribuido</h4>
+                            <p>Roles específicos y autogestionados asignados a cada miembro.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-tsp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Ciclo de Vida (TSP)</h2>
+                    <div class="flow-wrapper slide-elem delay-2">
+                        <div class="flow-step">
+                            <h4>Launch</h4>
+                            <p>Arranque y metas<br>guiado por un Coach</p>
+                        </div>
+                        <div class="flow-arrow"><i data-lucide="chevron-right"></i></div>
+                        <div class="flow-step">
+                            <h4>Estrategia</h4>
+                            <p>Formulación del<br>Plan Global</p>
+                        </div>
+                        <div class="flow-arrow"><i data-lucide="chevron-right"></i></div>
+                        <div class="flow-step">
+                            <h4>Ejecución</h4>
+                            <p>Daily Stand-ups e<br>Integración PSP</p>
+                        </div>
+                        <div class="flow-arrow"><i data-lucide="chevron-right"></i></div>
+                        <div class="flow-step">
+                            <h4>Postmortem</h4>
+                            <p>Auditoría formal de<br>métricas y lecciones</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-tsp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Roles en TSP</h2>
+                    <div class="card-grid">
+                        <div class="concept-card slide-elem delay-2">
+                            <h4 style="color: #ffb74d;"><i data-lucide="flag"></i> Team Leader</h4>
+                            <p>Facilita ceremonias y defiende al equipo de interrupciones externas.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-3">
+                            <h4 style="color: #ffb74d;"><i data-lucide="calendar"></i> Gestor Planificación</h4>
+                            <p>Monitorea el cronograma del equipo y alerta sobre desviaciones.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-4" style="grid-column: span 2;">
+                            <h4 style="color: #ffb74d;"><i data-lucide="shield"></i> Gestor Calidad / Desarrollo</h4>
+                            <p>Audita densidad de defectos (Yield), mitiga riesgos y modera inspecciones.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-tsp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Artefactos Clave</h2>
+                    <div class="card-grid">
+                        <div class="concept-card slide-elem delay-2">
+                            <h4 style="color: #ffb74d;"><i data-lucide="rocket"></i> Launch Plan</h4>
+                            <p>Estrategia, cronograma, calidad y riesgos definidos en el Día Cero.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-3">
+                            <h4 style="color: #ffb74d;"><i data-lucide="file-check-2"></i> Reportes Semanales</h4>
+                            <p><em>Status Report</em> semanal sobre velocidad y densidad de defectos.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-tsp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1" style="text-align: center; border: none; margin-bottom: 0;">Características</h2>
+                    <div class="two-cols" style="align-items: stretch; gap: 40px; margin-top: 20px;">
+                        <div class="col-text slide-elem delay-2" style="background: rgba(0, 230, 118, 0.1); padding: 40px; border-radius: 20px; border: 1px solid rgba(0, 230, 118, 0.3);">
+                            <h3 style="color: #00e676; text-align: center; font-weight:bold;"><i data-lucide="trending-up" style="display:inline; vertical-align:middle; margin-right:15px; width:45px; height:45px;"></i>Fortalezas</h3>
+                            <ul style="list-style: none; padding: 0; margin-top: 25px;">
+                                <li style="margin-bottom: 25px; font-size: 2.3em;"><span style="color: #00e676;">•</span> <strong style="color: #00e676;">Calidad absoluta:</strong> Defectos drásticamente reducidos.</li>
+                                <li style="margin-bottom: 25px; font-size: 2.3em;"><span style="color: #00e676;">•</span> <strong style="color: #00e676;">Productividad:</strong> Alineación milimétrica y sincronizada.</li>
+                                <li style="margin-bottom: 25px; font-size: 2.3em;"><span style="color: #00e676;">•</span> <strong style="color: #00e676;">Proyecciones 100% reales:</strong> Visibilidad gerencial libre de sesgos.</li>
+                            </ul>
+                        </div>
+                        <div class="col-text slide-elem delay-3" style="background: rgba(255, 82, 82, 0.1); padding: 40px; border-radius: 20px; border: 1px solid rgba(255, 82, 82, 0.3);">
+                            <h3 style="color: #ff5252; text-align: center; font-weight:bold;"><i data-lucide="trending-down" style="display:inline; vertical-align:middle; margin-right:15px; width:45px; height:45px;"></i>Debilidades</h3>
+                            <ul style="list-style: none; padding: 0; margin-top: 25px;">
+                                <li style="margin-bottom: 25px; font-size: 2.3em;"><span style="color: #ff5252;">•</span> <strong style="color: #ff5252;">Eslabón débil:</strong> Si un individuo no hace PSP, TSP colapsa.</li>
+                                <li style="margin-bottom: 25px; font-size: 2.3em;"><span style="color: #ff5252;">•</span> <strong style="color: #ff5252;">Costo corporativo:</strong> Requiere contratar o formar Coaches SEI.</li>
+                                <li style="margin-bottom: 25px; font-size: 2.3em;"><span style="color: #ff5252;">•</span> <strong style="color: #ff5252;">No es para todos:</strong> Demasiado complejo para proyectos triviales.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-tsp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Proyectos en TSP</h2>
+                    <div class="card-grid">
+                        <div class="concept-card slide-elem delay-2">
+                            <h4 style="color: #ffb74d;"><i data-lucide="folder-tree"></i> Tipologías</h4>
+                            <p>Orientado a Proyectos Multiciclo y escenarios de mejora de procesos.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-3">
+                            <h4 style="color: #ffb74d;"><i data-lucide="network"></i> Escala del Plan</h4>
+                            <p>El plan global es la suma de los Planes Individuales (PPI).</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-4" style="grid-column: span 2; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px;">
+                            <h4 style="color: #ffb74d; margin-bottom: 10px; font-size: 2.2em;"><i data-lucide="git-merge" style="width:45px; height:45px;"></i> Regla Vital (TSP ↔ PSP)</h4>
+                            <p style="text-align: center; max-width: 900px; font-size: 1.5em; color: #fff;">Un proyecto TSP es inviable si el equipo no está formado previamente. <strong style="color: #ffb74d;">La eficiencia y calidad grupal depende obligatoriamente de la disciplina individual (PSP).</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-tsp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Herramientas TSP</h2>
+                    <div class="card-grid">
+                        <div class="concept-card slide-elem delay-2">
+                            <h4 style="color: #ffb74d;"><i data-lucide="layers"></i> Agregadores de Métricas</h4>
+                            <p>Consolidan datos individuales generando <em>Burndown charts</em> y métricas de velocidad.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-3">
+                            <h4 style="color: #ffb74d;"><i data-lucide="boxes"></i> CI/CD + Test Automation</h4>
+                            <p>Automatizan pruebas para garantizar la calidad al integrar (ej. Jenkins, GitHub Actions).</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="theme-tsp">
+                <div class="glass-panel">
+                    <h2 class="slide-elem delay-1">Certificaciones TSP</h2>
+                    <div class="card-grid">
+                        <div class="concept-card slide-elem delay-2">
+                            <h4 style="color: #ffb74d;"><i data-lucide="briefcase"></i> TSP Executive / Mentor</h4>
+                            <p>Valida capacidad directiva para implementar y escalar el modelo en la corporación.</p>
+                        </div>
+                        <div class="concept-card slide-elem delay-3">
+                            <h4 style="color: #ffb74d;"><i data-lucide="medal"></i> TSP Coach</h4>
+                            <p>Experto élite que guía equipos, modera el Launch y sostiene el marco bajo presión.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE FINAL: GRACIAS -->
+            <section>
+                <div class="glass-panel glass-panel-center" style="justify-content: center; position: relative;">
+                    <!-- Decoración sutil superior -->
+                    <div style="position: absolute; top: 30%; left: 50%; transform: translateX(-50%); width: 40%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);"></div>
+                    
+                    <div class="slide-elem delay-1" style="margin-bottom: 20px; color: #fff; filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.3));">
+                        <i data-lucide="code-2" style="width: 120px; height: 120px;"></i>
+                    </div>
+                    
+                    <h1 class="slide-elem delay-2" style="font-size: 7em; font-weight: 300; letter-spacing: 2px; margin-bottom: 10px;">Gracias</h1>
+                    <p class="slide-elem delay-3" style="font-size: 2.5em; color: #aaa; font-weight: 300; letter-spacing: 5px; text-transform: uppercase;">Ingeniería de Software I</p>
+                    
+                    <!-- Decoración sutil inferior -->
+                    <div style="position: absolute; bottom: 30%; left: 50%; transform: translateX(-50%); width: 40%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);"></div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: false, // Desactivado por solicitud
+            progress: true, 
+            slideNumber: 'c/t', // Formato 1/18 sin espacios
+            center: true, 
+            hash: true,
+            history: false,
+            transition: 'slide', 
+            width: 1600,        
+            height: 900,        
+            margin: 0.05, 
+            minScale: 0.2, 
+            maxScale: 1.5,
+            keyboard: true
+        });
+        // Renderizar iconos
+        lucide.createIcons();
+    </script>
 </body>
 </html>
