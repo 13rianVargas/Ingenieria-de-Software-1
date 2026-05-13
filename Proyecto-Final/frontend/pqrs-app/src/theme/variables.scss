@@ -1,0 +1,44 @@
+// For information on how to create your own theme, please refer to:
+// https://ionicframework.com/docs/theming/
+
+:root {
+  /** primary (D81B60) **/
+  --ion-color-primary: #D81B60;
+  --ion-color-primary-rgb: 216,27,96;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255,255,255;
+  --ion-color-primary-shade: #be1854;
+  --ion-color-primary-tint: #dc3270;
+
+  /** secondary (CDDC39) **/
+  --ion-color-secondary: #CDDC39;
+  --ion-color-secondary-rgb: 205,220,57;
+  --ion-color-secondary-contrast: #000000;
+  --ion-color-secondary-contrast-rgb: 0,0,0;
+  --ion-color-secondary-shade: #b4c232;
+  --ion-color-secondary-tint: #d2e04d;
+
+  /** tertiary (4DB6AC) **/
+  --ion-color-tertiary: #4DB6AC;
+  --ion-color-tertiary-rgb: 77,182,172;
+  --ion-color-tertiary-contrast: #000000;
+  --ion-color-tertiary-contrast-rgb: 0,0,0;
+  --ion-color-tertiary-shade: #44a097;
+  --ion-color-tertiary-tint: #5fbeb4;
+
+  /** success (6A1B9A as Accent) **/
+  --ion-color-success: #6A1B9A;
+  --ion-color-success-rgb: 106,27,154;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255,255,255;
+  --ion-color-success-shade: #5d1888;
+  --ion-color-success-tint: #7932a4;
+
+  /** danger (C62828) **/
+  --ion-color-danger: #C62828;
+  --ion-color-danger-rgb: 198,40,40;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255,255,255;
+  --ion-color-danger-shade: #ae2323;
+  --ion-color-danger-tint: #cc3e3e;
+}
