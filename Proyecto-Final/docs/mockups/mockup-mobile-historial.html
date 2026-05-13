@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Radicados - SuperMarket</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#D81B60',
+                        secondary: '#CDDC39',
+                        tertiary: '#4DB6AC',
+                        accent: '#6A1B9A',
+                        danger: '#C62828'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f3f4f6; }
+        .mobile-container {
+            max-width: 400px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background-color: #f9fafb;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container flex flex-col">
+        
+        <!-- App Bar -->
+        <div class="bg-primary text-white p-4 flex items-center justify-between shadow-md sticky top-0 z-10">
+            <div class="flex items-center">
+                <button class="mr-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <h1 class="text-xl font-bold">Mis Radicados</h1>
+            </div>
+            <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-primary font-bold shadow-inner text-sm">
+                JD
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="bg-white p-4 shadow-sm border-b">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <input type="text" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:bg-white focus:border-tertiary focus:ring-1 focus:ring-tertiary sm:text-sm transition" placeholder="Buscar por Número de Radicado">
+            </div>
+        </div>
+
+        <!-- List Content -->
+        <div class="p-4 space-y-4">
+            
+            <!-- Card 1 -->
+            <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100 relative cursor-pointer active:bg-gray-50 transition">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-xs font-bold text-gray-500">Radicado #10025</span>
+                    <span class="px-2 py-1 text-[10px] font-bold rounded-full bg-blue-100 text-blue-800">Nuevo</span>
+                </div>
+                <h3 class="font-bold text-gray-800 mb-1">Reclamo</h3>
+                <p class="text-sm text-gray-600 line-clamp-2">El producto llegó abierto y la caja estaba en mal estado, exijo un cambio o devolución de mi dinero...</p>
+                <div class="mt-3 flex items-center text-xs text-gray-400">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    12 May 2026
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100 relative cursor-pointer active:bg-gray-50 transition">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-xs font-bold text-gray-500">Radicado #09942</span>
+                    <span class="px-2 py-1 text-[10px] font-bold rounded-full bg-secondary text-gray-800">En Proceso</span>
+                </div>
+                <h3 class="font-bold text-gray-800 mb-1">Petición</h3>
+                <p class="text-sm text-gray-600 line-clamp-2">Solicito copia de mi factura electrónica correspondiente a la compra del mes pasado.</p>
+                <div class="mt-3 flex justify-between items-center text-xs text-gray-400">
+                    <div class="flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        08 May 2026
+                    </div>
+                    <div class="flex items-center text-tertiary">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
+                        1 Anexo
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100 relative cursor-pointer active:bg-gray-50 transition">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-xs font-bold text-gray-500">Radicado #08731</span>
+                    <span class="px-2 py-1 text-[10px] font-bold rounded-full bg-green-100 text-green-800">Resuelto</span>
+                </div>
+                <h3 class="font-bold text-gray-800 mb-1">Sugerencia</h3>
+                <p class="text-sm text-gray-600 line-clamp-2">Sería excelente si incluyeran la opción de pago contra entrega en el sector norte de la ciudad.</p>
+                <div class="mt-3 flex items-center text-xs text-gray-400">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    20 Abr 2026
+                </div>
+            </div>
+
+            <!-- Card 4 (Rejected) -->
+            <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100 relative cursor-pointer active:bg-gray-50 transition">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-xs font-bold text-gray-500">Radicado #08100</span>
+                    <span class="px-2 py-1 text-[10px] font-bold rounded-full bg-danger text-white">Rechazado</span>
+                </div>
+                <h3 class="font-bold text-gray-800 mb-1">Reclamo</h3>
+                <p class="text-sm text-gray-600 line-clamp-2">El descuento del Black Friday no se aplicó a mis productos.</p>
+                <div class="mt-3 flex items-center text-xs text-gray-400">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    15 Mar 2026
+                </div>
+            </div>
+
+        </div>
+        
+        <!-- Floating Action Button -->
+        <button class="absolute bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:bg-opacity-90 active:scale-90 transition z-20">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+        </button>
+
+    </div>
+</body>
+</html>
