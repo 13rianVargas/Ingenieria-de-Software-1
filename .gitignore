@@ -14,8 +14,6 @@ Taller-7/PlanDePruebas/plan-de-pruebas.docx
 *_archivos/
 *.doc
 *.docx
-!Taller-6/Arquitectura/**/*.pdf
-!Taller-7/PlanDePruebas/plan-de-pruebas.docx
 
 # Scripts sueltos prohibidos en raíz
 /update-mockups.js
