@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
@@ -20,10 +20,8 @@ import { Router } from '@angular/router';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) { }
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   intercept(
     request: HttpRequest<unknown>,
@@ -32,23 +30,23 @@ export class AuthInterceptor implements HttpInterceptor {
     
     // Obtener el token
     const token = this.authService.getToken();
-    
-    // Si existe token, clonar la request y agregar header Authorization
-    if (token && this.shouldAttachToken(request.url)) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-    } else if (this.shouldAttachToken(request.url)) {
-      // Agregar Content-Type aunque no haya token
-      request = request.clone({
-        setHeaders: {
-          'Content-Type': 'application/json'
-        }
-      });
+    const esFormData = request.body instanceof FormData;
+
+    if (!this.shouldAttachToken(request.url)) {
+      return next.handle(request);
     }
+
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    // No forzar Content-Type si es FormData (el browser necesita
+    // establecer el boundary multipart automáticamente)
+    if (!esFormData) {
+      headers['Content-Type'] = 'application/json';
+    }
+
+    request = request.clone({ setHeaders: headers });
 
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {

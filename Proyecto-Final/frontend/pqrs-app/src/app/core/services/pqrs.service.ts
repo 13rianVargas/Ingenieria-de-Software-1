@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -17,8 +17,7 @@ import {
 })
 export class PQRSService {
   private apiUrl = environment.apiUrl;
-
-  constructor(private http: HttpClient) { }
+  private http = inject(HttpClient);
 
   /**
    * Crea una nueva PQRS
