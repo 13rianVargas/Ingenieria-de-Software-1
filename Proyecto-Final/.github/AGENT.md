@@ -33,11 +33,10 @@ Este archivo aplica solo a `Proyecto-Final/`. Reglas globales del repositorio: `
 
 ## Verificaciones automaticas
 
-- `commitlint` valida titulo del PR — falla si lleva scope.
+- `commitlint` valida titulo del PR y todos los commits del PR — falla si lleva scope o tipo invalido.
 - `frontend-ci` corre lint + Karma + ng build en PRs que tocan `frontend/`.
 - `backend-ci` corre Maven verify cuando exista `pom.xml`.
-- Husky pre-commit local corre `lint-staged` (lint + auto-fix).
-- Husky commit-msg local valida convencion.
+- Hooks locales opcionales en `Proyecto-Final/frontend/pqrs-app/.husky/`. Setup: `git config core.hooksPath Proyecto-Final/frontend/pqrs-app/.husky`.
 
 ## Dominio
 
