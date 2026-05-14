@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { 
   CanActivate, 
   ActivatedRouteSnapshot, 
@@ -19,10 +19,8 @@ import { AuthService } from '../services/auth.service';
 })
 export class AuthGuard implements CanActivate {
   
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) { }
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -59,10 +57,8 @@ export class AuthGuard implements CanActivate {
 })
 export class RoleGuard implements CanActivate {
   
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) { }
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   canActivate(
     route: ActivatedRouteSnapshot,

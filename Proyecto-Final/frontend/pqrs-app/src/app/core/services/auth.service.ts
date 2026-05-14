@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
@@ -24,10 +24,10 @@ export class AuthService {
   public currentUser$ = this.currentUserSubject.asObservable();
   public isAuthenticated$ = new BehaviorSubject<boolean>(this.hasValidToken());
 
-  constructor(
-    private http: HttpClient,
-    private router: Router
-  ) {
+  private http = inject(HttpClient);
+  private router = inject(Router);
+
+  constructor() {
     this.initializeSession();
   }
 

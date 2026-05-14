@@ -10,6 +10,7 @@ export interface PQRS {
   clienteIdentificacion: string;
   clienteNombre: string;
   clienteEmail: string;
+  clienteTelefono?: string;
   tipo: TipoPQRS;
   comentarios: string;
   estado: EstadoPQRS;
