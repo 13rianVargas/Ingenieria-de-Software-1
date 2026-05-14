@@ -45,13 +45,13 @@ Para iniciar el entorno de desarrollo local, ubícate en la carpeta `pqrs-app` y
 
 ```bash
 # 1. Instalar dependencias
-npm install
+pnpm install
 
 # 2. Levantar servidor local (Web)
-npx ionic serve
+pnpm exec ionic serve
 
 # 3. Compilar y sincronizar para Móvil (Android)
-npx ionic build
-npx cap sync android
-npx cap open android
+pnpm exec ionic build
+pnpm exec cap sync android
+pnpm exec cap open android
 ```

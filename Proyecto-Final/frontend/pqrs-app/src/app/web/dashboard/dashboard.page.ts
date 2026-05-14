@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.scss'],
+  standalone: false,
 })
 export class DashboardPage implements OnInit {
 
@@ -13,3 +14,5 @@ export class DashboardPage implements OnInit {
   }
 
 }
+
+

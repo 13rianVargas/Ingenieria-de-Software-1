@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-radicar',
   templateUrl: './radicar.page.html',
   styleUrls: ['./radicar.page.scss'],
+  standalone: false,
 })
 export class RadicarPage implements OnInit {
 
@@ -13,3 +14,5 @@ export class RadicarPage implements OnInit {
   }
 
 }
+
+
