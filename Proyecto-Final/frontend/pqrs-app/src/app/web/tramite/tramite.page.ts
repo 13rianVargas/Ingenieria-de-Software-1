@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-tramite',
   templateUrl: './tramite.page.html',
   styleUrls: ['./tramite.page.scss'],
+  standalone: false,
 })
 export class TramitePage implements OnInit {
 
@@ -13,3 +14,5 @@ export class TramitePage implements OnInit {
   }
 
 }
+
+
