@@ -1,5 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { PQRSService } from '../../core/services/pqrs.service';
 import { AuthService } from '../../core/services/auth.service';
 import { PQRS, TipoPQRS, EstadoPQRS, PQRSFilter, User } from '../../core/models';
@@ -10,9 +12,9 @@ import { PQRS, TipoPQRS, EstadoPQRS, PQRSFilter, User } from '../../core/models'
   styleUrls: ['./dashboard.page.scss'],
   standalone: false,
 })
-export class DashboardPage implements OnInit {
+export class DashboardPage implements OnInit, OnDestroy {
 
-  EstadoPQRS = EstadoPQRS; // expuesto para el template
+  EstadoPQRS = EstadoPQRS;
 
   pqrsList: PQRS[] = [];
   totalItems = 0;
@@ -27,6 +29,12 @@ export class DashboardPage implements OnInit {
   errorMessage = '';
   isExporting = false;
   currentUser: User | null = null;
+  private destroy$ = new Subject<void>();
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   tiposFiltro = [
     { value: '', label: 'Todos' },
@@ -62,7 +70,7 @@ export class DashboardPage implements OnInit {
     if (this.filtroEstado) filtros.estado = this.filtroEstado as EstadoPQRS;
 
     this.pqrsService.obtenerBandeja(filtros, this.currentPage, this.pageSize)
-      .subscribe({
+      .pipe(takeUntil(this.destroy$)).subscribe({
         next: (response) => {
           this.isLoading = false;
           if (response.success && response.data) {
@@ -116,7 +124,7 @@ export class DashboardPage implements OnInit {
     if (this.filtroEstado) filtros.estado = this.filtroEstado as EstadoPQRS;
 
     this.pqrsService.generarReporte(filtros)
-      .subscribe({
+      .pipe(takeUntil(this.destroy$)).subscribe({
         next: () => {
           this.isExporting = false;
         },

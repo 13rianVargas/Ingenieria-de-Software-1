@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
 import { TramitePage } from './tramite.page';
 import { PQRSService } from '../../core/services/pqrs.service';
 
@@ -9,9 +10,11 @@ describe('TramitePage', () => {
   let fixture: ComponentFixture<TramitePage>;
 
   const pqrsServiceMock = {
-    obtenerPorRadicado: jasmine.createSpy('obtenerPorRadicado'),
-    actualizarEstado: jasmine.createSpy('actualizarEstado'),
-    descargarAnexo: jasmine.createSpy('descargarAnexo')
+    obtenerPorRadicado: jasmine.createSpy('obtenerPorRadicado').and.returnValue(
+      of({ success: true, data: { radicado: '10025', tipo: 'RECLAMO', estado: 'NUEVO', comentarios: 'Test', fecha: new Date(), clienteNombre: 'Test', clienteIdentificacion: '12345678', clienteEmail: 'test@test.com', clienteTelefono: '3001234567' } })
+    ),
+    actualizarEstado: jasmine.createSpy('actualizarEstado').and.returnValue(of({ success: true, data: { estado: 'RESUELTO' } })),
+    descargarAnexo: jasmine.createSpy('descargarAnexo').and.returnValue(of(new Blob()))
   };
 
   const routerMock = {
@@ -26,7 +29,7 @@ describe('TramitePage', () => {
     }
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     fixture = TestBed.configureTestingModule({
       declarations: [TramitePage],
       imports: [ReactiveFormsModule],

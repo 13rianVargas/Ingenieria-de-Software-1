@@ -101,16 +101,4 @@ export class RoleGuard implements CanActivate {
   }
 }
 
-/**
- * Guard para prevenir salir de la aplicación si hay cambios sin guardar
- */
-@Injectable({
-  providedIn: 'root'
-})
-export class CanDeactivateGuard implements CanActivate {
-  
-  canActivate(): boolean {
-    // Placeholder para futura implementación
-    return true;
-  }
-}
+

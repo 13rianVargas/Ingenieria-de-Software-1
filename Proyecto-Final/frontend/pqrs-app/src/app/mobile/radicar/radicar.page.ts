@@ -203,9 +203,16 @@ export class RadicarPage implements OnInit, OnDestroy {
             this.radicacionForm.reset();
             this.clearFile();
 
-            // Redirigir al historial después de 3 segundos
             setTimeout(() => {
-              this.router.navigate(['/mobile/historial']);
+              if (this.currentUser) {
+                this.router.navigate(['/mobile/historial']);
+              } else if (response.data?.radicado) {
+                this.router.navigate(['/mobile/login'], {
+                  queryParams: { radicado: response.data.radicado }
+                });
+              } else {
+                this.router.navigate(['/mobile/login']);
+              }
             }, 3000);
           } else {
             this.errorMessage = response.message || 'Error al radicar la PQRS';
@@ -223,7 +230,11 @@ export class RadicarPage implements OnInit, OnDestroy {
    * Navega hacia atrás
    */
   goBack(): void {
-    this.router.navigate(['/mobile/historial']);
+    if (this.currentUser) {
+      this.router.navigate(['/mobile/historial']);
+    } else {
+      this.router.navigate(['/mobile/login']);
+    }
   }
 
   /**

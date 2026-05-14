@@ -16,8 +16,6 @@ const routes: Routes = [
   },
   {
     path: 'mobile/radicar',
-    canActivate: [AuthGuard, RoleGuard],
-    data: { role: UserRole.CLIENTE },
     loadChildren: () => import('./mobile/radicar/radicar.module').then( m => m.RadicarPageModule)
   },
   {
