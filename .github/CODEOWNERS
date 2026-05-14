@@ -6,7 +6,7 @@
 # - Toda PR que toque la ruta auto-asigna a los owners listados.
 # - Branch protection con "require_code_owner_reviews=true" bloquea merge sin approval del owner.
 #
-# Nick @JuliCriollo por confirmar. Actualizar cuando se valide.
+# Nicks GitHub confirmados con el equipo.
 
 # ============ DOCUMENTACION GENERAL ============
 *                                                              @13rianVargas
@@ -26,7 +26,7 @@
 /Proyecto-Final/database/                                      @13rianVargas
 
 # Backend — Juli Criollo
-/Proyecto-Final/backend/                                       @JuliCriollo
+/Proyecto-Final/backend/                                       @julianhomezdev
 
 # Frontend Web — Santi
 /Proyecto-Final/frontend/pqrs-app/src/app/web/                 @SantiagoRR17

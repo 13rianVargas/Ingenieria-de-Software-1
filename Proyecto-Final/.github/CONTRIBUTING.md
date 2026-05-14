@@ -171,11 +171,10 @@ Cada modulo tiene responsable principal. `CODEOWNERS` auto-asigna reviewers.
 | Persona | Modulo | Ruta |
 |---|---|---|
 | Brian Vargas (`@13rianVargas`) | Database + comodin | `Proyecto-Final/database/` |
-| Juli Criollo (`@JuliCriollo`) | Backend (Spring Boot) | `Proyecto-Final/backend/` |
+| Juli Criollo (`@julianhomezdev`) | Backend (Spring Boot) | `Proyecto-Final/backend/` |
 | Santiago RR (`@SantiagoRR17`) | Frontend Web | `Proyecto-Final/frontend/pqrs-app/src/app/web/` |
 | Juli Avila (`@JulianAvila259`) | Frontend Mobile | `Proyecto-Final/frontend/pqrs-app/src/app/mobile/` |
 
-> Nick `@JuliCriollo` por confirmar. Ajustar en `.github/CODEOWNERS` cuando se valide.
 
 ### Archivos compartidos (review obligatoria de Santi + Juli Avila)
 
@@ -289,7 +288,25 @@ Si llegas de npm: borrar `node_modules/` y `package-lock.json` antes de `pnpm in
 
 ---
 
-## 10. Branch protection (admin)
+## 10. Hooks locales (opcional pero recomendado)
+
+CI valida lint, tests, build y commitlint server-side. Para atrapar errores antes del push, activar hooks locales una sola vez:
+
+```bash
+# Desde la raiz del repo
+git config core.hooksPath Proyecto-Final/frontend/pqrs-app/.husky
+```
+
+Hooks disponibles:
+
+- `.husky/pre-commit` — corre `lint-staged` (ESLint --fix sobre archivos modificados).
+- `.husky/commit-msg` — valida convencion de commit con `commitlint`.
+
+Para desactivar temporal: `git commit --no-verify` (NO recomendado).
+
+---
+
+## 11. Branch protection (admin)
 
 Configurar via GitHub UI (Settings → Branches → Add rule) o `gh api`:
 
@@ -325,7 +342,7 @@ Activar solo despues de mergear los workflows CI (sino los status checks no exis
 
 ---
 
-## 11. Reporte de bugs
+## 12. Reporte de bugs
 
 Abrir Issue con plantilla `.github/ISSUE_TEMPLATE/bug-report.yml`. Incluir:
 
