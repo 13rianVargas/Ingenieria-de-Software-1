@@ -1,5 +1,12 @@
-allowBuilds:
-  '@parcel/watcher': set this to true or false
-  esbuild: set this to true or false
-  lmdb: set this to true or false
-  msgpackr-extract: set this to true or false
+# pnpm workspace config — Proyecto-Final frontend
+# Doc: https://pnpm.io/pnpm-workspace_yaml
+packages:
+  - .
+
+# Dependencias nativas autorizadas a correr build scripts
+# Doc: https://pnpm.io/settings#onlybuiltdependencies
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild
+  - lmdb
+  - msgpackr-extract
