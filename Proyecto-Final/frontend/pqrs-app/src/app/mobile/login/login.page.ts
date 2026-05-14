@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AuthService } from '../../core/services/auth.service';
@@ -17,18 +17,24 @@ export class LoginPage implements OnInit, OnDestroy {
   loginForm!: FormGroup;
   isLoading = false;
   errorMessage = '';
+  successMessage = '';
   private destroy$ = new Subject<void>();
 
   private formBuilder = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   constructor() {
     this.initializeForm();
   }
 
   ngOnInit() {
-    // Verificar si ya está autenticado
+    const radicado = this.route.snapshot.queryParamMap.get('radicado');
+    if (radicado) {
+      this.successMessage = `PQRS radicada exitosamente. Número de radicado: ${radicado}. Revisa tu correo para las credenciales de acceso.`;
+    }
+
     if (this.authService.hasValidToken()) {
       this.redirectBasedOnRole();
     }

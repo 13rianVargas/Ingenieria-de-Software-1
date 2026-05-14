@@ -1,5 +1,7 @@
-﻿import { Component, OnInit, inject } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { PQRSService } from '../../core/services/pqrs.service';
 import { AuthService } from '../../core/services/auth.service';
 import { PQRS, TipoPQRS, EstadoPQRS, User } from '../../core/models';
@@ -10,7 +12,7 @@ import { PQRS, TipoPQRS, EstadoPQRS, User } from '../../core/models';
   styleUrls: ['./historial.page.scss'],
   standalone: false,
 })
-export class HistorialPage implements OnInit {
+export class HistorialPage implements OnInit, OnDestroy {
 
   pqrsList: PQRS[] = [];
   filteredList: PQRS[] = [];
@@ -18,6 +20,7 @@ export class HistorialPage implements OnInit {
   isLoading = false;
   errorMessage = '';
   currentUser: User | null = null;
+  private destroy$ = new Subject<void>();
 
   private page = 1;
   private pageSize = 20;
@@ -25,6 +28,11 @@ export class HistorialPage implements OnInit {
   private pqrsService = inject(PQRSService);
   private authService = inject(AuthService);
   private router = inject(Router);
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   ngOnInit() {
     this.currentUser = this.authService.getCurrentUser();
@@ -43,7 +51,7 @@ export class HistorialPage implements OnInit {
       this.currentUser.id,
       this.page,
       this.pageSize
-    ).subscribe({
+    ).pipe(takeUntil(this.destroy$)).subscribe({
       next: (response) => {
         this.isLoading = false;
         if (response.success && response.data) {

@@ -1,5 +1,6 @@
 ﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { of } from 'rxjs';
 import { HistorialPage } from './historial.page';
 import { PQRSService } from '../../core/services/pqrs.service';
 import { AuthService } from '../../core/services/auth.service';
@@ -9,12 +10,14 @@ describe('HistorialPage', () => {
   let fixture: ComponentFixture<HistorialPage>;
 
   const authServiceMock = {
-    getCurrentUser: jasmine.createSpy('getCurrentUser').and.returnValue(null),
-    hasValidToken: jasmine.createSpy('hasValidToken').and.returnValue(false)
+    getCurrentUser: jasmine.createSpy('getCurrentUser').and.returnValue({ id: '1', identificacion: '12345678', nombre: 'Cliente Test', email: 'cliente@test.com', rol: 'CLIENTE' }),
+    hasValidToken: jasmine.createSpy('hasValidToken').and.returnValue(true)
   };
 
   const pqrsServiceMock = {
-    obtenerHistorial: jasmine.createSpy('obtenerHistorial')
+    obtenerHistorial: jasmine.createSpy('obtenerHistorial').and.returnValue(
+      of({ success: true, data: { data: [], total: 0 } })
+    )
   };
 
   const routerMock = {
