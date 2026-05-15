@@ -1,7 +1,7 @@
 name: backend-ci
 
-# Placeholder — activar cuando Proyecto-Final/backend/pom.xml exista.
-# Para activar: cambiar el `if: false` por la condicion real y removerlo.
+# Placeholder workflow. Auto-corre Maven verify cuando exista
+# Proyecto-Final/backend/pom.xml. Mientras tanto reporta success.
 
 on:
   pull_request:
@@ -20,20 +20,25 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  check:
     name: maven verify
     runs-on: ubuntu-latest
-    # Cambiar a `true` cuando exista pom.xml. Mientras tanto skip silencioso.
-    if: ${{ hashFiles('Proyecto-Final/backend/pom.xml') != '' }}
-    defaults:
-      run:
-        working-directory: Proyecto-Final/backend
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Detect backend
+        id: detect
+        run: |
+          if [ -f Proyecto-Final/backend/pom.xml ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "Backend pom.xml not found yet — placeholder success."
+          fi
+
       - name: Setup Java
+        if: steps.detect.outputs.exists == 'true'
         uses: actions/setup-java@v4
         with:
           java-version: '17'
@@ -41,4 +46,6 @@ jobs:
           cache: maven
 
       - name: Maven verify
+        if: steps.detect.outputs.exists == 'true'
+        working-directory: Proyecto-Final/backend
         run: mvn -B verify
