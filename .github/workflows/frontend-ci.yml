@@ -3,14 +3,8 @@ name: frontend-ci
 on:
   pull_request:
     branches: [main, develop]
-    paths:
-      - 'Proyecto-Final/frontend/**'
-      - '.github/workflows/frontend-ci.yml'
   push:
     branches: [main, develop]
-    paths:
-      - 'Proyecto-Final/frontend/**'
-      - '.github/workflows/frontend-ci.yml'
 
 concurrency:
   group: frontend-ci-${{ github.ref }}
@@ -27,13 +21,36 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect frontend changes
+        id: detect
+        working-directory: ${{ github.workspace }}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_SHA=$(git merge-base origin/${{ github.base_ref }} HEAD)
+          else
+            BASE_SHA=$(git rev-parse HEAD~1 2>/dev/null || git rev-parse HEAD)
+          fi
+          CHANGED=$(git diff --name-only "$BASE_SHA" HEAD)
+          echo "Changed files:"
+          echo "$CHANGED"
+          if echo "$CHANGED" | grep -qE '^Proyecto-Final/frontend/|^\.github/workflows/frontend-ci\.yml$'; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "No frontend changes detected — placeholder success."
+          fi
 
       - name: Setup pnpm
+        if: steps.detect.outputs.run == 'true'
         uses: pnpm/action-setup@v4
         with:
           version: 9
 
       - name: Setup Node
+        if: steps.detect.outputs.run == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -41,13 +58,17 @@ jobs:
           cache-dependency-path: Proyecto-Final/frontend/pqrs-app/pnpm-lock.yaml
 
       - name: Install dependencies
+        if: steps.detect.outputs.run == 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Lint
+        if: steps.detect.outputs.run == 'true'
         run: pnpm run lint
 
       - name: Unit tests (Karma headless)
+        if: steps.detect.outputs.run == 'true'
         run: pnpm test -- --watch=false --browsers=ChromeHeadless --code-coverage=false
 
       - name: Build
+        if: steps.detect.outputs.run == 'true'
         run: pnpm run build
