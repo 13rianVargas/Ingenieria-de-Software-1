@@ -9,7 +9,7 @@ participant "pqrs-api\n(REST)" as Api
 participant "pqrs-domain" as Domain
 participant "shared/security" as Sec
 database "PostgreSQL" as DB
-folder "NAS" as NAS
+collections "NAS" as NAS
 participant "pqrs-notificaciones" as Notif
 queue "SMTP Gateway" as SMTP
 
