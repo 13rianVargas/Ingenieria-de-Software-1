@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+# Commit-msg: valida convencion Conventional Commits sin scopes.
+# Setup local: git config core.hooksPath Proyecto-Final/frontend/pqrs-app/.husky
+set -e
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+COMMIT_MSG_FILE="$1"
+case "$COMMIT_MSG_FILE" in
+  /*) ;;
+  *) COMMIT_MSG_FILE="$REPO_ROOT/$COMMIT_MSG_FILE" ;;
+esac
+cd "$REPO_ROOT/Proyecto-Final/frontend/pqrs-app"
+pnpm exec commitlint --edit "$COMMIT_MSG_FILE"
