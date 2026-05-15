@@ -1,19 +1,13 @@
 name: backend-ci
 
-# Placeholder workflow. Auto-corre Maven verify cuando exista
-# Proyecto-Final/backend/pom.xml. Mientras tanto reporta success.
+# Workflow corre siempre. Detecta si existe pom.xml para decidir.
+# Cuando backend dev cree Proyecto-Final/backend/pom.xml, Maven verify activa.
 
 on:
   pull_request:
     branches: [main, develop]
-    paths:
-      - 'Proyecto-Final/backend/**'
-      - '.github/workflows/backend-ci.yml'
   push:
     branches: [main, develop]
-    paths:
-      - 'Proyecto-Final/backend/**'
-      - '.github/workflows/backend-ci.yml'
 
 concurrency:
   group: backend-ci-${{ github.ref }}
