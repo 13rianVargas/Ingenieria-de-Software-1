@@ -1,0 +1,56 @@
+@startuml
+' Vista Logica — Componentes del Sistema PQRS
+' Estilo C4 simplificado
+skinparam componentStyle rectangle
+skinparam linetype ortho
+
+actor Cliente as ClienteActor
+actor Gestor as GestorActor
+
+package "Frontend" {
+  component [pqrs-frontend-mobile\n(Angular + Ionic\nCapacitor)] as FrontMobile
+  component [pqrs-frontend-web\n(Angular + Ionic + Tailwind)] as FrontWeb
+}
+
+package "Backend (Spring Boot)" {
+  component [pqrs-api\n(REST Controllers)] as Api
+  component [pqrs-domain\n(Entidades + Reglas)] as Domain
+  component [pqrs-notificaciones\n(SMTP, plantillas)] as Notif
+  component [pqrs-archivos\n(NAS/FS adapter)] as Archivos
+  component [shared/security\n(JWT + BCrypt + Roles)] as Security
+  component [shared/auditoria\n(AOP)] as Audit
+}
+
+database "PostgreSQL\n(primario + replica)" as DB
+folder "NAS / FileSystem\n(adjuntos PDF)" as NAS
+node "SMTP Gateway" as SMTP
+
+ClienteActor --> FrontMobile : HTTPS
+GestorActor --> FrontWeb : HTTPS
+
+FrontMobile --> Api : REST/JSON\nover HTTPS
+FrontWeb --> Api : REST/JSON\nover HTTPS
+
+Api --> Security : autenticar/autorizar
+Api --> Domain : invocar casos de uso
+Domain --> Audit : log acciones CRUD
+Domain --> Archivos : guardar/leer adjuntos
+Domain --> Notif : disparar correo
+Domain --> DB : JPA / Hibernate
+
+Archivos --> NAS : NFS
+Notif --> SMTP : SMTP/SMTPS
+
+note right of Domain
+  Capa pura de dominio.
+  Sin dependencia de Spring
+  (puertos + adaptadores).
+end note
+
+note right of Security
+  BCrypt para hash de claves.
+  JWT para sesiones.
+  Roles: Cliente, Gestor, Admin.
+end note
+
+@enduml

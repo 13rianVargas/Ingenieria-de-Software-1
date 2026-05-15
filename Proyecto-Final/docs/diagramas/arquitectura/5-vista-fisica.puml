@@ -1,0 +1,75 @@
+@startuml
+' Vista Fisica / Despliegue — Topologia de red y nodos
+title Vista Fisica: Despliegue del Sistema PQRS
+
+skinparam node {
+  BackgroundColor #F4F6FA
+  BorderColor #2B2D42
+}
+
+cloud "Internet" as Internet {
+  actor Cliente
+  actor Gestor
+}
+
+node "Balanceador de Carga\n(Nginx / HAProxy)" as LB {
+  artifact "TCP 443 HTTPS"
+}
+
+node "Cluster Servidores App\n(Spring Boot — 2+ instancias)" as AppCluster {
+  artifact "TCP 8080 (interno)"
+  artifact "JWT validation"
+  artifact "BCrypt hash"
+}
+
+node "Servidor Web Estatico\n(Nginx, sirve Angular build)" as WebStatic {
+  artifact "TCP 80/443"
+}
+
+database "PostgreSQL\nPrimario" as DBMaster {
+  artifact "TCP 5432"
+}
+
+database "PostgreSQL\nReplica (standby)" as DBReplica {
+  artifact "TCP 5432\nreplicacion async"
+}
+
+folder "NAS / FileSystem\n(adjuntos PDF)" as NAS {
+  artifact "NFS TCP 2049"
+}
+
+node "SMTP Gateway\n(Postfix / SES)" as SMTP {
+  artifact "SMTP TCP 587 (TLS)"
+}
+
+Cliente --> LB : HTTPS\n(App Mobile, App Web)
+Gestor --> LB : HTTPS
+
+LB --> WebStatic : sirve bundle\nAngular/Ionic
+LB --> AppCluster : reverse proxy\n/api/*
+
+AppCluster --> DBMaster : JDBC SSL
+DBMaster --> DBReplica : replicacion\nasincrona
+AppCluster --> NAS : NFS lectura/escritura
+AppCluster --> SMTP : envio asincrono\nde correo
+
+note right of LB
+  HTTPS obligatorio.
+  Sin entrada TCP 80
+  (redirige a 443).
+end note
+
+note right of AppCluster
+  Sin estado en memoria
+  (sesion via JWT).
+  Escalable horizontal.
+end note
+
+note bottom of DBReplica
+  Failover manual a replica
+  en caso de caida del primario.
+  Backup diario via pg_dump
+  sin afectar produccion.
+end note
+
+@enduml

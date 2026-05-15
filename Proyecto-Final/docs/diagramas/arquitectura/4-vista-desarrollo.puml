@@ -1,0 +1,131 @@
+@startuml
+' Vista de Desarrollo — Estructura de paquetes (arquitectura hexagonal)
+' Tambien cubre entregable opcional Especificacion de Clases (estructura de paquetes)
+
+skinparam packageStyle rectangle
+
+package "backend (Spring Boot)" {
+  package "api" {
+    package "rest" {
+      class PqrsController
+      class UsuarioController
+      class AuthController
+      class ReporteController
+    }
+  }
+
+  package "domain" {
+    package "model" {
+      class Usuario
+      class Rol
+      class Pqrs
+      class Tramite
+      class Adjunto
+      class Notificacion
+      enum EstadoPqrs {
+        NUEVO
+        EN_PROCESO
+        RESUELTO
+        RECHAZADO
+      }
+    }
+    package "service" {
+      class RadicarPqrsService
+      class TramitarPqrsService
+      class AutenticarService
+      class GenerarReporteService
+    }
+    package "port" {
+      interface PqrsRepository
+      interface UsuarioRepository
+      interface NotificacionPort
+      interface AdjuntoStoragePort
+    }
+  }
+
+  package "infrastructure" {
+    package "persistencia" {
+      class PqrsJpaRepository
+      class UsuarioJpaRepository
+      class PqrsRepositoryAdapter
+    }
+    package "integraciones" {
+      class EmailAdapter
+      class NasAdjuntoAdapter
+      class PdfReportAdapter
+    }
+  }
+
+  package "shared" {
+    package "security" {
+      class JwtFilter
+      class BcryptPasswordEncoder
+      class RoleGuard
+    }
+    package "auditoria" {
+      class AuditAspect
+    }
+    package "logging" {
+      class GlobalErrorHandler
+    }
+  }
+}
+
+package "frontend (Angular + Ionic)" {
+  package "core" {
+    class AuthService
+    class PqrsService
+    class AuthGuard
+    class AuthInterceptor
+  }
+  package "shared (componentes reutilizables)" as fshared {
+    class HeaderComponent
+    class LoadingSpinner
+    class ConfirmModal
+  }
+  package "web (Gestor)" {
+    class LoginPage
+    class DashboardPage
+    class TramitePage
+  }
+  package "mobile (Cliente)" {
+    class LoginMobilePage
+    class RadicarPage
+    class HistorialPage
+    class DetallePage
+  }
+}
+
+PqrsController ..> RadicarPqrsService
+RadicarPqrsService ..> PqrsRepository
+PqrsRepositoryAdapter ..|> PqrsRepository
+PqrsRepositoryAdapter ..> PqrsJpaRepository
+RadicarPqrsService ..> NotificacionPort
+EmailAdapter ..|> NotificacionPort
+RadicarPqrsService ..> AdjuntoStoragePort
+NasAdjuntoAdapter ..|> AdjuntoStoragePort
+
+AuthService ..> AuthController : HTTPS
+PqrsService ..> PqrsController : HTTPS
+
+note right of "domain"
+  Capa pura sin Spring.
+  Solo POJOs + interfaces.
+  Define puertos que la
+  infrastructure implementa.
+end note
+
+note right of "infrastructure"
+  Adaptadores que implementan
+  los puertos del dominio.
+  Aqui viven JPA, REST clients,
+  filesystem, email, etc.
+end note
+
+note bottom of "shared"
+  Cross-cutting concerns:
+  seguridad, auditoria, logging.
+  Se aplican via AOP.
+end note
+
+@enduml

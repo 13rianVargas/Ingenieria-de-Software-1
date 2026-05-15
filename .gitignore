@@ -8,6 +8,9 @@ __pycache__/
 
 # Artefactos generados (regenerar con generar-docx.py)
 Taller-7/PlanDePruebas/plan-de-pruebas.docx
+Proyecto-Final/docs/build/**/*.docx
+Proyecto-Final/docs/build/**/.venv/
+Proyecto-Final/docs/build/**/__pycache__/
 
 # Office export artifacts (HTM/DOC generados desde Word — usar PDF o MD)
 *.htm
