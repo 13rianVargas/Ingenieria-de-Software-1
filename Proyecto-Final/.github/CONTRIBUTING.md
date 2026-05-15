@@ -166,7 +166,7 @@ Para `release/*` y `hotfix/*`: abrir PR a `main` Y a `develop`.
 
 ## 5. Mapa de ownership
 
-Cada modulo tiene responsable principal. `CODEOWNERS` auto-asigna reviewers.
+Cada modulo tiene responsable principal. Cuando tu PR toca codigo fuera de tu modulo, solicita revision manualmente al responsable.
 
 | Persona | Modulo | Ruta |
 |---|---|---|
@@ -175,8 +175,7 @@ Cada modulo tiene responsable principal. `CODEOWNERS` auto-asigna reviewers.
 | Santiago RR (`@SantiagoRR17`) | Frontend Web | `Proyecto-Final/frontend/pqrs-app/src/app/web/` |
 | Juli Avila (`@JulianAvila259`) | Frontend Mobile | `Proyecto-Final/frontend/pqrs-app/src/app/mobile/` |
 
-
-### Archivos compartidos (review obligatoria de Santi + Juli Avila)
+### Archivos compartidos (avisar a Santi + Juli Avila)
 
 - `Proyecto-Final/frontend/pqrs-app/src/app/core/`
 - `Proyecto-Final/frontend/pqrs-app/src/app/shared/`
@@ -187,7 +186,7 @@ Cada modulo tiene responsable principal. `CODEOWNERS` auto-asigna reviewers.
 
 ### Regla de oro
 
-Si tu PR toca codigo fuera de tu modulo asignado: solicita revision al owner antes de mergear, aunque CODEOWNERS no lo bloquee.
+Branch protection requiere 1 aprobacion sobre cada PR. Cuando toques codigo de otro modulo, asigna como reviewer al owner correspondiente — no esperes que el sistema lo haga por ti.
 
 ---
 
@@ -318,7 +317,6 @@ gh api -X PUT /repos/13rianVargas/Ingenieria-de-Software-1/branches/main/protect
   -F 'required_status_checks.contexts[]=commitlint' \
   -F required_pull_request_reviews.required_approving_review_count=1 \
   -F required_pull_request_reviews.dismiss_stale_reviews=true \
-  -F required_pull_request_reviews.require_code_owner_reviews=true \
   -F enforce_admins=false \
   -F allow_force_pushes=false \
   -F allow_deletions=false \
@@ -331,7 +329,6 @@ gh api -X PUT /repos/13rianVargas/Ingenieria-de-Software-1/branches/develop/prot
   -F 'required_status_checks.contexts[]=commitlint' \
   -F required_pull_request_reviews.required_approving_review_count=1 \
   -F required_pull_request_reviews.dismiss_stale_reviews=true \
-  -F required_pull_request_reviews.require_code_owner_reviews=true \
   -F enforce_admins=false \
   -F allow_force_pushes=false \
   -F allow_deletions=false \
