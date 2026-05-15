@@ -1,5 +1,5 @@
 name: Reporte de Defecto
-description: Plantilla para reportar defectos encontrados durante la ejecucion de casos de prueba — E-Commerce Comercial Konrad
+description: Plantilla para reportar defectos encontrados durante la ejecucion de casos de prueba
 title: "[BUG-NN] TC-XX — descripcion del defecto"
 labels: ["bug", "status:pending"]
 assignees: []
@@ -27,7 +27,7 @@ body:
     attributes:
       label: HU afectada
       description: ID de la Historia de Usuario involucrada.
-      placeholder: "HU-1 Registro de Vendedor"
+      placeholder: "HU-NN — descripcion corta"
     validations:
       required: true
 
@@ -72,10 +72,9 @@ body:
       label: Pasos para Reproducir
       description: Minimos pasos necesarios para que el defecto ocurra. Numerados.
       placeholder: |
-        1. Navegar a la pagina de registro de vendedores.
-        2. Completar todos los campos obligatorios con datos validos.
-        3. Adjuntar solo 4 de los 5 documentos requeridos (omitir formato de datos).
-        4. Hacer click en "Enviar solicitud".
+        1. Accion concreta para llegar al estado donde el defecto ocurre.
+        2. Siguiente accion.
+        3. Trigger exacto del defecto.
     validations:
       required: true
 
@@ -84,7 +83,7 @@ body:
     attributes:
       label: Resultado Esperado
       description: Comportamiento correcto segun el caso de prueba origen.
-      placeholder: El sistema muestra un mensaje de error indicando que el formato de tratamiento de datos personales es obligatorio y no permite enviar la solicitud.
+      placeholder: Comportamiento concreto esperado segun la especificacion del caso de prueba.
     validations:
       required: true
 
@@ -93,7 +92,7 @@ body:
     attributes:
       label: Resultado Obtenido
       description: Lo que realmente ocurrio.
-      placeholder: El sistema acepta la solicitud sin el documento y la registra en estado PENDIENTE.
+      placeholder: Comportamiento defectuoso observado en la ejecucion.
     validations:
       required: true
 
