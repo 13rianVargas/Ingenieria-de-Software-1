@@ -10,7 +10,7 @@ Inspirado en la guia de K-Forge.
 
 **PQRS — Peticiones, Quejas, Reclamos y Sugerencias.**
 
-Fuente oficial: [`Proyecto-Final/1-Funcionalidades.md`](../1-Funcionalidades.md).
+Fuente oficial: [`docs/1-Funcionalidades.md`](../docs/1-Funcionalidades.md).
 
 Los Talleres 6 y 7 trabajaron sobre un caso de estudio diferente (E-Commerce Konrad) como guia metodologica. Sus artefactos se portan al dominio PQRS dentro de `Proyecto-Final/docs/`. Los talleres no se modifican.
 
