@@ -1,0 +1,45 @@
+name: backend-ci
+
+# Workflow corre siempre. Detecta si existe pom.xml para decidir.
+# Cuando backend dev cree Proyecto-Final/backend/pom.xml, Maven verify activa.
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+concurrency:
+  group: backend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: maven verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect backend
+        id: detect
+        run: |
+          if [ -f Proyecto-Final/backend/pom.xml ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "Backend pom.xml not found yet — placeholder success."
+          fi
+
+      - name: Setup Java
+        if: steps.detect.outputs.exists == 'true'
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: temurin
+          cache: maven
+
+      - name: Maven verify
+        if: steps.detect.outputs.exists == 'true'
+        working-directory: Proyecto-Final/backend
+        run: mvn -B verify

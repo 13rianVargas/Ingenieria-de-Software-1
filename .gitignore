@@ -8,3 +8,27 @@ __pycache__/
 
 # Artefactos generados (regenerar con generar-docx.py)
 Taller-7/PlanDePruebas/plan-de-pruebas.docx
+
+# Office export artifacts (HTM/DOC generados desde Word — usar PDF o MD)
+*.htm
+*_archivos/
+*.doc
+*.docx
+
+# Scripts sueltos prohibidos en raíz
+/update-mockups.js
+
+# Lockfiles prohibidos — solo pnpm en este repo
+**/package-lock.json
+**/yarn.lock
+
+# Build outputs
+**/dist/
+**/www/
+**/.angular/
+**/node_modules/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
