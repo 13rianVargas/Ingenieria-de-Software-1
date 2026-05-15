@@ -1,0 +1,53 @@
+name: frontend-ci
+
+on:
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'Proyecto-Final/frontend/**'
+      - '.github/workflows/frontend-ci.yml'
+  push:
+    branches: [main, develop]
+    paths:
+      - 'Proyecto-Final/frontend/**'
+      - '.github/workflows/frontend-ci.yml'
+
+concurrency:
+  group: frontend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: lint + test + build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Proyecto-Final/frontend/pqrs-app
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: Proyecto-Final/frontend/pqrs-app/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Unit tests (Karma headless)
+        run: pnpm test -- --watch=false --browsers=ChromeHeadless --code-coverage=false
+
+      - name: Build
+        run: pnpm run build
