@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# Pre-commit: corre lint-staged sobre archivos modificados del frontend.
+# Setup local: git config core.hooksPath Proyecto-Final/frontend/pqrs-app/.husky
+set -e
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT/Proyecto-Final/frontend/pqrs-app"
+pnpm exec lint-staged

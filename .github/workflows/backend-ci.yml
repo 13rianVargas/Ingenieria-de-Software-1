@@ -1,0 +1,44 @@
+name: backend-ci
+
+# Placeholder — activar cuando Proyecto-Final/backend/pom.xml exista.
+# Para activar: cambiar el `if: false` por la condicion real y removerlo.
+
+on:
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'Proyecto-Final/backend/**'
+      - '.github/workflows/backend-ci.yml'
+  push:
+    branches: [main, develop]
+    paths:
+      - 'Proyecto-Final/backend/**'
+      - '.github/workflows/backend-ci.yml'
+
+concurrency:
+  group: backend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: maven verify
+    runs-on: ubuntu-latest
+    # Cambiar a `true` cuando exista pom.xml. Mientras tanto skip silencioso.
+    if: ${{ hashFiles('Proyecto-Final/backend/pom.xml') != '' }}
+    defaults:
+      run:
+        working-directory: Proyecto-Final/backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: temurin
+          cache: maven
+
+      - name: Maven verify
+        run: mvn -B verify
