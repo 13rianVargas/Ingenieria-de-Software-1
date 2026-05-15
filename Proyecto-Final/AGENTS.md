@@ -114,7 +114,7 @@ Para saltarlo en emergencia: `git commit --no-verify` (no recomendado, el CI te 
 
 **Peticiones, Quejas, Reclamos y Sugerencias.**
 
-Fuente oficial: [`1-Funcionalidades.md`](./1-Funcionalidades.md).
+Fuente oficial: [`docs/1-Funcionalidades.md`](./docs/1-Funcionalidades.md).
 
 Los Talleres 6 y 7 trabajaron con caso E-Commerce Konrad como guia metodologica. Sus artefactos se portan al dominio PQRS dentro de `docs/`. Los talleres no se modifican (son historico academico ya entregado).
 
