@@ -1,0 +1,120 @@
+@startuml
+' Modelo Entidad-Relacion — Sistema PQRS SuperMarket
+' Adaptado del formato del Taller-6/Diagramas/6-Vista-Datos/1-Modelo-Entidad-Relacion.puml
+skinparam linetype ortho
+hide methods
+hide stereotypes
+
+entity "rol" as Rol {
+  * id : SERIAL
+  --
+  nombre : VARCHAR(20)
+}
+
+entity "usuario" as Usuario {
+  * id : SERIAL
+  --
+  rol_id : INT <<FK>>
+  tipo_doc : VARCHAR(4)
+  num_doc : VARCHAR(20)
+  nombres : VARCHAR(100)
+  apellidos : VARCHAR(100)
+  email : VARCHAR(150)
+  telefono : VARCHAR(20)
+  clave_hash : VARCHAR(255)
+  fecha_creacion : TIMESTAMP
+}
+
+entity "pqrs" as Pqrs {
+  * id : SERIAL
+  --
+  radicado : VARCHAR(20)
+  tipo : VARCHAR(20)
+  asunto : VARCHAR(200)
+  descripcion : TEXT
+  estado : VARCHAR(20)
+  cliente_id : INT <<FK>>
+  gestor_id : INT <<FK>>
+  fecha_radicado : TIMESTAMP
+  fecha_cierre : TIMESTAMP
+}
+
+entity "tramite" as Tramite {
+  * id : SERIAL
+  --
+  pqrs_id : INT <<FK>>
+  gestor_id : INT <<FK>>
+  estado_anterior : VARCHAR(20)
+  estado_nuevo : VARCHAR(20)
+  justificacion : TEXT
+  timestamp : TIMESTAMP
+}
+
+entity "adjunto" as Adjunto {
+  * id : SERIAL
+  --
+  pqrs_id : INT <<FK>>
+  nombre_archivo : VARCHAR(255)
+  url_nas : VARCHAR(500)
+  tipo_mime : VARCHAR(50)
+  tamano_bytes : BIGINT
+  fecha_subida : TIMESTAMP
+}
+
+entity "notificacion" as Notificacion {
+  * id : SERIAL
+  --
+  usuario_id : INT <<FK>>
+  pqrs_id : INT <<FK>>
+  tipo : VARCHAR(30)
+  plantilla : VARCHAR(50)
+  enviado_en : TIMESTAMP
+  estado : VARCHAR(20)
+  intentos : INT
+}
+
+entity "auditoria" as Auditoria {
+  * id : SERIAL
+  --
+  usuario_id : INT <<FK>>
+  accion : VARCHAR(50)
+  entidad : VARCHAR(50)
+  entidad_id : INT
+  ip : VARCHAR(45)
+  timestamp : TIMESTAMP
+  payload_json : JSONB
+}
+
+Rol ||--o{ Usuario : "asigna"
+Usuario ||--o{ Pqrs : "radica (cliente_id)"
+Usuario ||--o{ Pqrs : "tramita (gestor_id)"
+Usuario ||--o{ Tramite : "ejecuta"
+Pqrs ||--o{ Tramite : "tiene cambios"
+Pqrs ||--o{ Adjunto : "incluye"
+Pqrs ||--o{ Notificacion : "dispara"
+Usuario ||--o{ Notificacion : "recibe"
+Usuario ||--o{ Auditoria : "genera"
+
+note right of Pqrs
+  Estado valido:
+  nuevo, en_proceso,
+  resuelto, rechazado.
+  Tipo: peticion, queja,
+  reclamo, sugerencia.
+end note
+
+note right of Tramite
+  LOG DE NEGOCIO.
+  Una PQRS tiene N tramites
+  (uno por cada cambio de estado).
+  Visible al cliente.
+end note
+
+note right of Auditoria
+  LOG TECNICO via AOP.
+  Toda operacion CRUD del
+  dominio queda registrada.
+  Solo accesible por admin.
+end note
+
+@enduml
