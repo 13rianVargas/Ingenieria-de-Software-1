@@ -1,0 +1,55 @@
+@startuml
+' Vista de Casos de Uso — Arquitectura PQRS
+' Mapa de actores y CU arquitectonicamente significativos
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+
+actor "Cliente\n(Ciudadano)" as Cliente
+actor "Gestor de PQRS" as Gestor
+actor "Administrador" as Admin
+actor "Sistema Notificador\n(SMTP, automatico)" as Notificador <<system>>
+
+rectangle "Sistema PQRS — SuperMarket" {
+  usecase "CU-01\nGestionar Registro Cliente" as CU01
+  usecase "CU-02\nAutenticarse (Login)" as CU02
+  usecase "CU-03\nRadicar PQRS" as CU03
+  usecase "CU-04\nConsultar PQRS Propias" as CU04
+  usecase "CU-05\nGestionar Bandeja Entrada" as CU05
+  usecase "CU-06\nTramitar PQRS" as CU06
+  usecase "CU-07\nGenerar Reportes PDF" as CU07
+  usecase "CU-08\nGestionar Seguridad Cuenta" as CU08
+}
+
+Cliente --> CU02
+Cliente --> CU03
+Cliente --> CU04
+Cliente --> CU08
+
+Gestor --> CU02
+Gestor --> CU05
+Gestor --> CU06
+Gestor --> CU07
+
+Admin --> CU02
+Admin --> CU08
+
+CU03 ..> CU01 : <<include>>
+CU03 ..> Notificador : <<extend>>\nnotificacion radicado
+CU06 ..> Notificador : <<extend>>\nnotificacion cambio estado
+
+note bottom of CU03
+  Arquitectonicamente significativo:
+  trigger de registro automatico,
+  almacenamiento PDF en NAS,
+  envio asincrono de correo.
+end note
+
+note bottom of CU05
+  Arquitectonicamente significativo:
+  paginacion sobre miles de PQRS,
+  filtros con consulta optimizada,
+  acceso controlado por rol.
+end note
+
+@enduml
