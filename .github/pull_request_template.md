@@ -31,7 +31,7 @@ Lee la guia: Proyecto-Final/.github/CONTRIBUTING.md
 - [ ] Build pasa (`pnpm run build`).
 - [ ] Sin credenciales hardcoded ni secretos.
 - [ ] Sin `console.log` ni codigo comentado muerto.
-- [ ] CODEOWNERS auto-asigno reviewers correctos.
+- [ ] Reviewer asignado manualmente (owner del modulo afectado).
 - [ ] Capturas adjuntas si el PR toca UI.
 
 ## Archivos compartidos
