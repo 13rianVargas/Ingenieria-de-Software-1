@@ -56,4 +56,4 @@ Para reglas de la implementacion (commits, ramas, CI, ownership) ver [`Proyecto-
 
 ### Ownership
 
-Ver `Proyecto-Final/.github/CONTRIBUTING.md` seccion 5 y `.github/CODEOWNERS`.
+Ver `Proyecto-Final/.github/CONTRIBUTING.md` seccion 5.
