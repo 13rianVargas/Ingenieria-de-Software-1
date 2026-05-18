@@ -9,13 +9,14 @@ Aplica a todo lo que viva en `Proyecto-Final/database/`. Reglas globales en [`..
 ## Stack
 
 - **PostgreSQL 15** — motor relacional.
-- **Neon** — host cloud serverless del Postgres. Branch `dev` compartido por todo el equipo (free tier).
-- **Flyway CLI** — migraciones versionadas via SQL plano. Instalable con `brew install flyway`.
+- **Neon** — host cloud serverless del Postgres. Branch compartido por todo el equipo (free tier).
+- **Flyway** — migraciones versionadas via SQL plano. Aplicadas por **GitHub Action `db-migrate`** al mergear PR a `develop`/`main`.
 
 Justificacion:
 - Postgres por requisito academico + soporte JSON, full-text search, indices GIN.
 - Neon sobre RDS/Supabase: free tier suficiente, branching tipo git, cold start tolerable para academico, sin tarjeta requerida.
 - Flyway sobre Liquibase: SQL puro, sin XML/YAML, mas legible para review.
+- Migraciones via GH Action: **devs no instalan Flyway local**. CI runner trae la herramienta cacheada.
 - **Sin Docker.** La BD vive en Neon. Si necesitas offline, instala Postgres local por tu cuenta.
 
 ---
@@ -102,25 +103,30 @@ Adaptar nombres y campos exactos al modelo Taller-6 portado a PQRS (`../docs/`).
 
 ## Setup (todos los devs)
 
-1. Pedir a Brian el `.env` con `DATABASE_URL` (pooled) y `DATABASE_URL_DIRECT` (para migraciones).
+1. Pedir a Brian el `DATABASE_URL` (pooled, rol `pqrs_app`) via canal privado.
 2. Crear `.env` local en `Proyecto-Final/database/.env` (gitignored).
-3. Verificar conexion:
+3. (Opcional) Verificar conexion con cualquier cliente Postgres (`psql`, DBeaver, PgAdmin, TablePlus). Ejemplo:
 
    ```bash
    source .env
-   psql "$DATABASE_URL_DIRECT" -c "\dt"
+   psql "$DATABASE_URL" -c "\dt"
    ```
 
-## Aplicar migraciones (solo Brian)
+**Devs NO necesitan Flyway ni Docker.** Solo el cliente Postgres opcional para inspeccionar.
+
+## Aplicar migraciones (automatico via CI)
+
+GitHub Action `.github/workflows/db-migrate.yml` aplica Flyway al mergear PR que toque `migrations/**` a `develop` o `main`.
+
+Disparar manual desde UI: GitHub Actions tab → `db-migrate` → Run workflow. O CLI:
 
 ```bash
-brew install flyway
-cd Proyecto-Final/database
-source .env
-flyway -configFiles=flyway.conf migrate
+gh workflow run db-migrate.yml
 ```
 
-Backend Spring Boot (cuando exista) corre con `spring.flyway.enabled=false` por defecto para evitar conflictos entre devs.
+Brian configuro el GitHub Secret `DATABASE_URL_DIRECT` con el endpoint sin pooler + rol `neondb_owner`. **Ese secret nunca se comparte ni se commitea.**
+
+Backend Spring Boot corre con `spring.flyway.enabled=false` por defecto. El CI es la unica fuente de verdad para migraciones.
 
 ---
 
