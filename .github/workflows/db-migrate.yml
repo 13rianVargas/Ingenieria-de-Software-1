@@ -1,0 +1,52 @@
+name: db-migrate
+
+# Aplica migraciones Flyway a Neon cuando se mergea PR que toca migraciones.
+# Tambien disparable manual desde GitHub UI (Actions tab → db-migrate → Run workflow).
+#
+# Requisito: GitHub Secret DATABASE_URL_DIRECT con connection string Neon
+# (rol neondb_owner, endpoint SIN -pooler, sslmode=require).
+
+on:
+  push:
+    branches: [develop, main]
+    paths:
+      - 'Proyecto-Final/database/migrations/**'
+      - '.github/workflows/db-migrate.yml'
+  workflow_dispatch: {}
+
+concurrency:
+  group: db-migrate
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    name: flyway migrate
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Proyecto-Final/database
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Flyway CLI
+        run: |
+          wget -qO flyway.tgz https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/10.20.1/flyway-commandline-10.20.1-linux-x64.tar.gz
+          tar xzf flyway.tgz
+          echo "$PWD/flyway-10.20.1" >> "$GITHUB_PATH"
+
+      - name: Validate
+        env:
+          DATABASE_URL_DIRECT: ${{ secrets.DATABASE_URL_DIRECT }}
+        run: flyway -configFiles=flyway.conf -url="$DATABASE_URL_DIRECT" validate
+
+      - name: Migrate
+        env:
+          DATABASE_URL_DIRECT: ${{ secrets.DATABASE_URL_DIRECT }}
+        run: flyway -configFiles=flyway.conf -url="$DATABASE_URL_DIRECT" migrate
+
+      - name: Info
+        env:
+          DATABASE_URL_DIRECT: ${{ secrets.DATABASE_URL_DIRECT }}
+        run: flyway -configFiles=flyway.conf -url="$DATABASE_URL_DIRECT" info
