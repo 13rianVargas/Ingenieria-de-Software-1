@@ -8,37 +8,38 @@ Aplica a todo lo que viva en `Proyecto-Final/database/`. Reglas globales en [`..
 
 ## Stack
 
-- **PostgreSQL 15+** — motor relacional.
-- **Flyway** — migraciones versionadas via SQL plano.
-- **Docker Compose** — Postgres local para desarrollo.
+- **PostgreSQL 15** — motor relacional.
+- **Neon** — host cloud serverless del Postgres. Branch `dev` compartido por todo el equipo (free tier).
+- **Flyway CLI** — migraciones versionadas via SQL plano. Instalable con `brew install flyway`.
 
 Justificacion:
-- Postgres por requisito academico (Taller-6) + soporte JSON, full-text search, particionado.
+- Postgres por requisito academico + soporte JSON, full-text search, indices GIN.
+- Neon sobre RDS/Supabase: free tier suficiente, branching tipo git, cold start tolerable para academico, sin tarjeta requerida.
 - Flyway sobre Liquibase: SQL puro, sin XML/YAML, mas legible para review.
+- **Sin Docker.** La BD vive en Neon. Si necesitas offline, instala Postgres local por tu cuenta.
 
 ---
 
-## Estructura propuesta
+## Estructura
 
 ```
 Proyecto-Final/database/
 ├── AGENTS.md              # este archivo
-├── README.md              # como correr local
-├── docker-compose.yml     # Postgres 15 con volumen
-├── schema/                # DDL de referencia (no se ejecuta directo, doc humano)
-│   ├── usuarios.sql
-│   ├── pqrs.sql
-│   └── tramites.sql
-├── migrations/            # Flyway versionado (lo que se ejecuta)
-│   ├── V1__init.sql
-│   ├── V2__usuarios.sql
-│   ├── V3__pqrs.sql
-│   └── ...
-├── seeds/                 # datos demo solo para dev
-│   ├── usuarios_demo.sql
-│   └── pqrs_demo.sql
-└── er-diagram/            # diagrama entidad-relacion
-    └── README.md          # link a Taller-6 Vista Datos adaptada PQRS
+├── README.md              # setup Neon + Flyway CLI
+├── .env.example           # plantilla connection strings
+├── flyway.conf            # config Flyway CLI
+├── migrations/            # Flyway versionado
+│   ├── V1__usuarios.sql
+│   ├── V2__pqrs.sql
+│   ├── V3__tramites_adjuntos.sql
+│   ├── V4__notificaciones.sql
+│   └── V5__auditoria.sql
+├── seeds/
+│   └── demo.sql
+├── schema/                # referencia humana
+│   └── README.md
+└── er-diagram/            # apunta al MER en docs/
+    └── README.md
 ```
 
 ---
@@ -99,15 +100,27 @@ Adaptar nombres y campos exactos al modelo Taller-6 portado a PQRS (`../docs/`).
 
 ---
 
-## Setup local
+## Setup (todos los devs)
+
+1. Pedir a Brian el `.env` con `DATABASE_URL` (pooled) y `DATABASE_URL_DIRECT` (para migraciones).
+2. Crear `.env` local en `Proyecto-Final/database/.env` (gitignored).
+3. Verificar conexion:
+
+   ```bash
+   source .env
+   psql "$DATABASE_URL_DIRECT" -c "\dt"
+   ```
+
+## Aplicar migraciones (solo Brian)
 
 ```bash
+brew install flyway
 cd Proyecto-Final/database
-docker compose up -d
-# Aplicar migraciones (cuando exista pom.xml en backend, Flyway corre via Spring)
-# Mientras tanto: psql manual
-psql -h localhost -U pqrs -d pqrs_dev -f migrations/V1__init.sql
+source .env
+flyway -configFiles=flyway.conf migrate
 ```
+
+Backend Spring Boot (cuando exista) corre con `spring.flyway.enabled=false` por defecto para evitar conflictos entre devs.
 
 ---
 
@@ -129,4 +142,6 @@ psql -h localhost -U pqrs -d pqrs_dev -f migrations/V1__init.sql
 | Tengo conflicto en numero de migracion con PR de otro dev | Renombrar mi `V{N}` al siguiente disponible, push force a mi branch |
 | Backend pide un campo que no existe | Crear migracion `V{N+1}__add_campo.sql`, no editar la vieja |
 | Necesito borrar data en dev | `seeds/` o script aparte en `tools/`, no via migracion |
-| Postgres local no arranca | `docker compose down -v && docker compose up -d` para recrear volumen |
+| Cold start lento Neon | Normal: free tier suspende compute tras 5 min inactivo. Primer query ~1s |
+| `connection refused` Neon | Verificar `sslmode=require` en URL y password actualizado |
+| Quiero datos aislados sin afectar al equipo | Crear branch propio en Neon UI: Settings → Branches → New |
