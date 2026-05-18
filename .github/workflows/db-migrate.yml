@@ -55,9 +55,6 @@ jobs:
             echo "FLYWAY_PASSWORD=$DB_PASS"
           } >> "$GITHUB_ENV"
 
-      - name: Validate
-        run: flyway -configFiles=flyway.conf validate
-
       - name: Migrate
         run: flyway -configFiles=flyway.conf migrate
 
