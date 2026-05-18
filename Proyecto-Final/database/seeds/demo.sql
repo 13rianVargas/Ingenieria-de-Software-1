@@ -1,6 +1,6 @@
 -- seeds/demo.sql
--- Datos demo para desarrollo local. NO ejecutar en produccion.
--- Carga: docker compose exec -T postgres psql -U pqrs -d pqrs_dev < seeds/demo.sql
+-- Datos demo para desarrollo. NO ejecutar en produccion.
+-- Carga manual (Brian, post-migrate): psql "$DATABASE_URL_DIRECT" < seeds/demo.sql
 
 -- Usuarios demo (clave plana de los 3: "Demo2026!" para pruebas)
 -- Hash BCrypt generado con cost 12. Cambiar en cada entorno real.
