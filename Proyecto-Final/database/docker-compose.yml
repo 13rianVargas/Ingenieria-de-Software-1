@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: pqrs-db
+    environment:
+      POSTGRES_DB: ${DB_NAME:-pqrs_dev}
+      POSTGRES_USER: ${DB_USER:-pqrs}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-pqrs}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pqrs-pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-pqrs} -d ${DB_NAME:-pqrs_dev}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  flyway:
+    image: flyway/flyway:10-alpine
+    container_name: pqrs-flyway
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./migrations:/flyway/sql
+    command: -url=jdbc:postgresql://postgres:5432/${DB_NAME:-pqrs_dev} -user=${DB_USER:-pqrs} -password=${DB_PASSWORD:-pqrs} -connectRetries=10 migrate
+
+volumes:
+  pqrs-pg-data:
