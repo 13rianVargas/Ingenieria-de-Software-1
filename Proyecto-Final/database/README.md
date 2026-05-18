@@ -102,12 +102,18 @@ psql "$DATABASE_URL_DIRECT" -c "TRUNCATE auditoria, notificacion, adjunto, trami
 
 ### (Opcional) Correr Flyway local para troubleshoot
 
-Solo si necesitas debugear una migracion fallida sin esperar al CI:
+Solo si necesitas debugear una migracion fallida sin esperar al CI. Flyway no acepta credenciales embebidas en URL, hay que parsear primero:
 
 ```bash
 brew install flyway      # macOS
 cd Proyecto-Final/database
-source .env              # con DATABASE_URL_DIRECT
+
+# Parsear .env (formato libpq) a vars Flyway
+URL="$DATABASE_URL_DIRECT"
+export FLYWAY_USER=$(echo "$URL" | sed -E 's|^postgres(ql)?://([^:]+):.*|\2|')
+export FLYWAY_PASSWORD=$(echo "$URL" | sed -E 's|^postgres(ql)?://[^:]+:([^@]+)@.*|\2|')
+export FLYWAY_URL="jdbc:postgresql://$(echo "$URL" | sed -E 's|^postgres(ql)?://[^@]+@(.*)$|\2|')"
+
 flyway -configFiles=flyway.conf migrate
 ```
 

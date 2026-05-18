@@ -4,7 +4,11 @@ name: db-migrate
 # Tambien disparable manual desde GitHub UI (Actions tab → db-migrate → Run workflow).
 #
 # Requisito: GitHub Secret DATABASE_URL_DIRECT con connection string Neon
-# (rol neondb_owner, endpoint SIN -pooler, sslmode=require).
+# en formato libpq: postgresql://USER:PASS@HOST/DB?sslmode=require
+# (rol neondb_owner, endpoint SIN -pooler).
+#
+# El workflow extrae user/password de la URL y construye el JDBC URL
+# (Flyway no acepta credenciales embebidas en la URL).
 
 on:
   push:
@@ -36,17 +40,26 @@ jobs:
           tar xzf flyway.tgz
           echo "$PWD/flyway-10.20.1" >> "$GITHUB_PATH"
 
-      - name: Validate
+      - name: Parse Neon URL into JDBC + credentials
         env:
           DATABASE_URL_DIRECT: ${{ secrets.DATABASE_URL_DIRECT }}
-        run: flyway -configFiles=flyway.conf -url="$DATABASE_URL_DIRECT" validate
+        run: |
+          URL="$DATABASE_URL_DIRECT"
+          DB_USER=$(echo "$URL" | sed -E 's|^postgres(ql)?://([^:]+):.*|\2|')
+          DB_PASS=$(echo "$URL" | sed -E 's|^postgres(ql)?://[^:]+:([^@]+)@.*|\2|')
+          HOSTDB=$(echo "$URL" | sed -E 's|^postgres(ql)?://[^@]+@(.*)$|\2|')
+          echo "::add-mask::$DB_PASS"
+          {
+            echo "FLYWAY_URL=jdbc:postgresql://$HOSTDB"
+            echo "FLYWAY_USER=$DB_USER"
+            echo "FLYWAY_PASSWORD=$DB_PASS"
+          } >> "$GITHUB_ENV"
+
+      - name: Validate
+        run: flyway -configFiles=flyway.conf validate
 
       - name: Migrate
-        env:
-          DATABASE_URL_DIRECT: ${{ secrets.DATABASE_URL_DIRECT }}
-        run: flyway -configFiles=flyway.conf -url="$DATABASE_URL_DIRECT" migrate
+        run: flyway -configFiles=flyway.conf migrate
 
       - name: Info
-        env:
-          DATABASE_URL_DIRECT: ${{ secrets.DATABASE_URL_DIRECT }}
-        run: flyway -configFiles=flyway.conf -url="$DATABASE_URL_DIRECT" info
+        run: flyway -configFiles=flyway.conf info
