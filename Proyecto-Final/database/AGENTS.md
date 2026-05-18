@@ -135,7 +135,7 @@ Backend Spring Boot corre con `spring.flyway.enabled=false` por defecto. El CI e
 - **No** crees `.sql` con nombre raro. Sigue `V{N}__descripcion.sql`.
 - **No** edites migraciones ya mergeadas — crea nueva.
 - **No** commitees dumps de produccion (`*.dump`, `*.sql.gz`) — `.gitignore` debe bloquearlos.
-- **No** hardcodees credenciales en `docker-compose.yml`. Usa variables de entorno con valores default dummy.
+- **No** commitees `.env` reales. Solo `.env.example` con valores dummy.
 - **Si** necesitas cambiar el modelo en runtime: nueva migracion, deploy, no `ALTER` manual.
 - **Si** tu cambio impacta queries del backend: avisa a Juli Criollo, PR coordinado.
 

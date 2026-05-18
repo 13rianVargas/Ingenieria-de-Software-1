@@ -10,8 +10,9 @@ Esta carpeta queda como espacio para:
 - Diagramas auxiliares fuera del MER principal.
 - Notas tecnicas sobre decisiones de schema.
 
-Para ver el schema actual aplicado, conectarse a la BD y correr:
+Para ver el schema actual aplicado, conectarse a Neon y correr:
 
 ```bash
-docker compose exec postgres pg_dump -U pqrs -d pqrs_dev --schema-only
+# Direct endpoint (Brian) o cualquier cliente Postgres apuntando a Neon
+pg_dump "$DATABASE_URL_DIRECT" --schema-only
 ```
