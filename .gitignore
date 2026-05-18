@@ -28,6 +28,12 @@ Taller-7/PlanDePruebas/plan-de-pruebas.docx
 **/.angular/
 **/node_modules/
 
+# Env files (credenciales locales — usar .env.example como plantilla)
+.env
+.env.local
+.env.*.local
+!.env.example
+
 # IDEs
 .vscode/
 .idea/
