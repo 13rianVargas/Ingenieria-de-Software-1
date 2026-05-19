@@ -13,8 +13,9 @@
 | Versión | Fecha | Descripción Cambio |
 | :--- | :--- | :--- |
 | 01 | 12/05/2026 | Creación inicial de los requerimientos funcionales mapeados a los Casos de Uso. |
-| 02 | 12/05/2026 | Reestructuración a 12 Requerimientos Funcionales estrictos basados en las 12 funcionalidades principales del sistema, mapeados a los 8 Casos de Uso existentes (Opción 1). |
+| 02 | 12/05/2026 | Reestructuración a 12 Requerimientos Funcionales estrictos basados en las 12 funcionalidades obligatorias del MVP (de las 17 totales en `1-Funcionalidades.md`; las restantes 5 son mejoras opcionales fuera del alcance del MVP), mapeados a los 8 Casos de Uso existentes. |
 | 03 | 18/05/2026 | Conversión a formato híbrido: cada RF incluye Historia de Usuario y Criterios de Aceptación además del flujo de eventos detallado. |
+| 04 | 19/05/2026 | Revisión preparación SRS: aclarada inconsistencia 12 vs 17 funcionalidades, removida referencia interna "(Opción 1)", removida nota "(Punto de extensión)" en RF-12, ampliado glosario con 10 términos técnicos (HU, CA, MVP, Sprint, JWT, BCrypt, JPA, AOP, NAS, SMTP). |
 
 ---
 
@@ -33,10 +34,20 @@
 | Término | Descripción |
 | :--- | :--- |
 | **PQRS** | Peticiones, Quejas, Reclamos o Sugerencias. Motivo principal del contacto del cliente con SuperMarket. |
-| **Radicado** | Número único autogenerado por el sistema utilizado para hacer seguimiento a una PQRS. |
-| **Anexo** | Documento complementario (exclusivamente en formato PDF) adjunto a la PQRS por el Cliente. |
+| **Radicado** | Número único autogenerado por el sistema utilizado para hacer seguimiento a una PQRS. Formato `PQRS-YYYY-NNNNNN`. |
+| **Anexo** | Documento complementario (exclusivamente en formato PDF, máx. 5 MB) adjunto a la PQRS por el Cliente. |
 | **Estado del Radicado** | Condición en la que se encuentra la PQRS (Nuevo, En proceso, Resuelto, Rechazado). |
 | **Bandeja de Entrada** | Vista de la Aplicación Web donde el Gestor visualiza el listado general de todas las PQRS. |
+| **HU** | Historia de Usuario. Descripción funcional desde la perspectiva del actor: "Como X, quiero Y, para Z". |
+| **CA** | Criterios de Aceptación. Condiciones verificables que un RF debe cumplir para considerarse implementado. Formato Dado/Cuando/Entonces. |
+| **MVP** | Minimum Viable Product. Subconjunto mínimo de funcionalidades suficiente para entregar valor y validar el sistema. En este proyecto: las 12 funcionalidades obligatorias. |
+| **Sprint** | Iteración de duración fija (2 semanas) en la cual el equipo entrega un incremento del producto. |
+| **JWT** | JSON Web Token. Estándar de token firmado utilizado para mantener la sesión del usuario autenticado sin estado en el servidor. |
+| **BCrypt** | Algoritmo de hashing de contraseñas con factor de costo configurable. Usado para almacenar `usuario.clave_hash` (cost 12). |
+| **JPA / Hibernate** | Java Persistence API y su implementación de referencia. ORM utilizado por el backend Spring Boot para mapear entidades de dominio a tablas relacionales. |
+| **AOP** | Aspect-Oriented Programming. Patrón usado por el módulo de auditoría para interceptar operaciones CRUD del dominio sin acoplar código. |
+| **NAS** | Network Attached Storage. Sistema de archivos compartido donde se almacenan los PDFs adjuntos de las PQRS (la BD solo guarda la metadata). |
+| **SMTP / SMTPS** | Protocolo de envío de correo electrónico. SMTPS es la variante sobre TLS, usada por el módulo de notificaciones. |
 
 ---
 
@@ -410,7 +421,7 @@
 | **Nombre** | Notificación de Confirmación (Correo) |
 | **Resumen** | Envío automático de correo electrónico al cliente confirmando la radicación exitosa de su PQRS, incluyéndole su número de radicado (y su contraseña si fue registro nuevo). |
 | **Actor** | Sistema Notificador |
-| **Caso de Uso Asociado** | CU-03: Radicar PQRS (Punto de extensión) |
+| **Caso de Uso Asociado** | CU-03: Radicar PQRS |
 | **Precondición** | El sistema procesó y asignó un número de radicado a una PQRS (RF-01). |
 | **Postcondición** | Se entrega un mensaje al servidor SMTP para ser enviado al cliente. |
 
