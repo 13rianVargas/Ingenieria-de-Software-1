@@ -76,7 +76,7 @@ Esta vista establece los CU arquitectónicamente significativos: aquellos que im
 |---|---|
 | **Cliente (Ciudadano)** | Persona natural que radica, consulta y filtra sus PQRS desde la App Móvil. |
 | **Gestor de PQRS** | Empleado de SuperMarket que tramita radicados desde la App Web. |
-| **Sistema Notificador** | Actor automático que envía correos electrónicos (radicación, cambio de estado, contraseñas autogeneradas). |
+| **Sistema** | Actor automático que envía correos electrónicos (radicación, cambio de estado, contraseñas autogeneradas). |
 
 > **Nota sobre Administrador:** El contexto del proyecto (`0-Contexto-Proyecto-Final.md`) no menciona un actor Administrador. El sistema reserva el rol `admin` en BD para administración futura (auditoría, parametrización) pero **no se modela como actor en el MVP**. Entrará al diagrama cuando el equipo planifique funcionalidades administrativas post-MVP.
 

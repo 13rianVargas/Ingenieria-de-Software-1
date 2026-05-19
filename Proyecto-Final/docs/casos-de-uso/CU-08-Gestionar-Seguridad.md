@@ -10,7 +10,7 @@ Permite a los usuarios (Cliente o Gestor) administrar las credenciales de acceso
 ## 2. Actores
 * **Cliente:** Actor que administra su acceso desde la App Móvil o Web.
 * **Gestor de PQRS:** Actor que administra su acceso desde la Aplicación Web.
-* **Sistema (Notificador):** Actor encargado de enviar el correo electrónico de recuperación de contraseña.
+* **Sistema:** Actor encargado de enviar el correo electrónico de recuperación de contraseña.
 
 ## 3. Precondiciones
 * Para *Cambiar Contraseña* y *Cerrar Sesión*, el usuario debe estar autenticado en el sistema (CU-02).
@@ -34,7 +34,7 @@ Permite a los usuarios (Cliente o Gestor) administrar las credenciales de acceso
     2. El sistema solicita el "Número de Identificación" o "Correo Electrónico".
     3. El usuario ingresa el dato y presiona "Recuperar".
     4. El sistema busca al usuario en la BD. Si existe, genera un token temporal o una nueva contraseña autogenerada (como en el CU-01).
-    5. El Sistema Notificador envía un correo electrónico al usuario con las instrucciones o la nueva credencial.
+    5. El Sistema envía un correo electrónico al usuario con las instrucciones o la nueva credencial.
     6. El sistema informa en pantalla: "Se han enviado instrucciones a su correo electrónico registrado."
 *   **Flujo Alternativo 2 (Cerrar Sesión):**
     1. El usuario (Cliente o Gestor), estando autenticado, hace clic en "Cerrar Sesión" o "Salir" desde el menú principal de la App/Web.

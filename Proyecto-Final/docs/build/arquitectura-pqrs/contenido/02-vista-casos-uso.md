@@ -9,11 +9,11 @@ La vista de casos de uso establece los requisitos funcionales arquitectonicament
 | Cliente (Ciudadano) | Persona natural que radica, consulta y filtra sus PQRS desde la App Movil. |
 | Gestor de PQRS | Empleado de SuperMarket que tramita radicados desde la App Web (panel administrativo). |
 | Administrador | Rol tecnico con acceso a parametrizacion del sistema y consulta de auditoria. |
-| Sistema Notificador | Actor automatico que envia correos electronicos en eventos clave (radicacion, cambio de estado, contraseña autogenerada). |
+| Sistema | Actor automatico que envia correos electronicos en eventos clave (radicacion, cambio de estado, contraseña autogenerada). |
 
 ## 2.2 Diagrama general de casos de uso
 
-El diagrama completo vive en el archivo PlantUML `diagramas/arquitectura/1-vista-casos-uso.puml` del repositorio. Resumidamente, los actores se relacionan con los 8 casos de uso del sistema y con las relaciones de inclusion/extension hacia el sistema notificador.
+El diagrama completo vive en el archivo PlantUML `diagramas/arquitectura/1-vista-casos-uso.puml` del repositorio. Resumidamente, los actores se relacionan con los 8 casos de uso del sistema y con las relaciones de inclusion/extension hacia el sistema.
 
 ## 2.3 Casos de uso arquitectonicamente significativos
 

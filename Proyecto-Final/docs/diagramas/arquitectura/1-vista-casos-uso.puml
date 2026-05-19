@@ -1,5 +1,5 @@
 @startuml
-' Vista de Casos de Uso — Arquitectura PQRS
+' Vista de Casos de Uso — Arquitectura PQRS (MVP)
 ' Mapa de actores y CU arquitectonicamente significativos
 left to right direction
 skinparam packageStyle rectangle
@@ -7,10 +7,9 @@ skinparam actorStyle awesome
 
 actor "Cliente\n(Ciudadano)" as Cliente
 actor "Gestor de PQRS" as Gestor
-actor "Administrador" as Admin
-actor "Sistema Notificador\n(SMTP, automatico)" as Notificador <<system>>
+actor "Sistema\n(SMTP, automatico)" as Sistema <<system>>
 
-rectangle "Sistema PQRS — SuperMarket" {
+rectangle "Sistema PQRS — SuperMarket (MVP)" {
   usecase "CU-01\nGestionar Registro Cliente" as CU01
   usecase "CU-02\nAutenticarse (Login)" as CU02
   usecase "CU-03\nRadicar PQRS" as CU03
@@ -18,25 +17,19 @@ rectangle "Sistema PQRS — SuperMarket" {
   usecase "CU-05\nGestionar Bandeja Entrada" as CU05
   usecase "CU-06\nTramitar PQRS" as CU06
   usecase "CU-07\nGenerar Reportes PDF" as CU07
-  usecase "CU-08\nGestionar Seguridad Cuenta" as CU08
 }
 
 Cliente --> CU02
 Cliente --> CU03
 Cliente --> CU04
-Cliente --> CU08
 
 Gestor --> CU02
 Gestor --> CU05
 Gestor --> CU06
 Gestor --> CU07
 
-Admin --> CU02
-Admin --> CU08
-
 CU03 ..> CU01 : <<include>>
-CU03 ..> Notificador : <<extend>>\nnotificacion radicado
-CU06 ..> Notificador : <<extend>>\nnotificacion cambio estado
+CU03 ..> Sistema : <<extend>>\nnotificacion radicado
 
 note bottom of CU03
   Arquitectonicamente significativo:
@@ -50,6 +43,15 @@ note bottom of CU05
   paginacion sobre miles de PQRS,
   filtros con consulta optimizada,
   acceso controlado por rol.
+end note
+
+note bottom of Sistema
+  Actor automatico del backend.
+  En el MVP envia notificacion de
+  confirmacion al radicar (CU-03).
+  Notificacion de cambio de estado
+  desde CU-06 esta fuera de alcance
+  MVP (funcionalidad #16 post-MVP).
 end note
 
 @enduml
