@@ -274,8 +274,7 @@ Ver [`diagramas/arquitectura/5-vista-fisica.puml`](./diagramas/arquitectura/5-vi
 
 | Entidad | Descripcion |
 |---|---|
-| `usuario` | Centraliza Cliente, Gestor y Admin. Discriminado por `rol`. |
-| `rol` | Catalogo de roles. |
+| `usuario` | Centraliza Cliente, Gestor y Admin. Discriminado por el atributo `rol` (CHECK enum). |
 | `pqrs` | Cabecera de cada radicado. Estado, tipo, fechas, FK al cliente y al gestor asignado. |
 | `tramite` | Log de cambios de estado de la PQRS. Una PQRS tiene N tramites. |
 | `adjunto` | Metadata del PDF adjunto. El archivo binario vive en NAS. |

@@ -1,20 +1,13 @@
 @startuml
 ' Modelo Entidad-Relacion — Sistema PQRS SuperMarket
-' Adaptado del formato del Taller-6/Diagramas/6-Vista-Datos/1-Modelo-Entidad-Relacion.puml
 skinparam linetype ortho
 hide methods
 hide stereotypes
 
-entity "rol" as Rol {
-  * id : SERIAL
-  --
-  nombre : VARCHAR(20)
-}
-
 entity "usuario" as Usuario {
   * id : SERIAL
   --
-  rol_id : INT <<FK>>
+  rol : VARCHAR(20)
   tipo_doc : VARCHAR(4)
   num_doc : VARCHAR(20)
   nombres : VARCHAR(100)
@@ -85,7 +78,6 @@ entity "auditoria" as Auditoria {
   payload_json : JSONB
 }
 
-Rol ||--o{ Usuario : "asigna"
 Usuario ||--o{ Pqrs : "radica (cliente_id)"
 Usuario ||--o{ Pqrs : "tramita (gestor_id)"
 Usuario ||--o{ Tramite : "ejecuta"
@@ -94,6 +86,12 @@ Pqrs ||--o{ Adjunto : "incluye"
 Pqrs ||--o{ Notificacion : "dispara"
 Usuario ||--o{ Notificacion : "recibe"
 Usuario ||--o{ Auditoria : "genera"
+
+note right of Usuario
+  rol: CHECK enum
+  ('cliente','gestor','admin').
+  Sin tabla catalogo separada.
+end note
 
 note right of Pqrs
   Estado valido:
