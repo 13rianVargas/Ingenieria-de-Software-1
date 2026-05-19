@@ -33,7 +33,7 @@ El objetivo es que cuatro devs trabajen en paralelo sobre el mismo repo sin pisa
 | Guia operativa por modulo | AGENTS.md por modulo con stack, patrones y reglas | `Proyecto-Final/{database,backend}/AGENTS.md` y `Proyecto-Final/frontend/pqrs-app/src/app/{web,mobile}/AGENTS.md` |
 | Reglas para IA / Claude Code | CLAUDE.md por modulo que apunta al AGENTS.md hermano | `Proyecto-Final/CLAUDE.md` y `Proyecto-Final/{database,backend}/CLAUDE.md` y `frontend/pqrs-app/src/app/{web,mobile}/CLAUDE.md` |
 | Gitignore | Bloquea Office artifacts (HTM/DOC/DOCX), lockfiles npm/yarn, node_modules, build outputs, IDEs, `.venv/`, `__pycache__/` | `.gitignore` raiz del repo |
-| Pipelines de documentos | Generador `.docx` reusable basado en python-docx mas pyyaml. Mismo pipeline que el Taller-7 | `Proyecto-Final/docs/build/{arquitectura-pqrs,plan-pruebas-pqrs}/` |
+| Pipelines de documentos | Generador `.docx` reusable basado en python-docx mas pyyaml | `Proyecto-Final/docs/build/{arquitectura-pqrs,plan-pruebas-pqrs}/` |
 
 ---
 

@@ -1,6 +1,6 @@
 # Especificación de Requerimientos No Funcionales
 
-A continuación se presentan los requerimientos no funcionales extraídos directamente del enunciado y contexto del sistema de información de PQRS para Comercial Konrad (SuperMarket). Estos han sido acotados para soportar estrictamente las 12 funcionalidades principales del sistema y están estructurados usando el formato de plantilla del curso.
+A continuación se presentan los requerimientos no funcionales extraídos directamente del enunciado y contexto del sistema de información de PQRS para SuperMarket. Estos han sido acotados para soportar estrictamente las 12 funcionalidades principales del sistema y están estructurados usando el formato de plantilla del curso.
 
 <table border="1" style="border-collapse: collapse; width: 100%;">
   <tr>

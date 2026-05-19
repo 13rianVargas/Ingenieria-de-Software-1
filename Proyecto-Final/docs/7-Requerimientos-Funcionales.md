@@ -4,7 +4,7 @@
 
 | Campo | Descripción |
 | :--- | :--- |
-| **Nombre del proyecto:** | E-Commerce Comercial Konrad - Sistema de Gestión de PQRS |
+| **Nombre del proyecto:** | Sistema de Gestión de PQRS — SuperMarket |
 | **Nombre del equipo:** | Fábrica de Desarrollo Konrad |
 | **Estado del documento:** | Aprobado |
 | **Autores:** | Estudiantes de Ingeniería de Sistemas |
