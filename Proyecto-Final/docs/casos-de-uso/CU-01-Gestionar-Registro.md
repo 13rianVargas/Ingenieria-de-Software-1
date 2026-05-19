@@ -34,9 +34,7 @@ Permite registrar automáticamente a un ciudadano en el sistema cuando radica un
 
 ## 6. Diagrama del Caso de Uso
 
-![Diagrama de CU-01](imagenes-diagramas/CU-01.png)
-
-En el diagrama de vista de casos de uso (`docs/diagramas/arquitectura/1-vista-casos-uso.puml`) CU-01 aparece exclusivamente como destino del `<<include>>` desde CU-03. No hay flecha directa del actor Cliente hacia CU-01.
+En el diagrama de vista de casos de uso (`docs/diagramas/arquitectura/1-vista-casos-uso.puml`, render PNG en [`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) CU-01 aparece exclusivamente como destino del `<<include>>` desde CU-03. No hay flecha directa del actor Cliente hacia CU-01.
 
 ## 7. Fuera de Alcance MVP
 
