@@ -38,7 +38,7 @@ A continuación se presentan los requerimientos no funcionales (RNF) extraídos 
 **Documentación asociada:**
 
 - Documento de Arquitectura ([`9-Arquitectura-PQRS.md`](./9-Arquitectura-PQRS.md)) y su Vista de Implementación.
-- Script de Base de Datos y Modelo Entidad-Relación ([`11-Modelo-Entidad-Relacion.md`](./11-Modelo-Entidad-Relacion.md)).
+- Script de Base de Datos y Modelo Entidad-Relación (sección 8 del SAD, [`9-Arquitectura-PQRS.md`](./9-Arquitectura-PQRS.md)).
 - Cumplimiento detallado ([`10-Cumplimiento-RNF-PQRS.md`](./10-Cumplimiento-RNF-PQRS.md) §RNF-01).
 
 ---

@@ -275,7 +275,7 @@ Ver [`diagramas/arquitectura/5-vista-fisica.puml`](./diagramas/arquitectura/5-vi
 
 ## 7. Vista de Datos
 
-> El modelo entidad-relación completo y el diccionario de datos viven en [`11-Modelo-Entidad-Relacion.md`](./11-Modelo-Entidad-Relacion.md). Aquí solo se hace referencia a las entidades principales.
+> El modelo entidad-relación completo y el diccionario de datos viven en la **sección 8** de este mismo documento (Modelo Entidad-Relación). Aquí solo se hace referencia a las entidades principales para contextualizar la arquitectura.
 
 ### 7.1 Entidades principales
 

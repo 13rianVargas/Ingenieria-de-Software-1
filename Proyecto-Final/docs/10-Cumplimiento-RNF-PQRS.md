@@ -103,4 +103,4 @@ Mapeo detallado de cada RNF definido en [`8-Requerimientos-No-Funcionales.md`](.
 - Documento de RNF: [`8-Requerimientos-No-Funcionales.md`](./8-Requerimientos-No-Funcionales.md).
 - Vistas arquitectónicas: [`9-Arquitectura-PQRS.md`](./9-Arquitectura-PQRS.md).
 - Diagramas: [`diagramas/arquitectura/`](./diagramas/arquitectura/).
-- Modelo de datos: [`11-Modelo-Entidad-Relacion.md`](./11-Modelo-Entidad-Relacion.md).
+- Modelo de datos: ver §8 (Modelo Entidad-Relación) del SAD [`9-Arquitectura-PQRS.md`](./9-Arquitectura-PQRS.md).
