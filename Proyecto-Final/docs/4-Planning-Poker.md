@@ -1,5 +1,14 @@
 # PLANNING POKER (ESTIMACIÓN DE FUNCIONALIDADES)
 
+## Historial de Versiones
+
+| Versión | Fecha | Descripción Cambio |
+| :--- | :--- | :--- |
+| 01 | 13/05/2026 | Creación inicial: estimación Fibonacci de las 12 HU del MVP tras sesión de Planning Poker del equipo. Total 45 SP. |
+| 02 | 19/05/2026 | Revisión preparación SPMP: suma de historial. Estimaciones sin cambio. |
+
+---
+
 La siguiente estimación se realizará utilizando la secuencia de Fibonacci (1, 2, 3, 5, 8, 13...).
 Se toma como pivote la historia **HU-05 (Filtrar Radicados Propios)** con un valor de **1 Punto de Historia (SP)**, equivalente a 9 horas de trabajo efectivo.
 
