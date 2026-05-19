@@ -1,13 +1,12 @@
 # 7. Vista de Datos
 
-El modelo entidad-relacion completo, con todos los atributos, constraints, indices y diccionario de datos vive en el documento `11-Modelo-Entidad-Relacion.md` del proyecto. Esta seccion solo resume las entidades principales y sus relaciones para contextualizar la arquitectura.
+El modelo entidad-relacion completo, con todos los atributos, constraints, indices y diccionario de datos vive en la **sección 8** de este mismo documento (Modelo Entidad-Relación). Esta sección solo resume las entidades principales y sus relaciones para contextualizar la arquitectura.
 
 ## 7.1 Entidades principales
 
 | Entidad | Descripcion |
 |---|---|
-| usuario | Centraliza Cliente, Gestor y Admin. Discriminado por rol_id. Almacena hash de clave (BCrypt). |
-| rol | Catalogo de roles del sistema (cliente, gestor, admin). |
+| usuario | Centraliza Cliente, Gestor y Admin. Discriminado por el atributo `rol` (CHECK enum, sin tabla catalogo separada). Almacena hash de clave (BCrypt). |
 | pqrs | Cabecera de cada radicado. Estado actual, tipo, fechas, FK al cliente y al gestor asignado. |
 | tramite | Log de cambios de estado de la PQRS. Una PQRS tiene N tramites. Incluye estado anterior, estado nuevo, justificacion, timestamp y gestor responsable. |
 | adjunto | Metadata del PDF adjunto: nombre, ruta NAS, mime, tamaño. El archivo binario vive en NAS, no en BD. |
@@ -32,4 +31,4 @@ Los PDF adjuntos a las PQRS NO se almacenan como BLOB en PostgreSQL. Se almacena
 
 ## 7.4 Diagrama
 
-El diagrama MER vive en `diagramas/mer/mer-pqrs.puml` y se renderiza en `mer-pqrs.png`. La especificacion completa de cada columna (tipo SQL, nulabilidad, descripcion, ejemplo) vive en `11-Modelo-Entidad-Relacion.md` seccion 5.
+El diagrama MER y la especificación completa de cada columna (tipo SQL, nulabilidad, descripción, ejemplo, validaciones) viven en la sección 8 de este mismo documento.

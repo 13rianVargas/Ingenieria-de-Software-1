@@ -38,7 +38,7 @@
 - Requerimientos No Funcionales: `Proyecto-Final/docs/8-Requerimientos-No-Funcionales.md`.
 - Casos de Uso: `Proyecto-Final/docs/casos-de-uso/`.
 - Documento de Arquitectura: `Proyecto-Final/docs/9-Arquitectura-PQRS.md`.
-- Modelo de Datos: `Proyecto-Final/docs/11-Modelo-Entidad-Relacion.md`.
+- Modelo de Datos: sección 8 (Modelo Entidad-Relación) del SAD `Proyecto-Final/docs/9-Arquitectura-PQRS.md`.
 - Plantillas de Issue: `.github/ISSUE_TEMPLATE/test-case.yml` y `bug-report.yml`.
 
 ## A4. Plan de evolucion

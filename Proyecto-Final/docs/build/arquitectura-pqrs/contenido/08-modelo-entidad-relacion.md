@@ -1,34 +1,14 @@
-# Modelo Entidad-Relación — Sistema PQRS
+# 8. Modelo Entidad-Relación (Diccionario de Datos)
 
-> Documento del **MER** del sistema PQRS para SuperMarket. Sirve de fuente única de verdad para el diseño de la base de datos (`Proyecto-Final/database/`) y referencia para el dominio del backend.
+> Esta sección embebe el modelo entidad-relación detallado del sistema PQRS. Sirve también como **Diccionario de Datos** (entregable opcional #15) y como **Modelo Conceptual** (entregable opcional #13), ya que las entidades aquí definidas representan los conceptos del dominio a nivel abstracto, además del nivel relacional. La sección 7 (Vista de Datos) presenta el resumen ejecutivo del modelo; esta sección 8 contiene el detalle completo.
 
-## Historial de Versiones
+## 8.1 Diagrama MER
 
-| Versión | Fecha | Descripción Cambio |
-| :--- | :--- | :--- |
-| 01 | 13/05/2026 | Creación inicial del MER con 7 entidades (incluyendo tabla `rol` catálogo), relaciones, constraints, índices recomendados y diccionario de datos. |
-| 02 | 18/05/2026 | Sincronización con migración Flyway V1: eliminación de la tabla `rol` catálogo y reemplazo por CHECK constraint sobre `usuario.rol`. Renumeración del diccionario de datos. |
-| 03 | 19/05/2026 | Revisión preparación SAD: pasada general de acentuación ortográfica, suma de historial. **Próximo cambio (B.2)**: este documento será embebido como sección del SAD (`build/arquitectura-pqrs/contenido/`) y eliminado del raíz; las refs cruzadas en otros docs se actualizarán al SAD. |
+![Diagrama Entidad-Relación del Sistema PQRS](../../../diagramas/mer/mer-pqrs.png)
 
----
+## 8.2  Entidades y relaciones
 
-## 1. Introducción
-
-El presente documento describe el modelo de datos persistente del sistema PQRS. Está basado en los requerimientos funcionales (`7-Requerimientos-Funcionales.md`) y casos de uso (`casos-de-uso/`) del proyecto, y se alinea con la Vista de Datos del documento de arquitectura ([`9-Arquitectura-PQRS.md`](./9-Arquitectura-PQRS.md), sección 7).
-
----
-
-## 2. Diagrama MER
-
-Fuente: [`diagramas/mer/mer-pqrs.puml`](./diagramas/mer/mer-pqrs.puml).
-
-Render: `diagramas/mer/mer-pqrs.png` (generar con `plantuml mer-pqrs.puml` o herramienta equivalente).
-
----
-
-## 3. Entidades y relaciones
-
-### 3.1 Listado de entidades
+### 8.2.1 Listado de entidades
 
 | Entidad | Propósito |
 |---|---|
@@ -41,7 +21,7 @@ Render: `diagramas/mer/mer-pqrs.png` (generar con `plantuml mer-pqrs.puml` o her
 
 > **Nota sobre roles:** los roles del sistema (`cliente`, `gestor`, `admin`) se modelan como un CHECK constraint sobre `usuario.rol`, no como tabla catálogo separada. Decisión tomada para reducir joins en queries frecuentes (bandeja, autorización) y porque el conjunto de roles es cerrado y conocido de antemano. Cambios en el conjunto requieren migración Flyway, no escritura en runtime.
 
-### 3.2 Relaciones principales
+### 8.2.2 Relaciones principales
 
 | De | A | Cardinalidad | Significado |
 |---|---|---|---|
@@ -54,7 +34,7 @@ Render: `diagramas/mer/mer-pqrs.png` (generar con `plantuml mer-pqrs.puml` o her
 | `usuario` | `notificacion` | 1—N | Un usuario recibe varios correos. |
 | `usuario` | `auditoria` | 1—N | Un usuario genera N entradas de auditoría a lo largo del tiempo. |
 
-### 3.3 Diferencia entre `tramite` y `auditoria`
+### 8.2.3 Diferencia entre `tramite` y `auditoria`
 
 Tabla `tramite` = log de **negocio**. Visible al cliente. Lo escribe el dominio explícitamente cuando un Gestor cambia el estado de la PQRS. Sirve para que el cliente entienda el ciclo de vida (paso a `en_proceso` con tal justificación, paso a `resuelto` con tal otra).
 
@@ -64,15 +44,15 @@ No son redundantes. Cumplen roles ortogonales: uno es para el cliente, otro es p
 
 ---
 
-## 4. Constraints e índices
+## 8.3  Constraints e índices
 
-### 4.1 Constraints UNIQUE
+### 8.3.1 Constraints UNIQUE
 
 - `usuario.email` UNIQUE
 - `usuario.num_doc` UNIQUE
 - `pqrs.radicado` UNIQUE (formato `PQRS-YYYY-NNNNNN`)
 
-### 4.2 Constraints CHECK
+### 8.3.2 Constraints CHECK
 
 - `usuario.tipo_doc IN ('CC', 'CE', 'TI', 'PP')`
 - `usuario.rol IN ('cliente', 'gestor', 'admin')`
@@ -81,7 +61,7 @@ No son redundantes. Cumplen roles ortogonales: uno es para el cliente, otro es p
 - `adjunto.tipo_mime = 'application/pdf'` (solo PDF permitidos)
 - `adjunto.tamano_bytes <= 5242880` (5 MB max)
 
-### 4.3 Índices recomendados
+### 8.3.3 Índices recomendados
 
 Optimizan las queries más frecuentes del backend (bandeja, historial, notificaciones pendientes):
 
@@ -94,11 +74,11 @@ Optimizan las queries más frecuentes del backend (bandeja, historial, notificac
 
 ---
 
-## 5. Diccionario de Datos
+## 8.4  Diccionario de Datos
 
 > Esta sección cubre el entregable opcional **#15 Diccionario de Datos**. Especifica cada columna del modelo: tipo SQL, nulabilidad, descripción, ejemplo y validaciones.
 
-### 5.1 Tabla `usuario`
+### 8.4.1 Tabla `usuario`
 
 | Columna | Tipo SQL | Null | Descripción | Ejemplo | Validaciones |
 |---|---|---|---|---|---|
@@ -113,7 +93,7 @@ Optimizan las queries más frecuentes del backend (bandeja, historial, notificac
 | clave_hash | VARCHAR(255) | NO | Hash BCrypt de la clave | "$2a$12$..." | BCrypt cost 12 |
 | fecha_creacion | TIMESTAMP | NO | Timestamp de alta | "2026-05-15 10:00:00" | DEFAULT NOW() |
 
-### 5.2 Tabla `pqrs`
+### 8.4.2 Tabla `pqrs`
 
 | Columna | Tipo SQL | Null | Descripción | Ejemplo | Validaciones |
 |---|---|---|---|---|---|
@@ -128,7 +108,7 @@ Optimizan las queries más frecuentes del backend (bandeja, historial, notificac
 | fecha_radicado | TIMESTAMP | NO | Fecha de radicación | "2026-05-15 10:05:00" | DEFAULT NOW() |
 | fecha_cierre | TIMESTAMP | YES | Fecha de cierre (si aplica) | "2026-05-20 16:30:00" | Solo si estado IN ('resuelto','rechazado') |
 
-### 5.3 Tabla `tramite`
+### 8.4.3 Tabla `tramite`
 
 | Columna | Tipo SQL | Null | Descripción | Ejemplo | Validaciones |
 |---|---|---|---|---|---|
@@ -140,7 +120,7 @@ Optimizan las queries más frecuentes del backend (bandeja, historial, notificac
 | justificacion | TEXT | NO | Razón del cambio | "Se inicia investigación..." | Longitud mínima 10 caracteres, no solo espacios |
 | timestamp | TIMESTAMP | NO | Fecha del cambio | "2026-05-15 11:00:00" | DEFAULT NOW() |
 
-### 5.4 Tabla `adjunto`
+### 8.4.4 Tabla `adjunto`
 
 | Columna | Tipo SQL | Null | Descripción | Ejemplo | Validaciones |
 |---|---|---|---|---|---|
@@ -152,7 +132,7 @@ Optimizan las queries más frecuentes del backend (bandeja, historial, notificac
 | tamano_bytes | BIGINT | NO | Tamaño en bytes | 102400 | <= 5242880 (5 MB) |
 | fecha_subida | TIMESTAMP | NO | Fecha de subida | "2026-05-15 10:05:30" | DEFAULT NOW() |
 
-### 5.5 Tabla `notificacion`
+### 8.4.5 Tabla `notificacion`
 
 | Columna | Tipo SQL | Null | Descripción | Ejemplo | Validaciones |
 |---|---|---|---|---|---|
@@ -165,7 +145,7 @@ Optimizan las queries más frecuentes del backend (bandeja, historial, notificac
 | estado | VARCHAR(20) | NO | Estado del envío | "enviada" | IN ('pendiente','enviada','fallida') |
 | intentos | INT | NO | Número de reintentos | 0 | DEFAULT 0, max 5 |
 
-### 5.6 Tabla `auditoria`
+### 8.4.6 Tabla `auditoria`
 
 | Columna | Tipo SQL | Null | Descripción | Ejemplo | Validaciones |
 |---|---|---|---|---|---|
@@ -178,21 +158,3 @@ Optimizan las queries más frecuentes del backend (bandeja, historial, notificac
 | timestamp | TIMESTAMP | NO | Fecha de la acción | "2026-05-15 11:00:00" | DEFAULT NOW() |
 | payload_json | JSONB | YES | Snapshot del cambio | `{"estado_anterior":"nuevo","estado_nuevo":"en_proceso"}` | JSON válido |
 
----
-
-## 6. Cobertura entregables
-
-> Este documento (y la sección del SAD donde se embeberá próximamente) cubre tres entregables del Proyecto-Final:
->
-> 1. **#9 Modelo Entidad-Relación** (obligatorio) — secciones 2, 3, 4.
-> 2. **#13 Modelo Conceptual** (opcional) — las entidades y relaciones aquí definidas representan los **conceptos del dominio PQRS** a nivel abstracto, además del nivel relacional. No se genera un modelo conceptual separado para evitar redundancia.
-> 3. **#15 Diccionario de Datos** (opcional) — sección 5.
-
----
-
-## 7. Referencias cruzadas
-
-- Casos de uso: [`casos-de-uso/`](./casos-de-uso/) — fuente de las entidades modeladas.
-- Requerimientos funcionales: [`7-Requerimientos-Funcionales.md`](./7-Requerimientos-Funcionales.md) — cada RF se traduce a operaciones sobre estas entidades.
-- Documento de arquitectura: [`9-Arquitectura-PQRS.md`](./9-Arquitectura-PQRS.md) — Vista de Datos (sección 7).
-- Implementación: las migraciones Flyway en [`Proyecto-Final/database/migrations/`](../database/migrations/) materializan este modelo.
