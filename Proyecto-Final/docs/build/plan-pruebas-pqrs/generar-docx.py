@@ -164,6 +164,29 @@ def parse_markdown_section(doc, md_text):
             t = re.sub(r"`([^`]+)`", r"\1", t)
             return t.replace("§", "sección").strip()
 
+        m_img = re.match(r"^\s*!\[([^\]]*)\]\(([^)]+)\)\s*$", line)
+        if m_img:
+            img_path = (CONTENIDO / m_img.group(2)).resolve()
+            if img_path.exists():
+                try:
+                    doc.add_picture(str(img_path), width=Cm(15))
+                    last_para = doc.paragraphs[-1]
+                    last_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    caption = m_img.group(1)
+                    if caption:
+                        cap = doc.add_paragraph()
+                        cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                        cap_run = cap.add_run(caption)
+                        cap_run.font.size = Pt(9)
+                        cap_run.font.italic = True
+                        E._safe_font(cap_run)
+                except Exception as e:
+                    print(f"WARN: no se pudo embeber {img_path}: {e}")
+            else:
+                print(f"WARN: imagen no encontrada: {img_path}")
+            i += 1
+            continue
+
         if line.startswith("### "):
             E.add_heading(doc, _clean(line[4:]), level=3)
         elif line.startswith("## "):
