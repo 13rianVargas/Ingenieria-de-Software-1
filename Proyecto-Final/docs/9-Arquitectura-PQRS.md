@@ -1,6 +1,6 @@
 # Arquitectura del Sistema PQRS — SuperMarket
 
-> Este documento porta la arquitectura del Taller-6 (caso E-Commerce Konrad) al dominio real del Proyecto-Final: **Sistema de PQRS** para SuperMarket. Las decisiones de fondo (capas hexagonales, BCrypt+JWT, replicacion de BD, NAS para archivos, auditoria via AOP) se mantienen; el dominio funcional cambia y se simplifica.
+> Documento de arquitectura del **Sistema de PQRS** para SuperMarket. Define las decisiones de fondo (capas hexagonales, BCrypt+JWT, replicacion de BD, NAS para archivos, auditoria via AOP) y las traza al dominio funcional del Proyecto-Final.
 
 ---
 
@@ -20,7 +20,7 @@ Describir la arquitectura del sistema PQRS usando el modelo **4+1 vistas** de Kr
 - Generacion de reportes PDF de la bandeja.
 - Notificaciones automaticas por correo.
 
-**Fuera de alcance:** integraciones con sistemas externos de BI, reportes BAM en tiempo real, modulo de pagos, validacion crediticia (todo eso era del E-Commerce).
+**Fuera de alcance:** integraciones con sistemas externos de BI, reportes BAM en tiempo real, modulo de pagos y validacion crediticia.
 
 ### 1.3 Glosario
 
@@ -264,18 +264,6 @@ Ver [`diagramas/arquitectura/5-vista-fisica.puml`](./diagramas/arquitectura/5-vi
 - **Backup diario.** `pg_dump` corre en la replica, sin afectar el primario.
 - **Adjuntos en NAS, no en BD.** Crecimiento del 200% en archivos no impacta tamaño de tablas.
 
-### 6.3 Diferencias con el Taller-6 (E-Commerce)
-
-| Aspecto | Taller-6 (E-Commerce) | Proyecto-Final (PQRS) |
-|---|---|---|
-| TPS objetivo | 1000 | No critico (uso interno + ciudadanos) |
-| Centro alterno (DRP) | Si, replicacion sincrona | Solo replica async + backup diario |
-| Integraciones externas | Datacredito, CIFIN, Stripe/PayPal, SOAP a BI | Solo SMTP |
-| Archivos planos | CIFIN, consignaciones | Solo PDF adjuntos a PQRS |
-| Roles | Vendedor, Comprador, Director, Admin | Cliente, Gestor, Admin |
-
-La arquitectura PQRS es **una simplificacion** de la del E-Commerce: misma forma, menos piezas.
-
 ---
 
 ## 7. Vista de Datos
@@ -319,7 +307,5 @@ Detalle completo en [`10-Cumplimiento-RNF-PQRS.md`](./10-Cumplimiento-RNF-PQRS.m
 
 1. P. Kruchten, "The 4+1 View Model of Architecture," _IEEE Software_, vol. 12, no. 6, pp. 42–50, nov. 1995.
 2. C. A. Lopez Ospina, "Enunciado del Proyecto-Final — Sistema PQRS SuperMarket," Fundacion Universitaria Konrad Lorenz, Ingenieria de Software I, 2026.
-3. J. Avila, J. Criollo, S. Rocha y B. Vargas, "Arquitectura del Sistema E-Commerce Konrad (Taller-6)," 2026 — referente metodologico portado a PQRS.
-4. J. Avila, J. Criollo, S. Rocha y B. Vargas, "Plan de Pruebas E-Commerce Konrad (Taller-7)," 2026 — referente metodologico para Plan de Pruebas PQRS.
-5. Spring Boot Reference Documentation, [docs.spring.io/spring-boot](https://docs.spring.io/spring-boot/).
-6. OWASP Authentication Cheat Sheet, [cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html).
+3. Spring Boot Reference Documentation, [docs.spring.io/spring-boot](https://docs.spring.io/spring-boot/).
+4. OWASP Authentication Cheat Sheet, [cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html).

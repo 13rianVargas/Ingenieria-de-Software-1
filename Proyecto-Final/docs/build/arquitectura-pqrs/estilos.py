@@ -1,6 +1,6 @@
 """
 Paleta charcoal/slate y helpers de estilo para python-docx.
-Coherente con la paleta del Taller-6 (arquitectura.pdf).
+Paleta interna del Proyecto-Final.
 """
 
 from docx.shared import Pt, Cm, RGBColor

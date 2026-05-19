@@ -2,7 +2,7 @@
 
 Mapeo detallado de cada RNF definido en [`8-Requerimientos-No-Funcionales.md`](./8-Requerimientos-No-Funcionales.md) a las decisiones arquitectonicas plasmadas en [`9-Arquitectura-PQRS.md`](./9-Arquitectura-PQRS.md) y los diagramas asociados.
 
-> Documento adaptado del cumplimiento RNF del Taller-6 (E-Commerce Konrad). El Proyecto-Final maneja 3 RNF (vs. 7 del Taller-6). Esta version es focalizada al alcance PQRS.
+> El Proyecto-Final maneja 3 RNF focalizados al alcance PQRS.
 
 ---
 

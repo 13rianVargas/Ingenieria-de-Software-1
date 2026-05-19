@@ -18,7 +18,7 @@ El sistema cubre las siguientes capacidades:
 - Generacion de reportes PDF de la bandeja, con o sin filtros aplicados.
 - Notificaciones automaticas por correo (radicacion, cambio de estado, contraseña autogenerada).
 
-Quedan fuera de alcance las integraciones con sistemas externos de BI, los reportes BAM en tiempo real, los modulos de pagos y las validaciones crediticias. Esos elementos pertenecian al caso de estudio del Taller-6 (E-Commerce Konrad) y no aplican al dominio PQRS.
+Quedan fuera de alcance las integraciones con sistemas externos de BI, los reportes BAM en tiempo real, los modulos de pagos y las validaciones crediticias. No aplican al dominio PQRS.
 
 ## 1.3 Glosario
 
