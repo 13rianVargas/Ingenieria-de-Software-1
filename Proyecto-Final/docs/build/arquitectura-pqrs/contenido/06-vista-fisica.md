@@ -24,15 +24,3 @@ Diagrama: `diagramas/arquitectura/5-vista-fisica.puml`.
 - Backup diario. Se ejecuta pg_dump sobre la replica, no sobre el primario, para no consumir IOPS en la BD que sirve produccion.
 - Adjuntos en NAS, no en BD. Permite que el crecimiento del 200% en archivos no impacte el tamaño de las tablas. La metadata (ruta, mime, tamaño) si vive en BD.
 
-## 6.3 Diferencias respecto al Taller-6 (E-Commerce)
-
-| Aspecto | Taller-6 (E-Commerce) | Proyecto-Final (PQRS) |
-|---|---|---|
-| TPS objetivo | 1.000 TPS | No critico (uso interno mas ciudadanos) |
-| Disponibilidad | 99,7% uptime con DRP | Replica asincrona mas backup diario |
-| Centro alterno | Si, replicacion sincrona | No (replica simple en la misma region) |
-| Integraciones externas | Datacredito, CIFIN, Stripe, PayPal, SOAP a BI | Solo SMTP |
-| Archivos planos | CIFIN, consignaciones | Solo PDF adjuntos a PQRS |
-| Roles | Vendedor, Comprador, Director, Admin | Cliente, Gestor, Admin |
-
-La arquitectura PQRS es una simplificacion deliberada de la del E-Commerce: misma forma estructural, menos piezas.

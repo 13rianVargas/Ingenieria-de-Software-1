@@ -69,7 +69,7 @@ Si necesitas funcionalidad adicional, edita `generar-docx.py` (parser en `parse_
 
 ## Estilo visual
 
-Paleta charcoal/slate definida en `estilos.py`. Es la misma paleta del Taller-6 (PDF) y Taller-7 (`.docx`), lo que mantiene coherencia visual entre todos los entregables del curso.
+Paleta charcoal/slate definida en `estilos.py`, consistente entre los entregables del Proyecto-Final.
 
 | Color | Hex | Uso |
 |---|---|---|

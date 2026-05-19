@@ -1,6 +1,6 @@
 # Plan de Pruebas — Sistema PQRS
 
-> Adaptacion del Plan de Pruebas del Taller-7 al dominio PQRS del Proyecto-Final. La estructura del plan se mantiene; cambia la HU bajo prueba (HU-01 Radicar PQRS en lugar de HU-1 Registro Vendedor + HU-2 Publicar Productos del Taller-7).
+> Plan de pruebas funcional para la HU-01 Radicar PQRS del Proyecto-Final.
 
 ---
 
@@ -114,4 +114,3 @@ La **ejecucion real** (entregable #12 Ejecucion y Resultado de Pruebas) se docum
 - Plantilla TC: [`.github/ISSUE_TEMPLATE/test-case.yml`](../../.github/ISSUE_TEMPLATE/test-case.yml).
 - Plantilla BUG: [`.github/ISSUE_TEMPLATE/bug-report.yml`](../../.github/ISSUE_TEMPLATE/bug-report.yml).
 - HU-01 detalle: [`docs/casos-de-uso/`](./casos-de-uso/) (CU-03 Radicar PQRS).
-- Referencia metodologica: [`Taller-7/0-Plan.md`](../../Taller-7/0-Plan.md) y [`Taller-7/PlanDePruebas/`](../../Taller-7/PlanDePruebas/).

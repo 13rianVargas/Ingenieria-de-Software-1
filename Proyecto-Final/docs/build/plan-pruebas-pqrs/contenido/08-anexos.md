@@ -40,20 +40,8 @@
 - Documento de Arquitectura: `Proyecto-Final/docs/9-Arquitectura-PQRS.md`.
 - Modelo de Datos: `Proyecto-Final/docs/11-Modelo-Entidad-Relacion.md`.
 - Plantillas de Issue: `.github/ISSUE_TEMPLATE/test-case.yml` y `bug-report.yml`.
-- Referente metodologico: `Taller-7/PlanDePruebas/` (plan original con caso E-Commerce Konrad).
 
-## A4. Notas sobre adaptacion del Taller-7
-
-Este plan reutiliza la estructura del Plan de Pruebas del Taller-7 (E-Commerce Comercial Konrad) y la adapta al dominio PQRS del Proyecto-Final. Los cambios principales son:
-
-- HU bajo prueba: HU-1 Registro Vendedor mas HU-2 Publicar Productos (Taller-7) → HU-01 Radicar PQRS (Proyecto-Final).
-- Actores: Vendedor mas Comprador (E-Commerce) → Cliente (PQRS).
-- Datos de prueba: documentos comerciales (RUT, camara, centrales de riesgo) → adjuntos genericos PDF.
-- Equipo de roles: se mantiene la misma distribucion del Taller-7 ajustada a los ownership actuales.
-
-La pipeline tecnica (`generar-docx.py` mas `estilos.py`) es identica a la del Taller-7, lo cual garantiza coherencia visual entre los entregables del curso.
-
-## A5. Plan de evolucion
+## A4. Plan de evolucion
 
 Una vez completada la ejecucion de los 10 TC base, este plan podria expandirse para cubrir:
 

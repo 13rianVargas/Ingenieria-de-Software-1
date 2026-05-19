@@ -30,7 +30,7 @@
 
 ## 9.4 Estado de aprobacion
 
-Documento generado a partir del trabajo del Taller-6 (E-Commerce Konrad) adaptado al dominio PQRS del Proyecto-Final. Pendiente de revision por el docente del curso.
+Documento del Proyecto-Final (Sistema PQRS). Pendiente de revision por el docente del curso.
 
 Equipo:
 

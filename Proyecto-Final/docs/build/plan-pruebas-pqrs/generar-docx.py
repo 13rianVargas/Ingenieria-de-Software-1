@@ -6,7 +6,7 @@ Pipeline: contenido/*.md + 00-portada.yaml -> plan-pruebas-pqrs.docx
 Requiere: pip install python-docx pyyaml
 Ejecutar:  python generar-docx.py
 
-Reusa el pipeline del Taller-7 con metadata y secciones propias del Proyecto-Final.
+Pipeline propio del Proyecto-Final.
 """
 
 import re
