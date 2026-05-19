@@ -1,7 +1,11 @@
 # CU-08: Gestionar Seguridad de la Cuenta
 
+> **⚠ Fuera de Alcance MVP.** Este caso de uso cubre HU-13 (Recuperar Contraseña), HU-14 (Cambiar Contraseña) y HU-15 (Cerrar Sesión), todas clasificadas como *"Supuesto de mejora"* en [`1-Funcionalidades.md`](../1-Funcionalidades.md). Se conserva la especificación como referencia para iteraciones post-MVP, pero **no se implementa** en la entrega actual ni se traza en el SRS principal.
+>
+> El MVP cubre 7 Casos de Uso (CU-01 a CU-07). CU-08 entra al alcance cuando el equipo aborde las funcionalidades 13, 14 y 15 en un sprint posterior.
+
 ## 1. Descripción
-Permite a los usuarios (Cliente o Gestor) administrar las credenciales de acceso a sus cuentas, brindándoles opciones para recuperar una contraseña olvidada, cambiar la contraseña autogenerada por una de su preferencia, y cerrar sesión de manera segura. Estas funcionalidades (HU-13, HU-14, HU-15) fueron identificadas como complementos vitales para la seguridad del MVP.
+Permite a los usuarios (Cliente o Gestor) administrar las credenciales de acceso a sus cuentas, brindándoles opciones para recuperar una contraseña olvidada, cambiar la contraseña autogenerada por una de su preferencia, y cerrar sesión de manera segura.
 
 ## 2. Actores
 * **Cliente:** Actor que administra su acceso desde la App Móvil o Web.
@@ -41,4 +45,4 @@ Permite a los usuarios (Cliente o Gestor) administrar las credenciales de acceso
 
 ## 6. Diagrama del Caso de Uso
 
-![Diagrama de CU-08](imagenes-diagramas/CU-08.png)
+CU-08 **no aparece en el diagrama general del MVP** ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) por estar fuera de alcance. Se incorporará en el diagrama cuando el equipo planifique el sprint que aborde HU-13/14/15.
