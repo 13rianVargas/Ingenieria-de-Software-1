@@ -30,4 +30,4 @@ Permite a un Cliente autenticado visualizar el historial de todas las Peticiones
 
 ## 6. Diagrama del Caso de Uso
 
-![Diagrama de CU-04](imagenes-diagramas/CU-04.png)
+CU-04 aparece en el diagrama general ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) accesible por el actor Cliente y dependiente de CU-02 (autenticación).
