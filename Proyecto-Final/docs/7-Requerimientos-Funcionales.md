@@ -5,9 +5,8 @@
 | Campo | Descripción |
 | :--- | :--- |
 | **Nombre del proyecto:** | Sistema de Gestión de PQRS — SuperMarket |
-| **Nombre del equipo:** | Fábrica de Desarrollo Konrad |
-| **Estado del documento:** | Aprobado |
-| **Autores:** | Estudiantes de Ingeniería de Sistemas |
+| **Nombre del equipo:** | Grupo 1 |
+| **Autores:** | Avila Cortes Julian David, Criollo Homez Julian Felipe, Rocha Ramirez Santiago, Vargas Clavijo Brian Steven |
 
 ## Historial de Versiones
 
