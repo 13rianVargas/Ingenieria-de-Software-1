@@ -25,7 +25,7 @@
 | :--- | :--- | :--- |
 | **Cliente (Ciudadano)** | Actor principal. Persona natural que utiliza la App Móvil para registrar, consultar y radicar sus PQRS. | RF-01, RF-03, RF-04, RF-05 |
 | **Gestor de PQRS** | Empleado de SuperMarket que utiliza la Aplicación Web para gestionar, tramitar y revisar las solicitudes ingresadas. | RF-06, RF-07, RF-08, RF-09, RF-10, RF-11 |
-| **Sistema Notificador** | Actor secundario/automático encargado de disparar eventos como el envío de correos electrónicos y generación de contraseñas. | RF-02, RF-12 |
+| **Sistema** | Actor secundario/automático encargado de disparar eventos como el envío de correos electrónicos y generación de contraseñas. | RF-02, RF-12 |
 
 ---
 
@@ -102,7 +102,7 @@
 | **Identificador** | RF-02 |
 | **Nombre** | Registro Automático de Cliente |
 | **Resumen** | Si el cliente no existe en la base de datos al momento de radicar de forma anónima, el sistema lo registra automáticamente en el sistema de usuarios. |
-| **Actor** | Sistema Notificador |
+| **Actor** | Sistema |
 | **Caso de Uso Asociado** | CU-01: Gestionar Registro |
 | **Precondición** | El Cliente completó exitosamente el formulario de radicación (RF-01) pero su identificación no existe en base de datos. |
 | **Postcondición** | El cliente es creado en la BD de usuarios y se autogenera una clave temporal. |
@@ -420,7 +420,7 @@
 | **Identificador** | RF-12 |
 | **Nombre** | Notificación de Confirmación (Correo) |
 | **Resumen** | Envío automático de correo electrónico al cliente confirmando la radicación exitosa de su PQRS, incluyéndole su número de radicado (y su contraseña si fue registro nuevo). |
-| **Actor** | Sistema Notificador |
+| **Actor** | Sistema |
 | **Caso de Uso Asociado** | CU-03: Radicar PQRS |
 | **Precondición** | El sistema procesó y asignó un número de radicado a una PQRS (RF-01). |
 | **Postcondición** | Se entrega un mensaje al servidor SMTP para ser enviado al cliente. |

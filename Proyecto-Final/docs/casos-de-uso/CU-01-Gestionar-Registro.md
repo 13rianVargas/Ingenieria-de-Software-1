@@ -7,7 +7,7 @@ Permite registrar automáticamente a un ciudadano en el sistema cuando radica un
 ## 2. Actores
 
 * **Cliente:** Persona natural cuya identificación no está aún en la base de datos.
-* **Sistema (Notificador):** Envía el correo electrónico con las credenciales autogeneradas.
+* **Sistema:** Envía el correo electrónico con las credenciales autogeneradas.
 
 ## 3. Precondiciones
 
@@ -21,7 +21,7 @@ Permite registrar automáticamente a un ciudadano en el sistema cuando radica un
 2. El sistema valida los datos personales recibidos en el payload de la PQRS (campos no vacíos, formato de correo, formato de teléfono).
 3. El sistema almacena el nuevo usuario con rol `cliente`.
 4. El sistema autogenera una contraseña segura (mínimo 6 caracteres, 1 mayúscula, 1 minúscula, 1 número) y la asocia a la cuenta (hash BCrypt).
-5. El Sistema Notificador envía un correo electrónico al Cliente con sus credenciales de acceso y el número de radicado de la PQRS.
+5. El Sistema envía un correo electrónico al Cliente con sus credenciales de acceso y el número de radicado de la PQRS.
 6. El control regresa a CU-03 (paso 7 del Flujo Principal de CU-03) sin interrumpir la radicación.
 
 ## 5. Flujos Alternativos

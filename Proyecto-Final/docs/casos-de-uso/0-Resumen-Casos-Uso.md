@@ -16,7 +16,7 @@ Los actores identificados que interactúan con las funcionalidades descritas son
 
 1. **Cliente (Ciudadano):** Actor principal. Persona natural que utiliza la App Móvil para registrar, consultar y radicar sus peticiones, quejas, reclamos y sugerencias.
 2. **Gestor de PQRS:** Actor principal (Administrador). Empleado de SuperMarket que utiliza la Aplicación Web para gestionar, tramitar y dar respuesta a las solicitudes ingresadas.
-3. **Sistema (Notificador):** Actor secundario/automático. Componente del sistema encargado de disparar eventos automáticos como el envío de correos electrónicos.
+3. **Sistema:** Actor secundario/automático. Componente del sistema encargado de disparar eventos automáticos como el envío de correos electrónicos.
 
 ## 3. Catálogo de Casos de Uso
 Con base en las 17 funcionalidades iniciales (12 obligatorias del MVP + 5 mejoras), se han estructurado **8 Casos de Uso** en total, de los cuales **7 están dentro del alcance MVP** (CU-01 a CU-07) y **1 queda fuera de alcance MVP** como referencia para iteraciones futuras (CU-08).
