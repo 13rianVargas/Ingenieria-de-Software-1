@@ -1,4 +1,13 @@
-# HISTORIA DE USUARIO BASE (PIVOTE)
+# HISTORIA DE USUARIO BASE (PIVOTE) Y ESTIMACIÓN PERT
+
+## Historial de Versiones
+
+| Versión | Fecha | Descripción Cambio |
+| :--- | :--- | :--- |
+| 01 | 13/05/2026 | Creación inicial: definición de HU-05 (Filtrar Radicados Propios) como HU base de 1 SP y estimación PERT detallada (1 SP ≈ 9 horas). |
+| 02 | 19/05/2026 | Revisión preparación SPMP: renombrado del archivo (`3-HU-Base-&-PERT.md` → `3-HU-Base-y-PERT.md`) para evitar el carácter `&` problemático en shell, suma de historial. |
+
+---
 
 Para realizar la estimación del proyecto mediante Planning Poker, se ha seleccionado la funcionalidad más sencilla del sistema como la **Historia de Usuario Base**, a la cual se le asigna un valor de **1 Punto de Historia (Story Point)**.
 
