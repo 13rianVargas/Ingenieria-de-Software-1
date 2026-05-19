@@ -10,8 +10,11 @@ Hoja de comandos para **regenerar PNGs de diagramas + DOCX de entregables** sin 
 | :--- | :--- | :--- |
 | PNGs de vistas de arquitectura | `Proyecto-Final/docs/diagramas/arquitectura/*.puml` | `Proyecto-Final/docs/diagramas/arquitectura/*.png` |
 | PNG del MER | `Proyecto-Final/docs/diagramas/mer/mer-pqrs.puml` | `Proyecto-Final/docs/diagramas/mer/mer-pqrs.png` |
-| DOCX de arquitectura | `Proyecto-Final/docs/build/arquitectura-pqrs/contenido/*.md` + `00-portada.yaml` | `Proyecto-Final/docs/build/arquitectura-pqrs/arquitectura-pqrs.docx` |
-| DOCX de plan de pruebas | `Proyecto-Final/docs/build/plan-pruebas-pqrs/contenido/*.md` + `00-portada.yaml` | `Proyecto-Final/docs/build/plan-pruebas-pqrs/plan-pruebas-pqrs.docx` |
+| PNGs de casos de uso (8 CU + resumen) | `Proyecto-Final/docs/casos-de-uso/plantuml/*.puml` | `Proyecto-Final/docs/casos-de-uso/images/*.png` |
+| DOCX SRS | `Proyecto-Final/docs/build/srs/contenido/*.md` + `00-portada.yaml` | `Proyecto-Final/docs/build/srs/srs.docx` |
+| DOCX SPMP | `Proyecto-Final/docs/build/spmp/contenido/*.md` + `00-portada.yaml` | `Proyecto-Final/docs/build/spmp/spmp.docx` |
+| DOCX SAD (arquitectura) | `Proyecto-Final/docs/build/arquitectura-pqrs/contenido/*.md` + `00-portada.yaml` | `Proyecto-Final/docs/build/arquitectura-pqrs/arquitectura-pqrs.docx` |
+| DOCX STP (plan pruebas) | `Proyecto-Final/docs/build/plan-pruebas-pqrs/contenido/*.md` + `00-portada.yaml` | `Proyecto-Final/docs/build/plan-pruebas-pqrs/plan-pruebas-pqrs.docx` |
 
 Los `.docx` **embeben los PNGs** generados arriba. Por eso el orden importa: PNGs primero, DOCX después.
 
@@ -95,13 +98,17 @@ cd -
 ```bash
 plantuml -tpng Proyecto-Final/docs/diagramas/arquitectura/*.puml \
   && plantuml -tpng Proyecto-Final/docs/diagramas/mer/*.puml \
-  && ( cd Proyecto-Final/docs/build/arquitectura-pqrs && source .venv/bin/activate && python generar-docx.py && deactivate ) \
-  && ( cd Proyecto-Final/docs/build/plan-pruebas-pqrs && source .venv/bin/activate && python generar-docx.py && deactivate )
+  && plantuml -tpng -o ../images Proyecto-Final/docs/casos-de-uso/plantuml/*.puml \
+  && for d in Proyecto-Final/docs/build/{srs,spmp,arquitectura-pqrs,plan-pruebas-pqrs}/; do
+       ( cd "$d" && source .venv/bin/activate && python generar-docx.py && deactivate )
+     done
 ```
 
 Salida esperada:
 
 ```
+Documento generado: .../srs.docx
+Documento generado: .../spmp.docx
 Documento generado: .../arquitectura-pqrs.docx
 Documento generado: .../plan-pruebas-pqrs.docx
 ```

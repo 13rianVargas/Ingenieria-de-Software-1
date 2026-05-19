@@ -6,18 +6,24 @@ Esta carpeta contiene pipelines para generar los documentos `.docx` de entrega a
 
 ## Pipelines disponibles
 
-| Subcarpeta | Genera | Cubre entregable |
-|---|---|---|
-| `arquitectura-pqrs/` | `arquitectura-pqrs.docx` | #7 Diagrama de Arquitectura |
-| `plan-pruebas-pqrs/` | `plan-pruebas-pqrs.docx` | #11 Plan de Pruebas |
-| `resultado-pruebas-hu01/` (futuro) | `resultado-pruebas-hu01.docx` | #12 Ejecucion y Resultado de Pruebas (post-implementacion) |
+Los entregables se consolidan en 4 documentos estandar IEEE/SWEBOK:
+
+| Subcarpeta | Genera | Estandar | Cubre entregables obligatorios |
+|---|---|---|---|
+| `spmp/` | `spmp.docx` | SPMP (Software Project Management Plan) | #1 Planeacion mediante el marco Scrum |
+| `srs/` | `srs.docx` | SRS (IEEE 830) | #2 RF, #3 RNF, #4 Diagrama CU, #5 Especificacion CU, #6 Especificacion RNFs, #8 Prototipos (anexo) |
+| `arquitectura-pqrs/` | `arquitectura-pqrs.docx` | SAD (IEEE 42010) | #7 Diagrama de Arquitectura, #9 MER (seccion 8 embebida) |
+| `plan-pruebas-pqrs/` | `plan-pruebas-pqrs.docx` | STP (IEEE 829) | #11 Plan de Pruebas |
+| `resultado-pruebas-hu01/` (futuro) | `resultado-pruebas-hu01.docx` | — | #12 Ejecucion y Resultado de Pruebas (post-implementacion) |
+
+Entregables obligatorios pendientes (post-implementacion): #10 Producto (software construido), #12 Ejecucion y Resultado de Pruebas.
 
 ## Como regenerar un `.docx`
 
-Desde la raiz del repositorio, ejecuta:
+Desde la raiz del repositorio, ejecuta (sustituyendo `<pipeline>` por uno de: `srs`, `spmp`, `arquitectura-pqrs`, `plan-pruebas-pqrs`):
 
 ```bash
-cd Proyecto-Final/docs/build/arquitectura-pqrs   # o plan-pruebas-pqrs
+cd Proyecto-Final/docs/build/<pipeline>
 python3 -m venv .venv
 source .venv/bin/activate
 pip install python-docx pyyaml
@@ -26,8 +32,18 @@ python generar-docx.py
 
 El `.docx` queda en la misma carpeta del script. Por ejemplo:
 
+- `Proyecto-Final/docs/build/srs/srs.docx`
+- `Proyecto-Final/docs/build/spmp/spmp.docx`
 - `Proyecto-Final/docs/build/arquitectura-pqrs/arquitectura-pqrs.docx`
 - `Proyecto-Final/docs/build/plan-pruebas-pqrs/plan-pruebas-pqrs.docx`
+
+Para regenerar los 4 documentos de una sola corrida (asume venvs ya creados con `python-docx` y `pyyaml` instalados):
+
+```bash
+for d in Proyecto-Final/docs/build/{srs,spmp,arquitectura-pqrs,plan-pruebas-pqrs}/; do
+  ( cd "$d" && source .venv/bin/activate && python generar-docx.py && deactivate )
+done
+```
 
 ## Como editar el contenido
 
@@ -59,11 +75,12 @@ El parser interno de `generar-docx.py` soporta:
 - Tablas pipe `| col1 | col2 |`.
 - Inline: `**bold**`, `*italic*`, `` `code` ``, `[texto](url)`.
 
+- Imagenes Markdown `![alt](path)` que apunten a un archivo PNG existente (el path se resuelve relativo a la carpeta `contenido/`).
+
 Lo que NO soporta:
 
-- Imagenes inline (los diagramas se referencian via texto que linkea al `.puml`).
 - Bloques de codigo con fence ``` (se renderizan como parrafos planos).
-- HTML embebido.
+- HTML embebido (tablas u otros tags HTML se renderizan como texto).
 
 Si necesitas funcionalidad adicional, edita `generar-docx.py` (parser en `parse_markdown_section`).
 
