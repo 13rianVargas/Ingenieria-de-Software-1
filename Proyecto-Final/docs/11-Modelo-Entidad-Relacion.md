@@ -8,8 +8,6 @@
 
 El presente documento describe el modelo de datos persistente del sistema PQRS. Esta basado en los requerimientos funcionales (`7-Requerimientos-Funcionales.md`) y casos de uso (`casos-de-uso/`) del proyecto, y se alinea con la Vista de Datos del documento de arquitectura ([`9-Arquitectura-PQRS.md`](./9-Arquitectura-PQRS.md), seccion 7).
 
-El formato PlantUML del diagrama reusa el estilo del Taller-6 (`Taller-6/Diagramas/6-Vista-Datos/1-Modelo-Entidad-Relacion.puml`) adaptado al dominio PQRS.
-
 ---
 
 ## 2. Diagrama MER
@@ -26,19 +24,19 @@ Render: `diagramas/mer/mer-pqrs.png` (generar con `plantuml mer-pqrs.puml` o her
 
 | Entidad | Proposito |
 |---|---|
-| `rol` | Catalogo de roles del sistema: cliente, gestor, admin. |
-| `usuario` | Centraliza Cliente, Gestor y Admin. Discriminado por `rol_id`. |
+| `usuario` | Centraliza Cliente, Gestor y Admin. Discriminado por el atributo `rol` (CHECK enum, no tabla separada). |
 | `pqrs` | Cabecera de cada radicado. Estado actual + metadata. |
 | `tramite` | Log de negocio: cada cambio de estado de una PQRS. |
 | `adjunto` | Metadata del PDF anexado. El archivo binario vive en NAS. |
 | `notificacion` | Cola de correos transaccionales. |
 | `auditoria` | Log tecnico via AOP. Toda operacion CRUD del dominio. |
 
+> **Nota sobre roles:** los roles del sistema (`cliente`, `gestor`, `admin`) se modelan como un CHECK constraint sobre `usuario.rol`, no como tabla catalogo separada. Decision tomada para reducir joins en queries frecuentes (bandeja, autorizacion) y porque el conjunto de roles es cerrado y conocido de antemano. Cambios en el conjunto requieren migracion Flyway, no escritura en runtime.
+
 ### 3.2 Relaciones principales
 
 | De | A | Cardinalidad | Significado |
 |---|---|---|---|
-| `rol` | `usuario` | 1—N | Un rol agrupa varios usuarios. |
 | `usuario` | `pqrs` (cliente_id) | 1—N | Un cliente puede radicar varias PQRS. |
 | `usuario` | `pqrs` (gestor_id) | 1—N (nullable) | Un gestor tramita varias PQRS. El `gestor_id` es nullable porque al radicar la PQRS aun no esta asignada. |
 | `usuario` | `tramite` (gestor_id) | 1—N | Un gestor ejecuta varios tramites. |
@@ -69,6 +67,7 @@ No son redundantes. Cumplen roles ortogonales: uno es para el cliente, otro es p
 ### 4.2 Constraints CHECK
 
 - `usuario.tipo_doc IN ('CC', 'CE', 'TI', 'PP')`
+- `usuario.rol IN ('cliente', 'gestor', 'admin')`
 - `pqrs.tipo IN ('peticion', 'queja', 'reclamo', 'sugerencia')`
 - `pqrs.estado IN ('nuevo', 'en_proceso', 'resuelto', 'rechazado')`
 - `adjunto.tipo_mime = 'application/pdf'` (solo PDF permitidos)
@@ -91,19 +90,12 @@ Optimizan las queries mas frecuentes del backend (bandeja, historial, notificaci
 
 > Esta seccion cubre el entregable opcional **#15 Diccionario de Datos**. Especifica cada columna del modelo: tipo SQL, nulabilidad, descripcion, ejemplo y validaciones.
 
-### 5.1 Tabla `rol`
-
-| Columna | Tipo SQL | Null | Descripcion | Ejemplo | Validaciones |
-|---|---|---|---|---|---|
-| id | SERIAL | NO | PK auto-incremental | 1 | Generado por la BD |
-| nombre | VARCHAR(20) | NO | Nombre del rol | "cliente" | UNIQUE, IN ('cliente','gestor','admin') |
-
-### 5.2 Tabla `usuario`
+### 5.1 Tabla `usuario`
 
 | Columna | Tipo SQL | Null | Descripcion | Ejemplo | Validaciones |
 |---|---|---|---|---|---|
 | id | SERIAL | NO | PK auto-incremental | 42 | Generado por la BD |
-| rol_id | INT | NO | FK a `rol(id)` | 1 | REFERENCES rol(id) |
+| rol | VARCHAR(20) | NO | Rol del usuario | "cliente" | CHECK IN ('cliente','gestor','admin') |
 | tipo_doc | VARCHAR(4) | NO | Tipo de documento | "CC" | IN ('CC','CE','TI','PP') |
 | num_doc | VARCHAR(20) | NO | Numero de documento | "1020304050" | UNIQUE, solo digitos para CC/TI, alfanumerico para PP |
 | nombres | VARCHAR(100) | NO | Nombres del usuario | "Juan Carlos" | Longitud 2..100 |
@@ -113,7 +105,7 @@ Optimizan las queries mas frecuentes del backend (bandeja, historial, notificaci
 | clave_hash | VARCHAR(255) | NO | Hash BCrypt de la clave | "$2a$12$..." | BCrypt cost 12 |
 | fecha_creacion | TIMESTAMP | NO | Timestamp de alta | "2026-05-15 10:00:00" | DEFAULT NOW() |
 
-### 5.3 Tabla `pqrs`
+### 5.2 Tabla `pqrs`
 
 | Columna | Tipo SQL | Null | Descripcion | Ejemplo | Validaciones |
 |---|---|---|---|---|---|
@@ -128,7 +120,7 @@ Optimizan las queries mas frecuentes del backend (bandeja, historial, notificaci
 | fecha_radicado | TIMESTAMP | NO | Fecha de radicacion | "2026-05-15 10:05:00" | DEFAULT NOW() |
 | fecha_cierre | TIMESTAMP | YES | Fecha de cierre (si aplica) | "2026-05-20 16:30:00" | Solo si estado IN ('resuelto','rechazado') |
 
-### 5.4 Tabla `tramite`
+### 5.3 Tabla `tramite`
 
 | Columna | Tipo SQL | Null | Descripcion | Ejemplo | Validaciones |
 |---|---|---|---|---|---|
@@ -140,7 +132,7 @@ Optimizan las queries mas frecuentes del backend (bandeja, historial, notificaci
 | justificacion | TEXT | NO | Razon del cambio | "Se inicia investigacion..." | Longitud minima 10 caracteres, no solo espacios |
 | timestamp | TIMESTAMP | NO | Fecha del cambio | "2026-05-15 11:00:00" | DEFAULT NOW() |
 
-### 5.5 Tabla `adjunto`
+### 5.4 Tabla `adjunto`
 
 | Columna | Tipo SQL | Null | Descripcion | Ejemplo | Validaciones |
 |---|---|---|---|---|---|
@@ -152,7 +144,7 @@ Optimizan las queries mas frecuentes del backend (bandeja, historial, notificaci
 | tamano_bytes | BIGINT | NO | Tamaño en bytes | 102400 | <= 5242880 (5 MB) |
 | fecha_subida | TIMESTAMP | NO | Fecha de subida | "2026-05-15 10:05:30" | DEFAULT NOW() |
 
-### 5.6 Tabla `notificacion`
+### 5.5 Tabla `notificacion`
 
 | Columna | Tipo SQL | Null | Descripcion | Ejemplo | Validaciones |
 |---|---|---|---|---|---|
@@ -165,7 +157,7 @@ Optimizan las queries mas frecuentes del backend (bandeja, historial, notificaci
 | estado | VARCHAR(20) | NO | Estado del envio | "enviada" | IN ('pendiente','enviada','fallida') |
 | intentos | INT | NO | Numero de reintentos | 0 | DEFAULT 0, max 5 |
 
-### 5.7 Tabla `auditoria`
+### 5.6 Tabla `auditoria`
 
 | Columna | Tipo SQL | Null | Descripcion | Ejemplo | Validaciones |
 |---|---|---|---|---|---|
@@ -195,5 +187,4 @@ Optimizan las queries mas frecuentes del backend (bandeja, historial, notificaci
 - Casos de uso: [`casos-de-uso/`](./casos-de-uso/) — fuente de las entidades modeladas.
 - Requerimientos funcionales: [`7-Requerimientos-Funcionales.md`](./7-Requerimientos-Funcionales.md) — cada RF se traduce a operaciones sobre estas entidades.
 - Documento de arquitectura: [`9-Arquitectura-PQRS.md`](./9-Arquitectura-PQRS.md) — Vista de Datos (seccion 7).
-- Referencia metodologica: [`../Taller-6/Diagramas/6-Vista-Datos/1-Modelo-Entidad-Relacion.puml`](../../Taller-6/Diagramas/6-Vista-Datos/1-Modelo-Entidad-Relacion.puml) — formato base reusado.
-- Implementacion: cuando Brian arranque el modulo DB, las migraciones Flyway en `Proyecto-Final/database/migrations/` materializaran este modelo.
+- Implementacion: las migraciones Flyway en [`Proyecto-Final/database/migrations/`](../database/migrations/) materializan este modelo.
