@@ -36,4 +36,4 @@ Es el proceso central (core) mediante el cual un Cliente ingresa una nueva Petic
 
 ## 6. Diagrama del Caso de Uso
 
-![Diagrama de CU-03](imagenes-diagramas/CU-03.png)
+CU-03 es el caso de uso central del MVP. En el diagrama general ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) aparece accesible directamente por el actor Cliente y con relación `<<include>>` hacia CU-01 (Registro Automático).

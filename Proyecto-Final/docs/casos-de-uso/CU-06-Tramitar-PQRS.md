@@ -36,4 +36,4 @@ Permite a un Gestor de PQRS, desde la Aplicación Web, procesar una petición, q
 
 ## 6. Diagrama del Caso de Uso
 
-![Diagrama de CU-06](imagenes-diagramas/CU-06.png)
+CU-06 aparece en el diagrama general ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) accesible por el actor Gestor con relación de extensión hacia el flujo de notificación al Cliente.

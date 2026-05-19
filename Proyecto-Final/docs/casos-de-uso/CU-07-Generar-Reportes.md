@@ -31,4 +31,4 @@ Permite al Gestor de PQRS, desde la Aplicación Web, exportar el listado de peti
 
 ## 6. Diagrama del Caso de Uso
 
-![Diagrama de CU-07](imagenes-diagramas/CU-07.png)
+CU-07 aparece en el diagrama general ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) accesible por el actor Gestor y dependiente de CU-05 (visualización de la bandeja).
