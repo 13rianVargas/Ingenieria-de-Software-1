@@ -2,44 +2,45 @@
 ' Vista Logica — Componentes del Sistema PQRS
 ' Estilo C4 simplificado
 skinparam componentStyle rectangle
-skinparam linetype ortho
+skinparam nodesep 50
+skinparam ranksep 80
 
 actor Cliente as ClienteActor
 actor Gestor as GestorActor
 
 package "Frontend" {
-  component [pqrs-frontend-mobile\n(Angular + Ionic\nCapacitor)] as FrontMobile
-  component [pqrs-frontend-web\n(Angular + Ionic + Tailwind)] as FrontWeb
+  component [pqrs-mobile\n(Ionic)] as FrontMobile
+  component [pqrs-web\n(Angular)] as FrontWeb
 }
 
 package "Backend (Spring Boot)" {
-  component [pqrs-api\n(REST Controllers)] as Api
-  component [pqrs-domain\n(Entidades + Reglas)] as Domain
-  component [pqrs-notificaciones\n(SMTP, plantillas)] as Notif
-  component [pqrs-archivos\n(NAS/FS adapter)] as Archivos
-  component [shared/security\n(JWT + BCrypt + Roles)] as Security
+  component [pqrs-api\n(REST)] as Api
+  component [pqrs-domain] as Domain
+  component [pqrs-notificaciones] as Notif
+  component [pqrs-archivos] as Archivos
+  component [shared/security\n(JWT + BCrypt)] as Security
   component [shared/auditoria\n(AOP)] as Audit
 }
 
 database "PostgreSQL\n(primario + replica)" as DB
-folder "NAS / FileSystem\n(adjuntos PDF)" as NAS
+folder "NAS\n(adjuntos PDF)" as NAS
 node "SMTP Gateway" as SMTP
 
 ClienteActor --> FrontMobile : HTTPS
 GestorActor --> FrontWeb : HTTPS
 
-FrontMobile --> Api : REST/JSON\nover HTTPS
-FrontWeb --> Api : REST/JSON\nover HTTPS
+FrontMobile --> Api : REST/JSON
+FrontWeb --> Api : REST/JSON
 
-Api --> Security : autenticar/autorizar
-Api --> Domain : invocar casos de uso
-Domain --> Audit : log acciones CRUD
-Domain --> Archivos : guardar/leer adjuntos
-Domain --> Notif : disparar correo
-Domain --> DB : JPA / Hibernate
+Api --> Security : auth
+Api --> Domain : casos de uso
+Domain --> Audit : log CRUD
+Domain --> Archivos : adjuntos
+Domain --> Notif : correo
+Domain --> DB : JPA
 
 Archivos --> NAS : NFS
-Notif --> SMTP : SMTP/SMTPS
+Notif --> SMTP : SMTPS
 
 note right of Domain
   Capa pura de dominio.
