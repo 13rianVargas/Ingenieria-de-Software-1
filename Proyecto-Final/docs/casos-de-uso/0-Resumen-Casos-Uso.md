@@ -1,5 +1,12 @@
 # RESUMEN Y CATÁLOGO DE CASOS DE USO
 
+## Historial de Versiones
+
+| Versión | Fecha | Descripción Cambio |
+| :--- | :--- | :--- |
+| 01 | 12/05/2026 | Creación inicial del catálogo con 8 Casos de Uso y 3 actores. |
+| 02 | 19/05/2026 | Revisión preparación SRS: ajuste alcance CU-01 a solo registro automático (MVP), corrección de ruta de diagrama general (de `imagenes-diagramas/RESUMEN.png` a `../diagramas/arquitectura/1-vista-casos-uso.png`), suma de historial. |
+
 ## 1. Introducción
 Este documento centraliza los Casos de Uso (CU) definidos para el sistema de PQRS de SuperMarket, abarcando las funcionalidades tanto de la App Móvil (Cliente) como de la Aplicación Web (Gestor). 
 
@@ -13,7 +20,7 @@ Los actores identificados que interactúan con las funcionalidades descritas son
 ## 3. Catálogo de Casos de Uso
 Con base en las 17 funcionalidades iniciales, se han estructurado los siguientes **8 Casos de Uso** principales:
 
-*   **[CU-01] Gestionar Registro de Cliente:** Abarca el registro manual (App) y el registro automático en la base de datos al momento de radicar si no existe.
+*   **[CU-01] Gestionar Registro de Cliente:** Abarca el registro automático del Cliente en la base de datos al momento de radicar si no existe. El registro manual desde pantalla independiente queda **fuera de alcance MVP**.
 *   **[CU-02] Autenticarse en el Sistema:** Proceso de login tanto para Clientes (App) como para Gestores (Web).
 *   **[CU-03] Radicar PQRS:** Flujo principal de creación de la PQRS (incluye adjuntar PDF y la notificación automática de confirmación).
 *   **[CU-04] Consultar PQRS Propias:** Listado y filtrado del historial de PQRS de un Cliente específico en la App.
@@ -26,4 +33,4 @@ Con base en las 17 funcionalidades iniciales, se han estructurado los siguientes
 
 ## 4. Diagrama General de Casos de Uso
 
-![Diagrama general](imagenes-diagramas/RESUMEN.png)
+![Diagrama general](../diagramas/arquitectura/1-vista-casos-uso.png)
