@@ -1,0 +1,42 @@
+# 3. Producto Mínimo Viable (MVP)
+
+Para garantizar la entrega de valor funcional alineada a la solicitud del cliente SuperMarket (flujo básico de recepción, notificación y gestión de PQRS), el desarrollo se ha dividido en un Producto Mínimo Viable (MVP) y un bloque de Incrementos o entregas posteriores.
+
+## Historial de Versiónes
+
+| Versión | Fecha | Descripción Cambio |
+| :--- | :--- | :--- |
+| 01 | 12/05/2026 | Creación inicial del documento MVP con división en Primera Salida (Sprint 1) + Segunda Salida (Sprint 2) + Incrementos Posteriores. |
+| 02 | 19/05/2026 | Revisión preparación SPMP: movimiento de la funcionalidad #9 Descargar Anexo de Segunda Salida a Primera Salida (coherente con CU-06 Tramitar §4 pasos 4-5: el Gestor necesita revisar el anexo antes de cambiar el estado de la PQRS). Suma de historial. |
+
+## Funcionalidades del MVP (Primera Salida)
+
+Este MVP compone el flujo core o crítico del negocio que permite al cliente final (Ciudadano) enviar una solicitud y al gestor tramitarla.
+
+*   **1. Radicar PQRS:** Permite diligenciar el formulario y adjuntar el anexo en PDF.
+*   **2. Registro Automático de Cliente:** Si el cliente no existe al momento de radicar, el sistema lo registra.
+*   **3. Autenticación de Cliente (Login):** Ingreso seguro a la App usando la contraseña autogenerada.
+*   **4. Consultar Historial de Radicados:** Visualización del listado de PQRS del cliente.
+*   **6. Autenticación de Gestor (Login):** Ingreso al panel de administración para poder gestionar los casos.
+*   **7. Consultar Bandeja de Radicados:** Visualización del listado general de todas las PQRS registradas en el sistema.
+*   **9. Descargar Anexo de PQRS:** Capacidad del Gestor de obtener el PDF adjunto para revisar la evidencia antes de tramitar.
+*   **10. Gestionar Estado de PQRS:** Capacidad para que el Gestor cambie el estado de un radicado (ingresando la justificación respectiva).
+*   **12. Notificación de Confirmación (Correo):** Envío automático de correo con las credenciales y el número de radicado.
+
+---
+## Funcionalidades del MVP (Segunda Salida)
+
+
+Estas funcionalidades se implementarán en sprints posteriores, enfocándose en filtrado avanzado y exportación.
+
+*   **5. Filtrar Radicados Propios:** Filtros dentro del historial del cliente.
+*   **8. Filtrar Bandeja de Radicados:** Búsqueda avanzada por "Tipo" y "Estado" para el Gestor.
+*   **11. Generar Reporte de Radicados (PDF):** Exportación de datos de gestión para auditoría o administración.
+---
+## Incrementos Posteriores (Post-MVP - Condicionados al tiempo disponible)
+
+*   **13. Recuperar Contraseña (App/Web):** *Supuesto de mejora.* Restauración de credenciales olvidadas.
+*   **14. Cambiar Contraseña (App/Web):** *Supuesto de mejora.* Mayor nivel de seguridad para la contraseña inicial enviada al cliente o actualización de credenciales para el gestor.
+*   **15. Cerrar Sesión (App/Web):** *Supuesto de mejora.* Cierre seguro del token de sesión.
+*   **16. Notificación de Cambio de Estado (Correo):** *Supuesto de mejora.* Informar pasivamente al cliente sobre el cambio de estado de su solicitud.
+*   **17. Registro Manual de Cliente (App):** *Supuesto de mejora.* Creación de cuenta en la App de manera independiente al proceso de radicación de una PQRS.

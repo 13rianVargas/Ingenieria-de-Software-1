@@ -5,7 +5,7 @@ Es el proceso central (core) mediante el cual un Cliente ingresa una nueva Petic
 
 ## 2. Actores
 * **Cliente:** Actor que inicia la radicación.
-* **Sistema (Notificador):** Actor encargado de enviar el correo electrónico confirmando el registro.
+* **Sistema:** Actor encargado de enviar el correo electrónico confirmando el registro.
 
 ## 3. Precondiciones
 * El Cliente debe estar dentro de la App Móvil, preferiblemente (pero no obligatoriamente) autenticado.
@@ -20,7 +20,7 @@ Es el proceso central (core) mediante el cual un Cliente ingresa una nueva Petic
 6. El sistema valida los datos obligatorios y el formato del archivo adjunto (.pdf).
 7. El sistema genera un "Número de Radicado" único de forma automática y registra la "Fecha del radicado" con el timestamp actual.
 8. El sistema guarda la PQRS en estado "Nuevo" y almacena el PDF en el servidor.
-9. El Sistema Notificador dispara el envío de un correo electrónico de confirmación al Cliente.
+9. El Sistema dispara el envío de un correo electrónico de confirmación al Cliente.
 10. El sistema notifica al Cliente en pantalla que la PQRS fue radicada exitosamente, mostrando el número de radicado.
 
 ## 5. Flujos Alternativos
@@ -36,4 +36,4 @@ Es el proceso central (core) mediante el cual un Cliente ingresa una nueva Petic
 
 ## 6. Diagrama del Caso de Uso
 
-![Diagrama de CU-03](imagenes-diagramas/CU-03.png)
+CU-03 es el caso de uso central del MVP. En el diagrama general ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) aparece accesible directamente por el actor Cliente y con relación `<<include>>` hacia CU-01 (Registro Automático).

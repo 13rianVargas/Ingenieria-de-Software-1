@@ -1,0 +1,43 @@
+@startuml
+' Vista de Procesos — Generar Reporte PDF de Bandeja
+title Proceso: Generar Reporte PDF (HU-11)
+
+actor Gestor
+participant "App Web\n(Angular)" as Web
+participant "pqrs-api\n(REST)" as Api
+participant "pqrs-domain" as Domain
+participant "pqrs-reportes\n(JasperReports/iText)" as Rep
+database "PostgreSQL" as DB
+
+Gestor -> Web : 1. Aplica filtros\n+ click "Exportar PDF"
+Web -> Api : POST /api/reportes/bandeja\n{filtros}
+activate Api
+
+Api -> Domain : generarReporteBandeja(filtros, gestorId)
+activate Domain
+
+Domain -> DB : SELECT pqrs\nJOIN tramite\nWHERE filtros
+DB --> Domain : dataset
+
+Domain -> Rep : renderPDF(template, dataset)
+activate Rep
+Rep --> Domain : bytes PDF
+deactivate Rep
+
+Domain --> Api : pdf stream
+deactivate Domain
+
+Api --> Web : 200 OK\nContent-Type: application/pdf\nContent-Disposition: attachment
+deactivate Api
+
+Web --> Gestor : 2. Descarga\nReporte_Bandeja_PQRS.pdf
+
+note right of Rep
+  Plantilla parametrizable
+  con logo y datos
+  corporativos
+  (cumple RNF-03 responsive
+  + admin sin codigo).
+end note
+
+@enduml

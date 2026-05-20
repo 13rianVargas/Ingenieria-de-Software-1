@@ -1,5 +1,5 @@
 name: Caso de Prueba
-description: Plantilla estructurada para casos de prueba funcionales — E-Commerce Comercial Konrad
+description: Plantilla estructurada para casos de prueba funcionales
 title: "[TC-NN] HU-XXX — descripcion corta"
 labels: ["test-case", "status:pending"]
 assignees: []
@@ -18,7 +18,7 @@ body:
     attributes:
       label: HU origen
       description: ID de la Historia de Usuario del backlog.
-      placeholder: "HU-1 Registro de Vendedor"
+      placeholder: "HU-NN — descripcion corta"
     validations:
       required: true
 
@@ -27,7 +27,7 @@ body:
     attributes:
       label: Caso de Uso (si aplica)
       description: ID del CU del Taller-4 o Proyecto Final.
-      placeholder: "CU-01 — Gestionar Registro"
+      placeholder: "CU-NN — Nombre del caso de uso"
     validations:
       required: false
 
@@ -75,9 +75,8 @@ body:
       label: Precondiciones
       description: Estado del sistema antes de ejecutar. Usuario logueado, fixtures cargados, datos previos necesarios.
       placeholder: |
-        - El vendedor NO tiene cuenta previa en el sistema.
-        - La pagina de registro esta disponible.
-        - Los formatos descargables (aceptacion de datos, consulta centrales) estan disponibles.
+        - Describir aqui las precondiciones especificas del caso.
+        - Estado inicial del sistema, datos cargados, fixtures, sesiones.
     validations:
       required: true
 
@@ -87,14 +86,9 @@ body:
       label: Datos de Prueba
       description: Valores de entrada exactos. No usar "datos validos" generico — poner los valores reales.
       placeholder: |
-        Nombre: Juan Carlos
-        Apellido: Perez Lopez
-        Cedula: 1020304050
-        Correo: jcperez@gmail.com
-        Pais: Colombia
-        Ciudad: Bogota
-        Telefono: 3001234567
-        Documentos: cedula.pdf, rut.pdf, camara_comercio.pdf, formato_centrales.pdf, formato_datos.pdf
+        Campo1: valor_exacto
+        Campo2: valor_exacto
+        Archivos adjuntos: nombre.ext (si aplica)
     validations:
       required: true
 
@@ -104,15 +98,9 @@ body:
       label: Pasos
       description: Una accion por paso. Numerados. Sin ambiguedad.
       placeholder: |
-        1. Navegar a la pagina de registro de vendedores.
-        2. Completar campos: nombres, apellidos, numero de identificacion, correo, pais, ciudad, telefono.
-        3. Seleccionar tipo de persona (natural).
-        4. Descargar y adjuntar fotocopia cedula.
-        5. Descargar y adjuntar RUT.
-        6. Descargar y adjuntar camara de comercio.
-        7. Adjuntar formato firmado de aceptacion de consulta a centrales de riesgo.
-        8. Adjuntar formato firmado de tratamiento de datos personales.
-        9. Hacer click en "Enviar solicitud".
+        1. Accion concreta del usuario o sistema.
+        2. Siguiente accion.
+        3. ...
     validations:
       required: true
 
@@ -122,9 +110,8 @@ body:
       label: Resultado Esperado
       description: Comportamiento observable concreto y verificable. Sin "el sistema funciona correctamente".
       placeholder: |
-        El sistema registra la solicitud en estado PENDIENTE.
-        Se muestra en pantalla el numero de solicitud generado.
-        El vendedor recibe correo de confirmacion con el numero de solicitud.
+        El sistema responde con el comportamiento concreto esperado.
+        Cambios de estado, mensajes, notificaciones que deben ocurrir.
     validations:
       required: true
 

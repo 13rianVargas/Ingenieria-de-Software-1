@@ -7,7 +7,7 @@ Proporciona al administrador del sistema (Gestor de PQRS) la funcionalidad para 
 * **Gestor de PQRS:** Usuario administrativo que atiende las solicitudes de la bandeja.
 
 ## 3. Precondiciones
-* El Gestor debe estar autenticado (CU-02) con rol de administrador en la Aplicación Web.
+* El Gestor debe estar autenticado (CU-02) con rol `gestor` en la Aplicación Web.
 * El sistema debe contar con al menos una PQRS registrada en la base de datos para mostrar.
 
 ## 4. Flujo Principal (Listado General)
@@ -31,4 +31,4 @@ Proporciona al administrador del sistema (Gestor de PQRS) la funcionalidad para 
 
 ## 6. Diagrama del Caso de Uso
 
-![Diagrama de CU-05](imagenes-diagramas/CU-05.png)
+CU-05 aparece en el diagrama general ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) accesible por el actor Gestor y dependiente de CU-02 (autenticación con rol `gestor`).

@@ -1,7 +1,7 @@
 @startuml
 left to right direction
 actor "Cliente" as C
-actor "Sistema Notificador" as S
+actor "Sistema" as S
 
 package "App Móvil" {
   usecase "Diligenciar Formulario PQRS" as UC1
