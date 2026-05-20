@@ -1,7 +1,7 @@
 @startuml
 left to right direction
 actor "Usuario (Cliente/Gestor)" as U
-actor "Sistema Notificador" as S
+actor "Sistema" as S
 
 package "Seguridad App/Web" {
   usecase "Cambiar Contraseña" as UC1

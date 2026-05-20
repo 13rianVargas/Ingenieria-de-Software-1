@@ -1,12 +1,16 @@
 # CU-08: Gestionar Seguridad de la Cuenta
 
+> **⚠ Fuera de Alcance MVP.** Este caso de uso cubre HU-13 (Recuperar Contraseña), HU-14 (Cambiar Contraseña) y HU-15 (Cerrar Sesión), todas clasificadas como *"Supuesto de mejora"* en [`1-Funcionalidades.md`](../1-Funcionalidades.md). Se conserva la especificación como referencia para iteraciones post-MVP, pero **no se implementa** en la entrega actual ni se traza en el SRS principal.
+>
+> El MVP cubre 7 Casos de Uso (CU-01 a CU-07). CU-08 entra al alcance cuando el equipo aborde las funcionalidades 13, 14 y 15 en un sprint posterior.
+
 ## 1. Descripción
-Permite a los usuarios (Cliente o Gestor) administrar las credenciales de acceso a sus cuentas, brindándoles opciones para recuperar una contraseña olvidada, cambiar la contraseña autogenerada por una de su preferencia, y cerrar sesión de manera segura. Estas funcionalidades (HU-13, HU-14, HU-15) fueron identificadas como complementos vitales para la seguridad del MVP.
+Permite a los usuarios (Cliente o Gestor) administrar las credenciales de acceso a sus cuentas, brindándoles opciones para recuperar una contraseña olvidada, cambiar la contraseña autogenerada por una de su preferencia, y cerrar sesión de manera segura.
 
 ## 2. Actores
 * **Cliente:** Actor que administra su acceso desde la App Móvil o Web.
 * **Gestor de PQRS:** Actor que administra su acceso desde la Aplicación Web.
-* **Sistema (Notificador):** Actor encargado de enviar el correo electrónico de recuperación de contraseña.
+* **Sistema:** Actor encargado de enviar el correo electrónico de recuperación de contraseña.
 
 ## 3. Precondiciones
 * Para *Cambiar Contraseña* y *Cerrar Sesión*, el usuario debe estar autenticado en el sistema (CU-02).
@@ -30,7 +34,7 @@ Permite a los usuarios (Cliente o Gestor) administrar las credenciales de acceso
     2. El sistema solicita el "Número de Identificación" o "Correo Electrónico".
     3. El usuario ingresa el dato y presiona "Recuperar".
     4. El sistema busca al usuario en la BD. Si existe, genera un token temporal o una nueva contraseña autogenerada (como en el CU-01).
-    5. El Sistema Notificador envía un correo electrónico al usuario con las instrucciones o la nueva credencial.
+    5. El Sistema envía un correo electrónico al usuario con las instrucciones o la nueva credencial.
     6. El sistema informa en pantalla: "Se han enviado instrucciones a su correo electrónico registrado."
 *   **Flujo Alternativo 2 (Cerrar Sesión):**
     1. El usuario (Cliente o Gestor), estando autenticado, hace clic en "Cerrar Sesión" o "Salir" desde el menú principal de la App/Web.
@@ -41,4 +45,4 @@ Permite a los usuarios (Cliente o Gestor) administrar las credenciales de acceso
 
 ## 6. Diagrama del Caso de Uso
 
-![Diagrama de CU-08](imagenes-diagramas/CU-08.png)
+CU-08 **no aparece en el diagrama general del MVP** ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) por estar fuera de alcance. Se incorporará en el diagrama cuando el equipo planifique el sprint que aborde HU-13/14/15.

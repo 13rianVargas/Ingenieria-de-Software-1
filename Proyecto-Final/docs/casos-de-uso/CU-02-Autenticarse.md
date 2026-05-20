@@ -8,7 +8,7 @@ Permite a los usuarios (Clientes en la App Móvil y Gestores en la Aplicación W
 * **Gestor de PQRS:** Actor que ingresa a la Aplicación Web.
 
 ## 3. Precondiciones
-* El Cliente debe haber sido registrado previamente (manual o automáticamente) y poseer sus credenciales.
+* El Cliente debe haber sido registrado previamente de forma automática durante una radicación (CU-01) y poseer sus credenciales recibidas por correo.
 * El Gestor de PQRS debe tener una cuenta administrativa previamente creada en el módulo de seguridad.
 
 ## 4. Flujo Principal (Autenticación del Cliente)
@@ -34,4 +34,4 @@ Permite a los usuarios (Clientes en la App Móvil y Gestores en la Aplicación W
 
 ## 6. Diagrama del Caso de Uso
 
-![Diagrama de CU-02](imagenes-diagramas/CU-02.png)
+CU-02 aparece en el diagrama general de casos de uso ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) accesible tanto por el actor Cliente como por el actor Gestor.

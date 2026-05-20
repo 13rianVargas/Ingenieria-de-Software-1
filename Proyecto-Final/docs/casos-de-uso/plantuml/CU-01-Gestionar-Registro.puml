@@ -1,20 +1,22 @@
 @startuml
 left to right direction
 actor "Cliente" as C
-actor "Sistema Notificador" as S
+actor "Sistema" as S
 
 package "App Móvil" {
-  usecase "Registro Manual" as UC1
-  usecase "Registro Automático" as UC2
+  usecase "Registro Automático\n(durante radicación CU-03)" as UC2
   usecase "Generar Contraseña Segura" as UC3
-  usecase "Enviar Correo de Bienvenida" as UC4
+  usecase "Enviar Correo con Credenciales" as UC4
 }
 
-C --> UC1
-C --> UC2
-
-UC1 ..> UC3 : <<include>>
 UC2 ..> UC3 : <<include>>
 UC3 ..> UC4 : <<include>>
 UC4 --> S
+
+note bottom of UC2
+  Trigger desde CU-03 (Radicar PQRS)
+  cuando el numero de identificacion
+  no existe en BD. En el MVP NO hay
+  registro manual independiente.
+end note
 @enduml

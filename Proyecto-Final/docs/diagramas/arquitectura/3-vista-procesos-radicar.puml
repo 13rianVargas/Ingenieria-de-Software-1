@@ -1,0 +1,54 @@
+@startuml
+' Vista de Procesos — Flujo Radicar PQRS
+' Diagrama de secuencia: Cliente radica una PQRS con anexo PDF
+title Proceso: Radicar PQRS (HU-01)
+
+actor Cliente
+participant "App Mobile\n(Ionic)" as App
+participant "pqrs-api\n(REST)" as Api
+participant "pqrs-domain" as Domain
+participant "shared/security" as Sec
+database "PostgreSQL" as DB
+collections "NAS" as NAS
+participant "pqrs-notificaciones" as Notif
+queue "SMTP Gateway" as SMTP
+
+Cliente -> App : 1. Selecciona "Radicar PQRS"
+App -> Cliente : 2. Muestra formulario
+Cliente -> App : 3. Completa datos + adjunta PDF + Enviar
+
+App -> Api : POST /api/pqrs\nmultipart/form-data
+activate Api
+
+Api -> Sec : autenticar (si autenticado)
+alt cliente autenticado
+  Sec --> Api : ok + userId
+else cliente anonimo
+  Api -> Domain : registrarClienteAutomatico()
+  Domain -> DB : INSERT usuario\n(clave_hash autogenerada)
+  Domain --> Api : userId nuevo
+end
+
+Api -> Domain : crearPQRS(datos, userId)
+activate Domain
+Domain -> DB : INSERT pqrs\n(estado=nuevo)
+Domain -> NAS : guardar adjunto.pdf
+Domain --> Api : radicado generado
+deactivate Domain
+
+Api --> App : 201 Created\n{radicado, fecha}
+deactivate Api
+
+App --> Cliente : 4. Confirmacion + numero radicado
+
+== Asincrono (no bloquea respuesta) ==
+Domain -> Notif : enviarCorreo(radicado, email)
+Notif -> SMTP : SMTP send
+note right of SMTP
+  Si SMTP falla:
+  reintentos con backoff,
+  NO afecta la respuesta
+  visual al cliente.
+end note
+
+@enduml

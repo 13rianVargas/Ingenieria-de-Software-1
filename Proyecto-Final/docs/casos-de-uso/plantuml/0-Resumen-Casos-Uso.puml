@@ -3,7 +3,7 @@ left to right direction
 
 actor "Cliente" as C
 actor "Gestor de PQRS" as G
-actor "Sistema (Notificador)" as S
+actor "Sistema" as S
 
 package "Sistema de PQRS SuperMarket" {
   usecase "CU-01 Gestionar Registro" as UC1

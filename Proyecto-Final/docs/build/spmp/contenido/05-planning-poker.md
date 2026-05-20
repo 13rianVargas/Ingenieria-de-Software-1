@@ -1,4 +1,4 @@
-# PLANNING POKER (ESTIMACIÓN DE FUNCIONALIDADES)
+# 5. Planning Poker — Estimación Fibonacci
 
 La siguiente estimación se realizará utilizando la secuencia de Fibonacci (1, 2, 3, 5, 8, 13...).
 Se toma como pivote la historia **HU-05 (Filtrar Radicados Propios)** con un valor de **1 Punto de Historia (SP)**, equivalente a 9 horas de trabajo efectivo.
@@ -20,4 +20,6 @@ La tabla presenta la estimación acordada por el equipo tras discutir los retos 
 | **HU-11** | Generar Reporte de Radicados (PDF) | 5 |
 | **HU-12** | Notificación de Confirmación (Correo) | 5 |
 
-| | **TOTAL PUNTOS DE HISTORIA (SP)** | **45 SP** |
+| | **TOTAL PUNTOS DE HISTORIA (SP)** | **32 SP** |
+
+> **Nota**: las funcionalidades #13 a #17 (Recuperar Contraseña, Cambiar Contraseña, Cerrar Sesión, Notificación de Cambio de Estado, Registro Manual) son **mejoras post-MVP** y no están incluidas en este Planning Poker. Ver `1-Funcionalidades.md` y `2-MVP.md` para el detalle de qué queda fuera del compromiso del MVP.
