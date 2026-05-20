@@ -2,6 +2,13 @@
 
 Para garantizar la entrega de valor funcional alineada a la solicitud del cliente SuperMarket (flujo básico de recepción, notificación y gestión de PQRS), el desarrollo se ha dividido en un Producto Mínimo Viable (MVP) y un bloque de Incrementos o entregas posteriores.
 
+## Historial de Versiones
+
+| Versión | Fecha | Descripción Cambio |
+| :--- | :--- | :--- |
+| 01 | 12/05/2026 | Creación inicial del documento MVP con división en Primera Salida (Sprint 1) + Segunda Salida (Sprint 2) + Incrementos Posteriores. |
+| 02 | 19/05/2026 | Revisión preparación SPMP: movimiento de la funcionalidad #9 Descargar Anexo de Segunda Salida a Primera Salida (coherente con CU-06 Tramitar §4 pasos 4-5: el Gestor necesita revisar el anexo antes de cambiar el estado de la PQRS). Suma de historial. |
+
 ## Funcionalidades del MVP (Primera Salida)
 
 Este MVP compone el flujo core o crítico del negocio que permite al cliente final (Ciudadano) enviar una solicitud y al gestor tramitarla.
@@ -12,6 +19,7 @@ Este MVP compone el flujo core o crítico del negocio que permite al cliente fin
 *   **4. Consultar Historial de Radicados:** Visualización del listado de PQRS del cliente.
 *   **6. Autenticación de Gestor (Login):** Ingreso al panel de administración para poder gestionar los casos.
 *   **7. Consultar Bandeja de Radicados:** Visualización del listado general de todas las PQRS registradas en el sistema.
+*   **9. Descargar Anexo de PQRS:** Capacidad del Gestor de obtener el PDF adjunto para revisar la evidencia antes de tramitar.
 *   **10. Gestionar Estado de PQRS:** Capacidad para que el Gestor cambie el estado de un radicado (ingresando la justificación respectiva).
 *   **12. Notificación de Confirmación (Correo):** Envío automático de correo con las credenciales y el número de radicado.
 
@@ -19,11 +27,10 @@ Este MVP compone el flujo core o crítico del negocio que permite al cliente fin
 ## Funcionalidades del MVP (Segunda Salida)
 
 
-Estas funcionalidades se implementarán en sprints posteriores, enfocándose en la usabilidad, filtrado avanzado, exportación y mejoras de seguridad propuestas por el equipo.
+Estas funcionalidades se implementarán en sprints posteriores, enfocándose en filtrado avanzado y exportación.
 
 *   **5. Filtrar Radicados Propios:** Filtros dentro del historial del cliente.
 *   **8. Filtrar Bandeja de Radicados:** Búsqueda avanzada por "Tipo" y "Estado" para el Gestor.
-*   **9. Descargar Anexo de PQRS:** Capacidad del gestor para revisar los documentos adjuntos detallados.
 *   **11. Generar Reporte de Radicados (PDF):** Exportación de datos de gestión para auditoría o administración.
 ---
 ## Incrementos Posteriores (Post-MVP - Condicionados al tiempo disponible)

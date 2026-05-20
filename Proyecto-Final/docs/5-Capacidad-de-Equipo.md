@@ -1,5 +1,14 @@
 # CÁLCULO DE CAPACIDAD DEL EQUIPO - PROYECTO FINAL
 
+## Historial de Versiones
+
+| Versión | Fecha | Descripción Cambio |
+| :--- | :--- | :--- |
+| 01 | 13/05/2026 | Creación inicial: cálculo de capacidad (112 hrs/sprint), estimación total del proyecto (32 SP = 288 hrs), aproximadamente 2.58 sprints. |
+| 02 | 19/05/2026 | Revisión preparación SPMP: corrección terminológica ("12.4 HU por Sprint" → "12.4 SP por Sprint", ya que la unidad de capacidad es el Story Point), suma de historial. Estimación 32 SP confirmada coherente con `4-Planning-Poker.md` corregido. |
+
+---
+
 | Concepto | Valor Sugerido | Descripción |
 |----------|----------------|-------------|
 | **Personas en el equipo (Dev/QA)** | 4 | Número de integrantes del equipo de desarrollo (sin el PO o SM si solo gestionan). |
@@ -10,7 +19,7 @@
 
 ---
 
-> **La capacidad total del equipo es de 112 horas efectivas por Sprint. Un estimado de 12.4 HU por Sprint**
+> **La capacidad total del equipo es de 112 horas efectivas por Sprint. Un estimado de 12.4 SP (Story Points) por Sprint** (asumiendo 1 SP = 9 horas).
 
 ## Estimación Total del Proyecto
 Teniendo en cuenta que el proyecto se estimó en **32 Puntos de Historia (SP)** y que la historia base define que **1 SP equivale a 9 horas de trabajo efectivo**, el proyecto requiere un total de **288 horas efectivas**.

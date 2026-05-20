@@ -1,0 +1,57 @@
+@startuml
+' Vista de Casos de Uso — Arquitectura PQRS (MVP)
+' Mapa de actores y CU arquitectonicamente significativos
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+
+actor "Cliente\n(Ciudadano)" as Cliente
+actor "Gestor de PQRS" as Gestor
+actor "Sistema\n(SMTP, automatico)" as Sistema <<system>>
+
+rectangle "Sistema PQRS — SuperMarket (MVP)" {
+  usecase "CU-01\nGestionar Registro Cliente" as CU01
+  usecase "CU-02\nAutenticarse (Login)" as CU02
+  usecase "CU-03\nRadicar PQRS" as CU03
+  usecase "CU-04\nConsultar PQRS Propias" as CU04
+  usecase "CU-05\nGestionar Bandeja Entrada" as CU05
+  usecase "CU-06\nTramitar PQRS" as CU06
+  usecase "CU-07\nGenerar Reportes PDF" as CU07
+}
+
+Cliente --> CU02
+Cliente --> CU03
+Cliente --> CU04
+
+Gestor --> CU02
+Gestor --> CU05
+Gestor --> CU06
+Gestor --> CU07
+
+CU03 ..> CU01 : <<include>>
+CU03 ..> Sistema : <<extend>>\nnotificacion radicado
+
+note bottom of CU03
+  Arquitectonicamente significativo:
+  trigger de registro automatico,
+  almacenamiento PDF en NAS,
+  envio asincrono de correo.
+end note
+
+note bottom of CU05
+  Arquitectonicamente significativo:
+  paginacion sobre miles de PQRS,
+  filtros con consulta optimizada,
+  acceso controlado por rol.
+end note
+
+note bottom of Sistema
+  Actor automatico del backend.
+  En el MVP envia notificacion de
+  confirmacion al radicar (CU-03).
+  Notificacion de cambio de estado
+  desde CU-06 esta fuera de alcance
+  MVP (funcionalidad #16 post-MVP).
+end note
+
+@enduml

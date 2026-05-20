@@ -1,0 +1,57 @@
+@startuml
+' Vista Logica — Componentes del Sistema PQRS
+' Estilo C4 simplificado
+skinparam componentStyle rectangle
+skinparam nodesep 50
+skinparam ranksep 80
+
+actor Cliente as ClienteActor
+actor Gestor as GestorActor
+
+package "Frontend" {
+  component [pqrs-mobile\n(Ionic)] as FrontMobile
+  component [pqrs-web\n(Angular)] as FrontWeb
+}
+
+package "Backend (Spring Boot)" {
+  component [pqrs-api\n(REST)] as Api
+  component [pqrs-domain] as Domain
+  component [pqrs-notificaciones] as Notif
+  component [pqrs-archivos] as Archivos
+  component [shared/security\n(JWT + BCrypt)] as Security
+  component [shared/auditoria\n(AOP)] as Audit
+}
+
+database "PostgreSQL\n(primario + replica)" as DB
+folder "NAS\n(adjuntos PDF)" as NAS
+node "SMTP Gateway" as SMTP
+
+ClienteActor --> FrontMobile : HTTPS
+GestorActor --> FrontWeb : HTTPS
+
+FrontMobile --> Api : REST/JSON
+FrontWeb --> Api : REST/JSON
+
+Api --> Security : auth
+Api --> Domain : casos de uso
+Domain --> Audit : log CRUD
+Domain --> Archivos : adjuntos
+Domain --> Notif : correo
+Domain --> DB : JPA
+
+Archivos --> NAS : NFS
+Notif --> SMTP : SMTPS
+
+note right of Domain
+  Capa pura de dominio.
+  Sin dependencia de Spring
+  (puertos + adaptadores).
+end note
+
+note right of Security
+  BCrypt para hash de claves.
+  JWT para sesiones.
+  Roles: Cliente, Gestor, Admin.
+end note
+
+@enduml

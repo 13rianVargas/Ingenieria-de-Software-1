@@ -1,4 +1,4 @@
-# HISTORIA DE USUARIO BASE (PIVOTE)
+# 4. Historia de Usuario base y Estimación PERT
 
 Para realizar la estimación del proyecto mediante Planning Poker, se ha seleccionado la funcionalidad más sencilla del sistema como la **Historia de Usuario Base**, a la cual se le asigna un valor de **1 Punto de Historia (Story Point)**.
 

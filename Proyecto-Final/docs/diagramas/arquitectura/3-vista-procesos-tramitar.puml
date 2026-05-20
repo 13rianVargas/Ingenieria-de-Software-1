@@ -1,0 +1,52 @@
+@startuml
+' Vista de Procesos — Flujo Tramitar PQRS (Gestor cambia estado)
+title Proceso: Tramitar PQRS (HU-10)
+
+actor Gestor
+participant "App Web\n(Angular)" as Web
+participant "pqrs-api\n(REST)" as Api
+participant "pqrs-domain" as Domain
+participant "shared/security" as Sec
+participant "shared/auditoria" as Audit
+database "PostgreSQL" as DB
+participant "pqrs-notificaciones" as Notif
+queue "SMTP Gateway" as SMTP
+
+Gestor -> Web : 1. Login + abre Bandeja
+Web -> Api : GET /api/pqrs?estado=nuevo
+Api -> Sec : autorizar (rol=gestor)
+Sec --> Api : ok
+Api -> Domain : listarPQRS(filtros)
+Domain -> DB : SELECT ... WHERE estado=...
+DB --> Domain : lista
+Domain --> Api : lista paginada
+Api --> Web : 200 OK + lista
+Web --> Gestor : 2. Tabla de PQRS
+
+Gestor -> Web : 3. Selecciona PQRS\n+ cambia estado\n+ ingresa justificacion
+Web -> Api : PUT /api/pqrs/{id}/tramitar\n{estado_nuevo, justificacion}
+activate Api
+
+Api -> Sec : autorizar (rol=gestor)
+Api -> Domain : tramitarPQRS(id, estadoNuevo, justificacion)
+activate Domain
+
+Domain -> Domain : validar justificacion no vacia
+Domain -> DB : UPDATE pqrs SET estado=...
+Domain -> DB : INSERT tramite\n(estado_anterior,\nestado_nuevo,\njustificacion,\ngestor_id,\ntimestamp)
+
+Domain -> Audit : log("tramitar_pqrs", gestor, payload)
+Audit -> DB : INSERT auditoria
+
+Domain --> Api : exito
+deactivate Domain
+Api --> Web : 200 OK
+deactivate Api
+
+Web --> Gestor : 4. Confirmacion visual
+
+== Asincrono ==
+Domain -> Notif : notificarCambioEstado(cliente, radicado, estado, justificacion)
+Notif -> SMTP : SMTP send
+
+@enduml
