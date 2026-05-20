@@ -2,7 +2,7 @@
 
 Para garantizar la entrega de valor funcional alineada a la solicitud del cliente SuperMarket (flujo básico de recepción, notificación y gestión de PQRS), el desarrollo se ha dividido en un Producto Mínimo Viable (MVP) y un bloque de Incrementos o entregas posteriores.
 
-## Historial de Versiones
+## Historial de Versiónes
 
 | Versión | Fecha | Descripción Cambio |
 | :--- | :--- | :--- |

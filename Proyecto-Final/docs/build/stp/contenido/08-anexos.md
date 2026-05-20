@@ -12,7 +12,7 @@
 | RNF | Requerimiento No Funcional |
 | PQRS | Peticion, Queja, Reclamo, Sugerencia |
 | CC/CE/TI/PP | Cedula / Cedula Extranjeria / Tarjeta Identidad / Pasaporte |
-| MER | Modelo Entidad Relacion |
+| MER | Modelo Entidad Relación |
 | SMTP | Simple Mail Transfer Protocol |
 | JWT | JSON Web Token |
 | NAS | Network Attached Storage |
@@ -43,9 +43,9 @@
 
 ## A4. Plan de evolucion
 
-Una vez completada la ejecucion de los 10 TC base, este plan podria expandirse para cubrir:
+Una vez completada la ejecución de los 10 TC base, este plan podria expandirse para cubrir:
 
-- HU-03 Autenticacion de Cliente (Login).
+- HU-03 Autenticación de Cliente (Login).
 - HU-04 Consultar Historial de Radicados.
 - HU-05 Filtrar Radicados Propios.
 - Pruebas de regresion cuando se sumen funcionalidades adicionales.

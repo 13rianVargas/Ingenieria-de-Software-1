@@ -22,7 +22,8 @@ import estilos as E
 
 BASE = Path(__file__).parent
 CONTENIDO = BASE / "contenido"
-OUTPUT = BASE / "srs.docx"
+# OUTPUT calculado dinámicamente en main() a partir de 00-portada.yaml
+# Patron: PF_<TIPO>_<APELLIDOS>_GRUPO_<grupo>_<periodo>.docx
 
 SECCIONES = [
     "01-introduccion.md",
@@ -33,6 +34,7 @@ SECCIONES = [
     "06-especificacion-casos-uso.md",
     "07-cumplimiento-rnf.md",
     "08-anexo-prototipos.md",
+    "09-referencias.md",
 ]
 
 
@@ -121,13 +123,13 @@ def build_historial(doc, meta):
     E.add_heading(doc, "Historial de Versiones", level=1)
     E.add_table(
         doc,
-        headers=["Fecha", "Version", "Autor", "Descripcion"],
+        headers=["Fecha", "Versión", "Autor", "Descripción"],
         rows=[
             [
                 meta.get("fecha", ""),
                 meta.get("version", "1.0"),
                 " · ".join(a.split()[0] for a in meta.get("autores", [])),
-                "Version inicial del plan de pruebas PQRS",
+                "Versión inicial del SRS",
             ],
         ],
         col_widths_cm=[3, 2, 5, 8],
@@ -136,16 +138,16 @@ def build_historial(doc, meta):
 
 
 def build_info_proyecto(doc, meta):
-    E.add_heading(doc, "Informacion del Proyecto", level=1)
+    E.add_heading(doc, "Información del Proyecto", level=1)
     filas = [
-        ["Empresa / Organizacion", meta.get("institucion", "")],
+        ["Empresa / Organización", meta.get("institucion", "")],
         ["Proyecto", meta.get("subtitulo", "")],
         ["Cliente", meta.get("cliente", "SuperMarket")],
-        ["Fecha de preparacion", meta.get("fecha", "")],
+        ["Fecha de preparación", meta.get("fecha", "")],
         ["Materia", meta.get("materia", "")],
         ["Docente", meta.get("docente", "")],
         ["Grupo", meta.get("grupo", "")],
-        ["Lider de Pruebas", "Por asignar internamente"],
+        ["Líder de Pruebas", meta.get("lider_pruebas", "Criollo Homez Julián Felipe")],
     ]
     E.add_table(doc, headers=["Campo", "Valor"], rows=filas, col_widths_cm=[6, 11])
     doc.add_paragraph()
@@ -202,7 +204,7 @@ def parse_markdown_section(doc, md_text):
             if table_lines:
                 _render_table(doc, table_lines)
             continue
-        elif line.strip().startswith("- "):
+        elif line.strip().startswith("- ") or line.strip().startswith("* "):
             try:
                 p = doc.add_paragraph(style="List Bullet")
             except KeyError:
@@ -217,6 +219,10 @@ def parse_markdown_section(doc, md_text):
                 p = doc.add_paragraph()
                 p.paragraph_format.left_indent = Pt(18)
             _add_inline_runs(p, text, size_pt=10.5)
+        elif line.strip() == "---" or line.strip() == "***" or line.strip() == "___":
+            # Agregar un separador visual limpio o simplemente espacio
+            p = doc.add_paragraph()
+            p.paragraph_format.space_after = Pt(12)
         elif line.strip().startswith(">") or line.strip().startswith("<!--"):
             pass
         elif line.strip() == "":
@@ -277,7 +283,7 @@ def _render_table(doc, pipe_lines):
 
 
 def add_header_footer(doc, meta):
-    footer_text = f"{meta.get('subtitulo', '')} — Plan de Pruebas v{meta.get('version', '1.0')}"
+    footer_text = f"{meta.get('subtitulo', '')} — {meta.get('tipo_documento', 'Documento')} v{meta.get('version', '1.0')}"
     for section in doc.sections:
         footer = section.footer
         p = footer.paragraphs[0] if footer.paragraphs else footer.add_paragraph()
@@ -336,7 +342,23 @@ def main():
     with open(CONTENIDO / "00-portada.yaml", encoding="utf-8") as f:
         meta = yaml.safe_load(f)
 
+    tipo = meta.get("tipo_documento", "DOC")
+    grupo = meta.get("grupo", "X")
+    periodo = meta.get("periodo", "20261")
+    apellidos = meta.get("apellidos_consolidados", "AVILA_CRIOLLO_ROCHA_VARGAS")
+    OUTPUT = BASE / f"PF_{tipo}_{apellidos}_GRUPO_{grupo}_{periodo}.docx"
+
     doc = Document()
+    
+    # Configurar idioma principal a Español (es-ES) para la revisión ortográfica
+    styles = doc.styles
+    if hasattr(styles.element, 'xpath'):
+        default_rPr = styles.element.xpath('w:docDefaults/w:rPrDefault/w:rPr')
+        if default_rPr:
+            lang = OxmlElement('w:lang')
+            lang.set(qn('w:val'), 'es-ES')
+            default_rPr[0].append(lang)
+
     for section in doc.sections:
         section.top_margin = Cm(2.5)
         section.bottom_margin = Cm(2.5)

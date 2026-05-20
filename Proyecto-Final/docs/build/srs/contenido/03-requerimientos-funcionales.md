@@ -305,7 +305,7 @@
 | **Postcondición** | El estado de la PQRS se actualiza en base de datos. |
 
 **Criterios de Aceptación:**
-- Dado una PQRS en estado "Nuevo", cuando el Gestor cambia el estado y diligencia justificación válida (>= 10 caracteres, no solo espacios), entonces el sistema persiste el cambio y crea un registro en `tramite` con el estado anterior y nuevo.
+- Dado una PQRS en estado "Nuevo", cuando el Gestor cambia el estado y diligencia justificación válida (>= 10 caracteres, no solo espacios), entonces el sistema persiste el cambio y crea un registro en `trámite` con el estado anterior y nuevo.
 - Dado un campo de justificación vacío o solo con espacios, cuando el Gestor presiona "Guardar Cambios", entonces el sistema impide guardar y muestra "Para cambiar el estado, la justificación es obligatoria".
 - Dado un cambio de estado a "Resuelto" o "Rechazado", cuando se persiste, entonces el sistema registra `fecha_cierre` con timestamp actual.
 - Dado un usuario sin rol `gestor` o `admin`, cuando intenta cambiar estado, entonces el endpoint responde HTTP 403.

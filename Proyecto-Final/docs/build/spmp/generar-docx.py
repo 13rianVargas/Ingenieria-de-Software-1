@@ -22,7 +22,7 @@ import estilos as E
 
 BASE = Path(__file__).parent
 CONTENIDO = BASE / "contenido"
-OUTPUT = BASE / "spmp.docx"
+OUTPUT = BASE / "PF_SPMP_AVILA_CRIOLLO_ROCHA_VARGAS_GRUPO_51_20261.docx"
 
 SECCIONES = [
     "01-introduccion.md",
@@ -144,7 +144,7 @@ def build_info_proyecto(doc, meta):
         ["Materia", meta.get("materia", "")],
         ["Docente", meta.get("docente", "")],
         ["Grupo", meta.get("grupo", "")],
-        ["Lider de Pruebas", "Por asignar internamente"],
+        ["Lider de Pruebas", meta.get("lider_pruebas", "Criollo Homez Julián Felipe")],
     ]
     E.add_table(doc, headers=["Campo", "Valor"], rows=filas, col_widths_cm=[6, 11])
     doc.add_paragraph()

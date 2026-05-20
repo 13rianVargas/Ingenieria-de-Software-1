@@ -1,6 +1,6 @@
 # 2. Catálogo de Funcionalidades
 
-## Historial de Versiones
+## Historial de Versiónes
 
 | Versión | Fecha | Descripción Cambio |
 | :--- | :--- | :--- |
