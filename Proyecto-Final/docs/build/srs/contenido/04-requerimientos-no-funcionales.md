@@ -12,11 +12,11 @@
 
 **Criterios de Aceptación:**
 
-1. El sistema debe alojar su base de datos obligatoriamente en un motor de licencia libre aprobado (PostgreSQL, MySQL, SQLServer Express u Oracle Express).
-2. El código fuente backend debe implementar un Sistema de Mapeo Objeto-Relacional (ORM) como Hibernate, iBatis, o equivalente, para toda transacción con la base de datos.
-3. El sistema debe ser desplegado en un Servidor Web o de Aplicaciones avalado (ej. Tomcat, JBoss, Glassfish, Apache, IIS).
-4. El sistema debe ofrecer dos interfaces de presentación independientes: una **App Móvil** (orientada al Cliente) y una **Aplicación Web** (orientada al Gestor).
-5. El código backend y web debe desarrollarse en lenguajes/frameworks estándar aprobados en el contexto (ej. PHP, .NET, Angular, JSF, SpringMVC, etc.).
+- El sistema debe alojar su base de datos obligatoriamente en un motor de licencia libre aprobado (PostgreSQL, MySQL, SQLServer Express u Oracle Express).
+- El código fuente backend debe implementar un Sistema de Mapeo Objeto-Relacional (ORM) como Hibernate, iBatis, o equivalente, para toda transacción con la base de datos.
+- El sistema debe ser desplegado en un Servidor Web o de Aplicaciones avalado (ej. Tomcat, JBoss, Glassfish, Apache, IIS).
+- El sistema debe ofrecer dos interfaces de presentación independientes: una **App Móvil** (orientada al Cliente) y una **Aplicación Web** (orientada al Gestor).
+- El código backend y web debe desarrollarse en lenguajes/frameworks estándar aprobados en el contexto (ej. PHP, .NET, Angular, JSF, SpringMVC, etc.).
 
 **Quality Attribute Scenarios:**
 
@@ -26,9 +26,9 @@
 
 **Documentación asociada:**
 
-- Documento de Arquitectura ([`9-Arquitectura-PQRS.md`](./9-Arquitectura-PQRS.md)) y su Vista de Implementación.
+- Documento de Arquitectura (Documento Especifico de Arquitectura (1)) y su Vista de Implementación.
 - Script de Base de Datos y Modelo Entidad-Relación (sección 8 del SAD, `9-Arquitectura-PQRS.md`).
-- Cumplimiento detallado ([`10-Cumplimiento-RNF-PQRS.md`](./10-Cumplimiento-RNF-PQRS.md) §RNF-01).
+- Cumplimiento detallado (Documento Especifico de Cumplimiento RNF (2) §RNF-01).
 
 ---
 
@@ -44,10 +44,10 @@
 
 **Criterios de Aceptación:**
 
-1. Las contraseñas de todos los usuarios (Clientes y Gestores) deben cifrarse en la base de datos a través de un mecanismo o algoritmo unidireccional (hash criptográfico seguro como BCrypt o Argon2).
-2. El sistema debe incorporar un módulo de seguridad basado en Roles o Perfiles (mínimo `cliente` y `gestor`, con `admin` adicional) que restrinja el acceso a las opciones y funcionalidades correspondientes.
-3. La App Móvil solo debe permitir la consulta de PQRS propias si la sesión del Cliente fue validada correctamente mediante su número de identificación y contraseña (autenticación).
-4. La Aplicación Web debe denegar el acceso a la Bandeja General, la descarga de Anexos y la Generación de Reportes a cualquier solicitud no autenticada como Gestor.
+- Las contraseñas de todos los usuarios (Clientes y Gestores) deben cifrarse en la base de datos a través de un mecanismo o algoritmo unidireccional (hash criptográfico seguro como BCrypt o Argon2).
+- El sistema debe incorporar un módulo de seguridad basado en Roles o Perfiles (mínimo `cliente` y `gestor`, con `admin` adicional) que restrinja el acceso a las opciones y funcionalidades correspondientes.
+- La App Móvil solo debe permitir la consulta de PQRS propias si la sesión del Cliente fue validada correctamente mediante su número de identificación y contraseña (autenticación).
+- La Aplicación Web debe denegar el acceso a la Bandeja General, la descarga de Anexos y la Generación de Reportes a cualquier solicitud no autenticada como Gestor.
 
 **Quality Attribute Scenarios:**
 
@@ -59,8 +59,8 @@
 **Documentación asociada:**
 
 - Políticas de Cifrado y Seguridad de SuperMarket.
-- Vista Lógica de Seguridad ([`9-Arquitectura-PQRS.md`](./9-Arquitectura-PQRS.md) §4 + §6).
-- Cumplimiento detallado ([`10-Cumplimiento-RNF-PQRS.md`](./10-Cumplimiento-RNF-PQRS.md) §RNF-02).
+- Vista Lógica de Seguridad (Documento Especifico de Arquitectura (1) §4 + §6).
+- Cumplimiento detallado (Documento Especifico de Cumplimiento RNF (2) §RNF-02).
 
 ---
 
@@ -72,14 +72,14 @@
 | **Prioridad** | Alta |
 | **Nombre** | Interoperabilidad, Integración y Comunicación |
 | **Categoría** | Interoperabilidad / Integración |
-| **Descripción** | El sistema se estructura en capas separadas. Por consiguiente, la comunicación entre las interfaces cliente (App Móvil y Aplicación Web) y el Servidor de Aplicaciones (Backend) debe seguir un estándar de interoperabilidad web para garantizar que las radicaciones y peticiones se transaccionen de manera fiable. |
+| **Descripción** | El sistema se estructura en capas separadas. Por consiguiente, la comunicación entre las interfaces cliente (App Móvil y Aplicación Web) y el Servidor de Aplicaciones (Backend) debe seguir un estándar de interoperabilidad web para garantizar que las radicaciónes y peticiones se transaccionen de manera fiable. |
 
 **Criterios de Aceptación:**
 
-1. Toda la integración y el intercambio de datos entre la App Móvil (Cliente), la App Web (Gestor) y la capa de lógica de negocio (Servidor) debe realizarse exclusivamente mediante consumo de servicios web bajo el protocolo SOAP o REST.
-2. El sistema backend debe exponer los *endpoints* necesarios para cubrir la radicación, consulta de historial, descarga de PDF (anexos) y tramitación.
-3. Las notificaciones automáticas (confirmación de registro y nueva contraseña, cambio de estado de PQRS) deben dispararse de forma asíncrona sin bloquear las respuestas del servicio web al cliente.
-4. Las respuestas de integración (payloads JSON/XML) deben estructurarse correctamente manejando códigos de estado HTTP estándar (200, 201, 400, 401, 403, 404, 500) para informar éxito o fallo de la operación a la interfaz de usuario.
+- Toda la integración y el intercambio de datos entre la App Móvil (Cliente), la App Web (Gestor) y la capa de lógica de negocio (Servidor) debe realizarse exclusivamente mediante consumo de servicios web bajo el protocolo SOAP o REST.
+- El sistema backend debe exponer los *endpoints* necesarios para cubrir la radicación, consulta de historial, descarga de PDF (anexos) y tramitación.
+- Las notificaciónes automáticas (confirmación de registro y nueva contraseña, cambio de estado de PQRS) deben dispararse de forma asíncrona sin bloquear las respuestas del servicio web al cliente.
+- Las respuestas de integración (payloads JSON/XML) deben estructurarse correctamente manejando códigos de estado HTTP estándar (200, 201, 400, 401, 403, 404, 500) para informar éxito o fallo de la operación a la interfaz de usuario.
 
 **Quality Attribute Scenarios:**
 
@@ -90,5 +90,5 @@
 **Documentación asociada:**
 
 - Definición de API / Especificación OpenAPI (Swagger) o WSDL.
-- Vista Física y de Despliegue ([`9-Arquitectura-PQRS.md`](./9-Arquitectura-PQRS.md) §6).
-- Cumplimiento detallado ([`10-Cumplimiento-RNF-PQRS.md`](./10-Cumplimiento-RNF-PQRS.md) §RNF-03).
+- Vista Física y de Despliegue (Documento Especifico de Arquitectura (1) §6).
+- Cumplimiento detallado (Documento Especifico de Cumplimiento RNF (2) §RNF-03).

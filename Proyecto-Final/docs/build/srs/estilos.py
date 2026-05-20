@@ -26,9 +26,14 @@ FONT_FAMILY_FALLBACK = "Calibri"  # fallback si HN no esta instalada
 
 
 def _safe_font(run):
-    """Aplica fuente con fallback."""
+    """Aplica fuente con fallback y fuerza el idioma a Español."""
     run.font.name = FONT_FAMILY
     run._element.rPr.rFonts.set(qn("w:cs"), FONT_FAMILY_FALLBACK)
+    
+    # Forzar idioma a Español (es-ES) para corrección ortográfica en Word
+    lang = OxmlElement('w:lang')
+    lang.set(qn('w:val'), 'es-ES')
+    run._element.rPr.append(lang)
 
 
 # ── Helpers de parrafo ────────────────────────────────────────────────────────

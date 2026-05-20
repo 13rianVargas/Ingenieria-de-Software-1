@@ -56,12 +56,12 @@ Esta sección mapea cada RNF a las decisiones arquitectónicas que lo materializ
 
 ## 3. RNF-03: Interoperabilidad, Integración y Comunicación
 
-**Descripción breve:** Comunicación entre App Móvil/Web y backend mediante REST o SOAP. Notificaciones automáticas asíncronas (no bloquean respuesta). Respuestas con códigos HTTP estándar.
+**Descripción breve:** Comunicación entre App Móvil/Web y backend mediante REST o SOAP. Notificaciónes automáticas asíncronas (no bloquean respuesta). Respuestas con códigos HTTP estándar.
 
 ### ¿Cómo se aborda arquitectónicamente?
 
 - **Vista Lógica:** El componente `pqrs-api` expone endpoints REST/JSON. Los frontends consumen vía `HttpClient` de Angular. No hay comunicación directa con la BD desde el frontend.
-- **Vista de Procesos:** El flujo Radicar PQRS muestra que la notificación por correo se dispara en una **rama asíncrona** después de la respuesta 201 al cliente. Si el SMTP falla, el sistema reintenta sin afectar la respuesta UI. La tabla `notificacion` actúa como cola con estado para retry.
+- **Vista de Procesos:** El flujo Radicar PQRS muestra que la notificación por correo se dispara en una **rama asíncrona** después de la respuesta 201 al cliente. Si el SMTP falla, el sistema reintenta sin afectar la respuesta UI. La tabla `notificación` actúa como cola con estado para retry.
 - **Vista de Desarrollo:** El paquete `infrastructure/integraciones/EmailAdapter` implementa el puerto `NotificacionPort` del dominio. La invocación al adapter se hace con `@Async` (Spring) o publicando un evento de dominio que un listener procesa fuera del request lifecycle.
 - **Códigos HTTP estándar:** 201 Created (radicar), 200 OK (consultar/tramitar), 400 Bad Request (validación), 401 Unauthorized (sin token), 403 Forbidden (rol insuficiente), 404 Not Found, 500 Internal Server Error.
 - **Preparado para SOAP:** Si en el futuro se requiere integración con sistemas BI externos, se puede agregar un paquete `api/soap/` sin tocar el dominio. La arquitectura hexagonal lo permite porque el dominio no está acoplado al protocolo de entrada.
@@ -72,7 +72,7 @@ Esta sección mapea cada RNF a las decisiones arquitectónicas que lo materializ
 |---|---|---|
 | 1 | Comunicación mediante REST o SOAP | `pqrs-api/rest/*` (REST sobre HTTPS) |
 | 2 | Endpoints para radicación, historial, descarga PDF | `PqrsController.radicar()`, `.listarPropias()`, `.descargarAdjunto()` |
-| 3 | Notificaciones asíncronas no bloqueantes | `EmailAdapter` con `@Async` + tabla `notificacion` como cola |
+| 3 | Notificaciónes asíncronas no bloqueantes | `EmailAdapter` con `@Async` + tabla `notificación` como cola |
 | 4 | Payloads estructurados con códigos de estado | Convención REST + `GlobalErrorHandler` en `shared/logging` |
 
 ---
@@ -83,13 +83,13 @@ Esta sección mapea cada RNF a las decisiones arquitectónicas que lo materializ
 |---|---|---|---|
 | RNF-01 Arquitectura | Lógica + Física | Stack open source + `infrastructure/persistencia` | OpenJDK + Spring Boot + Postgres + JPA + Angular + Ionic |
 | RNF-02 Seguridad | Lógica + Datos | `shared/security` + `usuario.clave_hash` + CHECK enum `usuario.rol` | BCrypt + JWT + Roles + HTTPS |
-| RNF-03 Interoperabilidad | Lógica + Procesos | `pqrs-api/rest` + `pqrs-notificaciones` (async) | REST/JSON sobre HTTPS + códigos HTTP estándar + envío asíncrono |
+| RNF-03 Interoperabilidad | Lógica + Procesos | `pqrs-api/rest` + `pqrs-notificaciónes` (async) | REST/JSON sobre HTTPS + códigos HTTP estándar + envío asíncrono |
 
 ---
 
 ## Referencias cruzadas
 
-- Documento de RNF: [`8-Requerimientos-No-Funcionales.md`](./8-Requerimientos-No-Funcionales.md).
-- Vistas arquitectónicas: [`9-Arquitectura-PQRS.md`](./9-Arquitectura-PQRS.md).
-- Diagramas: [`diagramas/arquitectura/`](./diagramas/arquitectura/).
+- Documento de RNF: Documento Especifico de Requerimientos No Funcionales (3).
+- Vistas arquitectónicas: Documento Especifico de Arquitectura (1).
+- Diagramas: Carpeta de Diagramas de Arquitectura (6).
 - Modelo de datos: sección 8 (Modelo Entidad-Relación) del SAD `9-Arquitectura-PQRS.md`.

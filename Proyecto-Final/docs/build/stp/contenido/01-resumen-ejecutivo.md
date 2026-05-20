@@ -4,9 +4,9 @@ Este documento constituye el Plan de Pruebas de Software del sistema de **PQRS p
 
 El plan cubre una sola historia de usuario seleccionada para implementacion en el ciclo academico:
 
-- **HU-01 — Radicar PQRS**: proceso mediante el cual un ciudadano (autenticado o anonimo) radica una Peticion, Queja, Reclamo o Sugerencia desde la App Movil, adjuntando opcionalmente un PDF y recibiendo confirmacion del numero de radicado generado.
+- **HU-01 — Radicar PQRS**: proceso mediante el cual un ciudadano (autenticado o anónimo) radica una Peticion, Queja, Reclamo o Sugerencia desde la App Móvil, adjuntando opcionalmente un PDF y recibiendo confirmacion del numero de radicado generado.
 
-## Proposito del plan
+## Propósito del plan
 
 Definir el alcance, enfoque, criterios y recursos necesarios para verificar que la HU-01 Radicar PQRS se comporta segun la especificacion del cliente (ver Requerimientos Funcionales — RF-01, RF-02, RF-12 — y Casos de Uso — CU-03 Radicar PQRS, CU-01 Registro Cliente).
 

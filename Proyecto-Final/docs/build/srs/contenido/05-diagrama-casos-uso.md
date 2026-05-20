@@ -1,6 +1,6 @@
 # 5. Diagrama de Casos de Uso
 
-El siguiente diagrama presenta la **vista de casos de uso** del MVP del sistema PQRS de SuperMarket. Muestra los 7 casos de uso obligatorios del MVP (CU-01 a CU-07), los 3 actores (Cliente, Gestor, Sistema) y las relaciones de `<<include>>` y `<<extend>>` entre ellos.
+El siguiente diagrama presenta la **vista de casos de uso** del MVP del sistema PQRS de SuperMarket. Muestra los 7 casos de uso obligatorios del MVP (CU-01 a CU-07), los 3 actores (Cliente, Gestor, Sistema) y las relaciónes de `<<include>>` y `<<extend>>` entre ellos.
 
 ![Diagrama general de Casos de Uso del MVP](../../../diagramas/arquitectura/1-vista-casos-uso.png)
 
