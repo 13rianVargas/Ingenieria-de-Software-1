@@ -19,14 +19,14 @@ El plan se considera fallido (no apto para entrega) si:
 
 ## Criterios de Suspension
 
-Se detiene la ejecucion de pruebas cuando:
+Se detiene la ejecución de pruebas cuando:
 
-- Un defecto critical impide ejecutar el flujo principal de la HU-01 (ej. el formulario de radicacion no carga, el sistema no permite adjuntar archivos, la API devuelve 500 sistematicamente).
+- Un defecto critical impide ejecutar el flujo principal de la HU-01 (ej. el formulario de radicación no carga, el sistema no permite adjuntar archivos, la API devuelve 500 sistematicamente).
 - El ambiente de pruebas no esta disponible o presenta inestabilidad que afecta mas del 50% de los casos planificados.
 
 ## Criterios de Reanudacion
 
-La ejecucion se reanuda cuando:
+La ejecución se reanuda cuando:
 
 - El defecto con severidad critica que causo la suspension ha sido corregido y verificado en el ambiente.
 - El ambiente de pruebas esta estable y disponible.
@@ -51,4 +51,4 @@ Independiente de la severidad, la prioridad indica el orden de correccion:
 |---|---|---|
 | Alta | Debe corregirse antes de cerrar el sprint | priority:alta |
 | Media | Debe corregirse en el siguiente sprint | priority:media |
-| Baja | Puede quedar en backlog para futuras versiones | priority:baja |
+| Baja | Puede quedar en backlog para futuras versiónes | priority:baja |

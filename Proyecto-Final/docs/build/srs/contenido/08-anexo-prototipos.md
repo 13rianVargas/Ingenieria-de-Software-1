@@ -6,13 +6,13 @@ Conforme al estándar IEEE 830, los prototipos de interfaz de usuario se anexan 
 
 | # | Pantalla | Tipo | Caso de Uso asociado | Archivo |
 | :--- | :--- | :--- | :--- | :--- |
-| 1 | Login Cliente | App Móvil | CU-02 | `mockup-mobile-login.html` |
-| 2 | Radicar PQRS | App Móvil | CU-03 | `mockup-mobile-radicar.html` |
-| 3 | Detalle Radicado | App Móvil | CU-04 | `mockup-mobile-detalle.html` |
-| 4 | Mis Radicados (Historial) | App Móvil | CU-04 | `mockup-mobile-historial.html` |
-| 5 | Login Gestor | Aplicación Web | CU-02 | `mockup-web-login.html` |
-| 6 | Bandeja de Radicados (Dashboard) | Aplicación Web | CU-05, CU-07 | `mockup-web-dashboard.html` |
-| 7 | Tramitar Radicado | Aplicación Web | CU-06 | `mockup-web-tramite.html` |
+| 1 | Login Cliente | App Móvil | CU-02 | [mockup-mobile-login.html](../../../mockups/mockup-mobile-login.html) |
+| 2 | Radicar PQRS | App Móvil | CU-03 | [mockup-mobile-radicar.html](../../../mockups/mockup-mobile-radicar.html) |
+| 3 | Detalle Radicado | App Móvil | CU-04 | [mockup-mobile-detalle.html](../../../mockups/mockup-mobile-detalle.html) |
+| 4 | Mis Radicados (Historial) | App Móvil | CU-04 | [mockup-mobile-historial.html](../../../mockups/mockup-mobile-historial.html) |
+| 5 | Login Gestor | Aplicación Web | CU-02 | [mockup-web-login.html](../../../mockups/mockup-web-login.html) |
+| 6 | Bandeja de Radicados (Dashboard) | Aplicación Web | CU-05, CU-07 | [mockup-web-dashboard.html](../../../mockups/mockup-web-dashboard.html) |
+| 7 | Tramitar Radicado | Aplicación Web | CU-06 | [mockup-web-trámite.html](../../../mockups/mockup-web-trámite.html) |
 
 ## 8.2 Cobertura de los CUs MVP
 
@@ -21,7 +21,7 @@ Conforme al estándar IEEE 830, los prototipos de interfaz de usuario se anexan 
 - **CU-03 (Radicar PQRS)** — cubierto por `mockup-mobile-radicar.html`.
 - **CU-04 (Consultar PQRS Propias)** — cubierto por `mockup-mobile-historial.html` (listado) y `mockup-mobile-detalle.html` (detalle de un radicado).
 - **CU-05 (Gestionar Bandeja)** — cubierto por `mockup-web-dashboard.html`.
-- **CU-06 (Tramitar PQRS)** — cubierto por `mockup-web-tramite.html`.
+- **CU-06 (Tramitar PQRS)** — cubierto por `mockup-web-trámite.html`.
 - **CU-07 (Generar Reportes)** — reutiliza el dashboard web (`mockup-web-dashboard.html`); el botón "Exportar PDF" forma parte de esa misma pantalla.
 
 ## 8.3 Acceso a los prototipos
@@ -39,4 +39,4 @@ Los mockups son archivos HTML autocontenidos. Para revisarlos:
 - Paleta consistente entre las dos interfaces (definida en los CSS embebidos de los mockups).
 - Componentes accesibles: contraste WCAG AA, navegación por teclado, labels asociados a inputs.
 
-> **Nota sobre el alcance MVP**: el mockup [`Taller-4/mockup/Registro.html`](../../../../../Taller-4/mockup/Registro.html) existe como referencia visual de una eventual pantalla de Registro Manual independiente, pero está **fuera del alcance del MVP**. La funcionalidad correspondiente (#17 en `1-Funcionalidades.md`) está clasificada como mejora post-MVP.
+> **Nota sobre el alcance MVP**: el mockup Mockup de Registro Taller 4 (5) existe como referencia visual de una eventual pantalla de Registro Manual independiente, pero está **fuera del alcance del MVP**. La funcionalidad correspondiente (#17 en `1-Funcionalidades.md`) está clasificada como mejora post-MVP.

@@ -24,9 +24,9 @@
 | JWT | JSON Web Token. Estándar de token firmado utilizado para mantener la sesión del usuario autenticado sin estado en el servidor. |
 | BCrypt | Algoritmo de hashing de contraseñas con factor de costo configurable. Usado para almacenar `usuario.clave_hash` (cost 12). |
 | JPA / Hibernate | Java Persistence API y su implementación de referencia. ORM utilizado por el backend Spring Boot para mapear entidades de dominio a tablas relacionales. |
-| AOP | Aspect-Oriented Programming. Patrón usado por el módulo de auditoría para interceptar operaciones CRUD del dominio sin acoplar código. |
+| AOP | Aspect-Oriented Programming. Patrón usado por el módulo de auditoría para interceptar operaciónes CRUD del dominio sin acoplar código. |
 | NAS | Network Attached Storage. Sistema de archivos compartido donde se almacenan los PDFs adjuntos de las PQRS (la BD solo guarda la metadata). |
-| SMTP / SMTPS | Protocolo de envío de correo electrónico. SMTPS es la variante sobre TLS, usada por el módulo de notificaciones. |
+| SMTP / SMTPS | Protocolo de envío de correo electrónico. SMTPS es la variante sobre TLS, usada por el módulo de notificaciónes. |
 | ORM | Object-Relational Mapping. Capa entre objetos del dominio y tablas relacionales. |
 | RF | Requerimiento Funcional. Especifica una acción que el sistema debe ejecutar. |
 | RNF | Requerimiento No Funcional. Especifica una restricción transversal (calidad, rendimiento, seguridad, integración). |

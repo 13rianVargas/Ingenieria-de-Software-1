@@ -6,6 +6,8 @@ Esta sección detalla los 7 Casos de Uso del MVP (CU-01 a CU-07) y conserva como
 
 ## CU-01: Gestionar Registro de Cliente
 
+![Diagrama CU-01: Gestionar Registro de Cliente](../../../casos-de-uso/images/CU-01.png)
+
 ### 1. Descripción
 
 Permite registrar automáticamente a un ciudadano en el sistema cuando radica una PQRS por primera vez y aún no existe en la base de datos. **En el MVP no hay registro manual independiente:** el registro ocurre exclusivamente como `include` desde CU-03 (Radicar PQRS), sin pantalla "Registrarse" separada. El contexto del proyecto lo permite ("validar la existencia del Cliente en la base de datos; en caso de no existir, el sistema deberá registrarlo").
@@ -36,11 +38,11 @@ Permite registrar automáticamente a un ciudadano en el sistema cuando radica un
     En el paso 1, si el sistema detecta que el correo o número de identificación ya existe asociado a otra cuenta, **no** crea un nuevo registro. El flujo continúa en CU-03 reutilizando los datos del usuario existente. No se envía correo de credenciales.
 
 * **Flujo Excepción 2 (Falla de persistencia):**
-    En el paso 3, si la inserción en la base de datos falla, el sistema aborta la radicación completa (rollback de CU-03) e informa al usuario que "No fue posible completar el registro. Intente más tarde." El error queda registrado en `auditoria`.
+    En el paso 3, si la inserción en la base de datos falla, el sistema aborta la radicación completa (rollback de CU-03) e informa al usuario que "No fue posible completar el registro. Intente más tarde." El error queda registrado en `auditoría`.
 
 ### 6. Diagrama del Caso de Uso
 
-En el diagrama de vista de casos de uso (`docs/diagramas/arquitectura/1-vista-casos-uso.puml`, render PNG en [`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) CU-01 aparece exclusivamente como destino del `<<include>>` desde CU-03. No hay flecha directa del actor Cliente hacia CU-01.
+En el diagrama de vista de casos de uso (`docs/diagramas/arquitectura/1-vista-casos-uso.puml`, render PNG en Diagrama general de Casos de Uso) CU-01 aparece exclusivamente como destino del `<<include>>` desde CU-03. No hay flecha directa del actor Cliente hacia CU-01.
 
 ### 7. Fuera de Alcance MVP
 
@@ -52,8 +54,10 @@ Decisión tomada para reducir alcance de implementación de software y enfocar e
 
 ## CU-02: Autenticarse en el Sistema
 
+![Diagrama CU-02: Autenticarse en el Sistema](../../../casos-de-uso/images/CU-02.png)
+
 ### 1. Descripción
-Permite a los usuarios (Clientes en la App Móvil y Gestores en la Aplicación Web) acceder de forma segura a sus respectivas cuentas para realizar operaciones en el sistema.
+Permite a los usuarios (Clientes en la App Móvil y Gestores en la Aplicación Web) acceder de forma segura a sus respectivas cuentas para realizar operaciónes en el sistema.
 
 ### 2. Actores
 * **Cliente:** Actor que ingresa a la App Móvil.
@@ -86,10 +90,12 @@ Permite a los usuarios (Clientes en la App Móvil y Gestores en la Aplicación W
 
 ### 6. Diagrama del Caso de Uso
 
-CU-02 aparece en el diagrama general de casos de uso ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) accesible tanto por el actor Cliente como por el actor Gestor.
+CU-02 aparece en el diagrama general de casos de uso (Diagrama general de Casos de Uso) accesible tanto por el actor Cliente como por el actor Gestor.
 ---
 
 ## CU-03: Radicar PQRS
+
+![Diagrama CU-03: Radicar PQRS](../../../casos-de-uso/images/CU-03.png)
 
 ### 1. Descripción
 Es el proceso central (core) mediante el cual un Cliente ingresa una nueva Petición, Queja, Reclamo o Sugerencia en la App Móvil, pudiendo adjuntar documentación de soporte (PDF) de forma opcional, y el sistema genera automáticamente un número de radicado y lo notifica por correo electrónico.
@@ -127,10 +133,12 @@ Es el proceso central (core) mediante el cual un Cliente ingresa una nueva Petic
 
 ### 6. Diagrama del Caso de Uso
 
-CU-03 es el caso de uso central del MVP. En el diagrama general ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) aparece accesible directamente por el actor Cliente y con relación `<<include>>` hacia CU-01 (Registro Automático).
+CU-03 es el caso de uso central del MVP. En el diagrama general (Diagrama general de Casos de Uso) aparece accesible directamente por el actor Cliente y con relación `<<include>>` hacia CU-01 (Registro Automático).
 ---
 
 ## CU-04: Consultar PQRS Propias
+
+![Diagrama CU-04: Consultar PQRS Propias](../../../casos-de-uso/images/CU-04.png)
 
 ### 1. Descripción
 Permite a un Cliente autenticado visualizar el historial de todas las Peticiones, Quejas, Reclamos o Sugerencias (PQRS) que ha radicado a través del sistema, y buscar una solicitud específica utilizando filtros (ej. número de radicado).
@@ -162,10 +170,12 @@ Permite a un Cliente autenticado visualizar el historial de todas las Peticiones
 
 ### 6. Diagrama del Caso de Uso
 
-CU-04 aparece en el diagrama general ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) accesible por el actor Cliente y dependiente de CU-02 (autenticación).
+CU-04 aparece en el diagrama general (Diagrama general de Casos de Uso) accesible por el actor Cliente y dependiente de CU-02 (autenticación).
 ---
 
 ## CU-05: Gestionar Bandeja de Entrada
+
+![Diagrama CU-05: Gestionar Bandeja de Entrada](../../../casos-de-uso/images/CU-05.png)
 
 ### 1. Descripción
 Proporciona al administrador del sistema (Gestor de PQRS) la funcionalidad para visualizar, desde la Aplicación Web, el listado general de todas las peticiones, quejas, reclamos o sugerencias ingresadas por todos los Clientes, y aplicar filtros avanzados para organizarlas.
@@ -198,10 +208,12 @@ Proporciona al administrador del sistema (Gestor de PQRS) la funcionalidad para 
 
 ### 6. Diagrama del Caso de Uso
 
-CU-05 aparece en el diagrama general ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) accesible por el actor Gestor y dependiente de CU-02 (autenticación con rol `gestor`).
+CU-05 aparece en el diagrama general (Diagrama general de Casos de Uso) accesible por el actor Gestor y dependiente de CU-02 (autenticación con rol `gestor`).
 ---
 
 ## CU-06: Tramitar PQRS
+
+![Diagrama CU-06: Tramitar PQRS](../../../casos-de-uso/images/CU-06.png)
 
 ### 1. Descripción
 Permite a un Gestor de PQRS, desde la Aplicación Web, procesar una petición, queja, reclamo o sugerencia específica que ha ingresado a la bandeja. Esto implica descargar el anexo (PDF), actualizar el estado de la solicitud y justificar la decisión.
@@ -237,10 +249,12 @@ Permite a un Gestor de PQRS, desde la Aplicación Web, procesar una petición, q
 
 ### 6. Diagrama del Caso de Uso
 
-CU-06 aparece en el diagrama general ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) accesible por el actor Gestor con relación de extensión hacia el flujo de notificación al Cliente.
+CU-06 aparece en el diagrama general (Diagrama general de Casos de Uso) accesible por el actor Gestor con relación de extensión hacia el flujo de notificación al Cliente.
 ---
 
 ## CU-07: Generar Reportes
+
+![Diagrama CU-07: Generar Reportes](../../../casos-de-uso/images/CU-07.png)
 
 ### 1. Descripción
 Permite al Gestor de PQRS, desde la Aplicación Web, exportar el listado de peticiones, quejas, reclamos y sugerencias consultadas o filtradas a un documento PDF. Este reporte sirve como registro y soporte de la gestión realizada, excluyendo información innecesaria como los enlaces a los anexos.
@@ -273,12 +287,14 @@ Permite al Gestor de PQRS, desde la Aplicación Web, exportar el listado de peti
 
 ### 6. Diagrama del Caso de Uso
 
-CU-07 aparece en el diagrama general ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) accesible por el actor Gestor y dependiente de CU-05 (visualización de la bandeja).
+CU-07 aparece en el diagrama general (Diagrama general de Casos de Uso) accesible por el actor Gestor y dependiente de CU-05 (visualización de la bandeja).
 ---
 
 ## CU-08: Gestionar Seguridad de la Cuenta
 
-> **⚠ Fuera de Alcance MVP.** Este caso de uso cubre HU-13 (Recuperar Contraseña), HU-14 (Cambiar Contraseña) y HU-15 (Cerrar Sesión), todas clasificadas como *"Supuesto de mejora"* en [`1-Funcionalidades.md`](../1-Funcionalidades.md). Se conserva la especificación como referencia para iteraciones post-MVP, pero **no se implementa** en la entrega actual ni se traza en el SRS principal.
+![Diagrama CU-08: Gestionar Seguridad de la Cuenta](../../../casos-de-uso/images/CU-08.png)
+
+> **⚠ Fuera de Alcance MVP.** Este caso de uso cubre HU-13 (Recuperar Contraseña), HU-14 (Cambiar Contraseña) y HU-15 (Cerrar Sesión), todas clasificadas como *"Supuesto de mejora"* en Documento de Funcionalidades (4). Se conserva la especificación como referencia para iteraciones post-MVP, pero **no se implementa** en la entrega actual ni se traza en el SRS principal.
 >
 > El MVP cubre 7 Casos de Uso (CU-01 a CU-07). CU-08 entra al alcance cuando el equipo aborde las funcionalidades 13, 14 y 15 en un sprint posterior.
 
@@ -323,5 +339,5 @@ Permite a los usuarios (Cliente o Gestor) administrar las credenciales de acceso
 
 ### 6. Diagrama del Caso de Uso
 
-CU-08 **no aparece en el diagrama general del MVP** ([`../diagramas/arquitectura/1-vista-casos-uso.png`](../diagramas/arquitectura/1-vista-casos-uso.png)) por estar fuera de alcance. Se incorporará en el diagrama cuando el equipo planifique el sprint que aborde HU-13/14/15.
+CU-08 **no aparece en el diagrama general del MVP** (Diagrama general de Casos de Uso) por estar fuera de alcance. Se incorporará en el diagrama cuando el equipo planifique el sprint que aborde HU-13/14/15.
 

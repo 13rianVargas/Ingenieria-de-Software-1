@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Generador del Documento de Arquitectura — Proyecto-Final (PQRS)
+Generador del Plan de Pruebas — Proyecto-Final (PQRS)
 
-Pipeline: contenido/*.md + 00-portada.yaml -> arquitectura-pqrs.docx
+Pipeline: contenido/*.md + 00-portada.yaml -> plan-pruebas-pqrs.docx
 Requiere: pip install python-docx pyyaml
 Ejecutar:  python generar-docx.py
 
@@ -20,26 +20,22 @@ from docx.oxml import OxmlElement
 
 import estilos as E
 
-# Rutas
 BASE = Path(__file__).parent
 CONTENIDO = BASE / "contenido"
-OUTPUT = BASE / "arquitectura-pqrs.docx"
+OUTPUT = BASE / "PF_STP_AVILA_CRIOLLO_ROCHA_VARGAS_GRUPO_51_20261.docx"
 
 SECCIONES = [
-    "01-introduccion.md",
-    "02-vista-casos-uso.md",
-    "03-vista-logica.md",
-    "04-vista-procesos.md",
-    "05-vista-desarrollo.md",
-    "06-vista-fisica.md",
-    "07-vista-datos.md",
-    "08-modelo-entidad-relacion.md",
-    "09-cumplimiento-rnf.md",
-    "10-conclusiones.md",
+    "01-resumen-ejecutivo.md",
+    "02-alcance.md",
+    "03-estrategia.md",
+    "04-criterios.md",
+    "05-casos-de-prueba.md",
+    "06-workflow-github.md",
+    "07-recursos.md",
+    "08-anexos.md",
 ]
 
 
-# Portada
 def build_portada(doc, meta):
     sec = doc.sections[0]
     sec.page_width = Cm(21.59)
@@ -61,7 +57,7 @@ def build_portada(doc, meta):
 
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    run = p.add_run(meta.get("titulo", "Documento de Arquitectura"))
+    run = p.add_run(meta.get("titulo", "Plan de Pruebas de Software"))
     run.font.size = Pt(24)
     run.font.bold = True
     run.font.color.rgb = E.COLOR_PRIMARY
@@ -131,7 +127,7 @@ def build_historial(doc, meta):
                 meta.get("fecha", ""),
                 meta.get("version", "1.0"),
                 " · ".join(a.split()[0] for a in meta.get("autores", [])),
-                "Version inicial del documento de arquitectura",
+                "Version inicial del plan de pruebas PQRS",
             ],
         ],
         col_widths_cm=[3, 2, 5, 8],
@@ -149,14 +145,13 @@ def build_info_proyecto(doc, meta):
         ["Materia", meta.get("materia", "")],
         ["Docente", meta.get("docente", "")],
         ["Grupo", meta.get("grupo", "")],
-        ["Arquitecto", "Por asignar internamente"],
+        ["Lider de Pruebas", meta.get("lider_pruebas", "Criollo Homez Julián Felipe")],
     ]
     E.add_table(doc, headers=["Campo", "Valor"], rows=filas, col_widths_cm=[6, 11])
     doc.add_paragraph()
 
 
 def parse_markdown_section(doc, md_text):
-    """Parser simplificado: headings, tablas pipe, listas, texto."""
     lines = md_text.split("\n")
     i = 0
     while i < len(lines):
@@ -282,7 +277,7 @@ def _render_table(doc, pipe_lines):
 
 
 def add_header_footer(doc, meta):
-    footer_text = f"{meta.get('subtitulo', '')} — Arquitectura v{meta.get('version', '1.0')}"
+    footer_text = f"{meta.get('subtitulo', '')} — Plan de Pruebas v{meta.get('version', '1.0')}"
     for section in doc.sections:
         footer = section.footer
         p = footer.paragraphs[0] if footer.paragraphs else footer.add_paragraph()
