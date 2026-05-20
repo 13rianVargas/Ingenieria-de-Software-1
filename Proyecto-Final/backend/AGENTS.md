@@ -11,7 +11,7 @@ Aplica a todo lo que viva en `Proyecto-Final/backend/`. Reglas globales en [`../
 - **Java OpenJDK 17+** — LTS, requisito academico Taller-6.
 - **Spring Boot 3.x** — framework principal.
 - **Maven** — build y dependency management.
-- **PostgreSQL 15+** — BD (managed by Brian, ver `../database/AGENTS.md`).
+- **PostgreSQL 15** en **Neon** (cloud, compartido por el equipo) — managed by Brian, ver `../database/AGENTS.md`.
 - **Flyway** — migraciones, autoejecutadas por Spring al boot.
 - **JUnit 5 + Spring Boot Test** — unit + integration.
 - **Testcontainers** — Postgres real en tests de integracion.
@@ -107,14 +107,17 @@ spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/pqrs_dev}
-    username: ${DB_USER:pqrs}
-    password: ${DB_PASSWORD:pqrs}
+    url: ${DATABASE_URL}                # pooled endpoint Neon
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
   jpa:
     hibernate:
-      ddl-auto: validate          # Flyway controla schema
+      ddl-auto: validate                # Flyway controla schema, JPA solo valida
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
   flyway:
-    enabled: true
+    enabled: false                      # Solo Brian aplica migraciones (evita conflictos)
     locations: filesystem:../database/migrations
 
 server:
@@ -124,6 +127,8 @@ jwt:
   secret: ${JWT_SECRET:dummy-replace-in-prod}
   expiration-ms: ${JWT_EXP:3600000}
 ```
+
+`DATABASE_URL` se obtiene pidiendole a Brian (compartido por canal privado).
 
 **Nunca** hardcodear valores reales. Usa env vars con defaults dummy.
 
