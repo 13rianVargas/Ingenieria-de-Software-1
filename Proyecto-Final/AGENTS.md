@@ -148,3 +148,111 @@ Actores principales:
 | Necesito tocar codigo de otro modulo | Habla con el owner antes, asignalo como reviewer del PR |
 | Branch protection me bloquea merge | Verifica checks verdes + aprobacion. Si urgente, Brian tiene bypass admin |
 | Encontre un bug en otro modulo | Abre Issue con plantilla `bug-report.yml`, no lo arregles tu |
+
+---
+
+## 10. Fase 2 — Implementación Software (pivot post-documental)
+
+**Estado**: la fase documental (SRS, SAD, SPMP, STP) fue presentada al docente y aprobada. El proyecto avanza a feria académica. **Foco actual = construir el software MVP**.
+
+**Cronograma**: 11 días (22-may → 2-jun-2026). Demo confirmada **2-jun**; si docente adelanta, **26-may** como mínimo viable. Cliente del enunciado: **SuperMarket** (ficticio). Docente / evaluador: López Ospina Carlos Andrés.
+
+**Pulido de documentación queda para Fase 3** (post-software). NO se actualizan los DOCX SRS/SAD/SPMP/STP durante esta fase.
+
+### 10.1 Cronograma por persona (11 días — 22-may a 2-jun-2026)
+
+| Bloque (días) | Fechas | Brian (DB + CI/CD + Líder Pruebas) | Juli C (Backend) | Santi (Frontend Web) | Juli A (Frontend Mobile) |
+|---|---|---|---|---|---|
+| **D1-D2** | jue 22 + vie 23 may | T-0.1 rotar passwords + T-0.2 cleanup leak + T-DB.3 seeds reales + T-5.4 Kanban GH Project | T-2.1 fix scaffold (config + anotaciones + SecurityConfig + deps pom) | T-3.2 environment refactor + T-3.3 prep login | T-4.1 instalar Capacitor + T-4.2 Android Studio + T-4.3 environment |
+| **D3-D5** | sab 24 + dom 25 + lun 26 may | T-DB.4 cargar seeds Neon + T-DB.5 health checks docs + T-5.1 backend-ci real | T-2.2 CU-02 Auth JWT + T-2.3 CU-01 registro interno + T-2.4 CU-03 Radicar PQRS (R2 + sequence) | T-3.3 login validado contra Render + T-3.4 dashboard real | T-4.4 login mobile + T-4.5 Radicar PQRS con FilePicker |
+| **D6-D8** | mar 27 + mie 28 + jue 29 may | T-5.2 mobile-ci + T-5.5 issue templates + T-5.6 PR template + T-5.7 Dependabot | T-2.5 CU-04 mis PQRS + T-2.6 CU-05 Bandeja + T-2.7 CU-06 Tramitar (AOP audit) | T-3.5 Tramite page (descargar anexo + cambiar estado) + T-3.7 shared components | T-4.6 Historial (lista + pull-refresh + buscar) + T-4.7 Detalle PQRS (timeline + descargar) |
+| **D9-D10** | vie 30 + sab 31 may | T-5.3 deploy Render docs + Render config inicial | T-2.8 CU-07 Reportes PDF + T-2.9 RF-12 Resend async + T-2.10 deploy backend Render | T-3.6 Exportar PDF + T-3.8 build prod verify | T-4.8 build APK debug Android Studio |
+| **D11** | dom 1-jun | TCs manuales (#37-#46) sobre APK + dry-run completo + pre-warm Render | smoke tests E2E + revisar logs Render | smoke web + verificar all flows | T-4.9 publicar APK GitHub Release v0.1.0-mvp + instalar en 2-3 cels |
+| **D12 (demo)** | **lun 2-jun** | **DEMO en aula + plan B activado si falla algo** | | | |
+
+**Backup demo 26-may**: si docente adelanta fecha, D5 lunes 26-may cierra MVP mínimo (CU-02 Auth + CU-03 Radicar end-to-end + login web). Resto deshabilitado en UI hasta D11.
+
+### 10.2 Índice de planes maestros
+
+Cada IA continuadora (Sonnet, Gemini, Claude o futuras) **debe leer primero el plan de su área** antes de tocar código. Los planes están en la raíz de `Proyecto-Final/`:
+
+| Plan | Owner principal | Cubre |
+|---|---|---|
+| [`PLAN-MAESTRO.md`](./PLAN-MAESTRO.md) | Brian | Índice + cronograma + estado global |
+| [`PLAN-DB.md`](./PLAN-DB.md) | Brian | Migraciones Flyway, seeds, health checks, coordinación con backend |
+| [`PLAN-BACK.md`](./PLAN-BACK.md) | Juli C | Fix scaffold + CU-01..07 + RF-12 + deploy Render |
+| [`PLAN-WEB.md`](./PLAN-WEB.md) | Santi | Environment + dashboard + tramite + reportes + shared components |
+| [`PLAN-MOBILE.md`](./PLAN-MOBILE.md) | Juli A | Capacitor + Android Studio + UI restante + build APK + GH Release |
+| [`PLAN-CICD.md`](./PLAN-CICD.md) | Brian | backend-ci real + mobile-ci + deploy + Kanban + Dependabot |
+
+### 10.3 Decisiones lockeadas Fase 2
+
+- **Cliente**: "SuperMarket" (ficticio del enunciado). NO cambiar a docente.
+- **Demo mobile**: APK Capacitor build local (Android Studio). Sideload en celulares Android del equipo.
+- **Backend deploy**: Render / Railway / Fly.io free tier (Juli C decide en T-2.10).
+- **Base de datos**: Neon free tier (compartida). Migraciones Flyway por GH Action.
+- **Almacenamiento PDFs**: Cloudflare R2 (10 GB free, S3-compatible).
+- **SMTP**: Resend (free 100 emails/día).
+- **Secrets**: GitHub Secrets exclusivos para los 4 devs. NUNCA en repo.
+- **Tests**: híbrido — backend JUnit + Testcontainers (≥ 70% coverage bloqueante en PR) + frontend TCs manuales en issues GH.
+- **Branches Fase 2**: `feature/backend-core`, `feature/frontend-web-core`, `feature/frontend-mobile-core`. PRs a `develop`.
+- **Workflow equipo**: GitHub Projects Kanban + daily WhatsApp text. PR review en ≤ 24 h.
+- **Definición de Done por CU**: endpoint backend + frontend UI consumiéndolo + TC manual ejecutado por Brian / Juli C.
+- **Documentación**: NO modificar `.md` source de docs ni regenerar DOCX durante Fase 2.
+
+### 10.4 Reglas para IAs continuadoras (Sonnet, Gemini, Claude o futuras)
+
+1. **Leer este `AGENTS.md` completo** y luego el `PLAN-*.md` de tu área. NO improvisar.
+2. **NO modificar** módulos fuera de tu plan sin coordinación (`Habla con el owner` antes).
+3. **Commits granulares**, Conventional Commits sin scope, en inglés.
+4. **NO hacer push directo** a `develop` ni `main`. Siempre PR.
+5. **NO atribuir IA** en commits, PRs ni código (`Co-Authored-By: Claude`, `Generated by ...` → prohibido).
+6. **NO hardcodear secrets**, URLs de producción ni credenciales. Usar `environment.ts` (frontend) o variables de entorno + GitHub Secrets (backend / CI).
+7. **Cubrir tests** según definición de Done de tu plan. Backend ≥ 70 % coverage.
+8. **Reportar bloqueos** al owner del módulo (no inventar workarounds que rompan otros módulos).
+9. **Verificar CI verde** antes de pedir review.
+10. **Si te quedas sin tokens / contexto**, deja el estado en un commit + actualiza el `PLAN-*.md` con el paso exacto donde quedaste para que la siguiente IA continúe.
+
+### 10.5 Issues GitHub renombrados
+
+Los 14 TCs anteriores (HU-1 Registro Vendedor + HU-2 Publicar Productos del Taller-7 E-Commerce) están **cerrados y etiquetados `Taller7-Examples`** como referencia metodológica histórica.
+
+Los **10 TCs PF-native** sobre HU-01 Radicar PQRS están abiertos como issues #37 a #46. Trazabilidad con STP §5. Brian (líder pruebas) coordina ejecución manual.
+
+### 10.6 Estado del leak `.env`
+
+**Detectado**: commit `409751b` añadió `Proyecto-Final/database/.env` con credenciales reales de Neon. NO está en `origin` remoto; solo local + stash.
+
+**Acciones requeridas (Brian, antes de cualquier push de Fase 2)**:
+
+1. Rotar passwords `neondb_owner` y `pqrs_app` en Neon dashboard.
+2. Actualizar GitHub Secret `DATABASE_URL_DIRECT` con el nuevo direct URL.
+3. Compartir nuevo `DATABASE_URL` pooled por WhatsApp privado al equipo.
+4. Cleanup local: `git filter-repo --invert-paths --path Proyecto-Final/database/.env --force` (instalar `git-filter-repo` si no existe).
+5. Verificar: `git log --all -- "**/.env"` retorna vacío.
+6. Marcar este checklist con timestamp de rotación en este mismo archivo (línea siguiente).
+
+**Timestamp de rotación**: _pendiente — Brian lo registra al ejecutar_.
+
+---
+
+## 11. Plataformas externas (Fase 2)
+
+| Servicio | Uso | Tier | Owner |
+|---|---|---|---|
+| **Neon** | PostgreSQL gestionado | Free (compartido 4 devs) | Brian |
+| **Render / Railway / Fly.io** | Hosting backend Spring Boot | Free | Juli C |
+| **Cloudflare R2** | Bucket S3-compatible para PDFs adjuntos | Free (10 GB) | Juli C + Brian |
+| **Resend** | API HTTP envío correos | Free (100/día) | Juli C |
+| **GitHub Actions** | CI (commitlint, frontend-ci, backend-ci, db-migrate, mobile-ci) | Free (2 000 min/mes) | Brian |
+| **GitHub Releases** | Distribución APK Android | Free | Juli A |
+| **GitHub Projects** | Kanban Fase 2 | Free | Brian |
+
+---
+
+## 12. Glosario rápido Fase 2
+
+- **MVP** — CU-01..CU-07 + RF-12 implementados con flujo end-to-end demo-able.
+- **CU-08** queda fuera de alcance MVP (Gestionar Seguridad — recuperar/cambiar/cerrar sesión).
+- **Sideload APK** — instalación de APK fuera de Play Store. Cada Android: Settings → Security → "Instalar apps desconocidas" → permitir para Chrome → descargar APK → tap → "Instalar".
+- **Definition of Done (DoD)** — endpoint backend + tests JUnit + frontend UI conectado + TC manual ejecutado.
