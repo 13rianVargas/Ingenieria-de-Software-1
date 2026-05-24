@@ -67,7 +67,13 @@ Reglas operativas detalladas en [`AGENTS.md`](./AGENTS.md).
    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO pqrs_app;
    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO pqrs_app;
    ```
-4. **Copiar 2 connection strings** desde Neon Dashboard:
+4. **Fijar `search_path = public` a nivel de rol** (evita que devs tengan que prefijar `public.usuario` en cada query):
+   ```sql
+   ALTER ROLE pqrs_app SET search_path TO public;
+   ALTER ROLE neondb_owner SET search_path TO public;
+   ```
+   Persiste en `pg_db_role_setting`. Aplica a TODA sesión nueva del rol, sin importar el cliente (psql, DBeaver, PgAdmin, Spring Boot, GitHub Action). Sin necesidad de `?options=-c%20search_path=public` en la URL.
+5. **Copiar 2 connection strings** desde Neon Dashboard:
    - **Direct** (sin `-pooler`): para Flyway CLI.
    - **Pooled** (`-pooler` en host): para Spring Boot.
 5. **Configurar GitHub Secret:**
