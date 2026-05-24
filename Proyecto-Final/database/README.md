@@ -205,3 +205,67 @@ Resumen:
 - **Sin Docker local.** La BD es Neon compartida. Si necesitas desarrollo offline, monta tu propio Postgres y apunta `DATABASE_URL` ahi.
 - **Migraciones via GitHub Action.** Devs no instalan Flyway. Brian no aplica manual (excepto troubleshoot).
 - **`spring.flyway.enabled=false` en backend.** Evita race conditions cuando varios devs arrancan backend.
+
+---
+
+## Health checks pre-demo
+
+Ejecutar 5 min antes de la demo para **pre-warm de Neon** (free tier suspende compute tras 5 min inactivo) y **validar** que la BD tiene los datos esperados:
+
+```bash
+# 0. Pre-warm: primer query despierta el compute (~1-2 s primera vez)
+psql "$DATABASE_URL_DIRECT" -c "SELECT 1;"
+
+# 1. Conectividad + version Postgres
+psql "$DATABASE_URL_DIRECT" -c "SELECT version();"
+
+# 2. 4 usuarios demo presentes (brian, gestor, cliente, maria)
+psql "$DATABASE_URL_DIRECT" -c "SELECT count(*) AS total_usuarios FROM usuario;"
+
+# 3. 3 PQRS demo presentes
+psql "$DATABASE_URL_DIRECT" -c "SELECT count(*) AS total_pqrs FROM pqrs;"
+
+# 4. 1 tramite demo presente
+psql "$DATABASE_URL_DIRECT" -c "SELECT count(*) AS total_tramites FROM tramite;"
+
+# 5. Listar usuarios + roles (verificar hashes BCrypt cargados, NO placeholders)
+psql "$DATABASE_URL_DIRECT" -c "SELECT id, email, rol, LEFT(clave_hash, 7) AS bcrypt_prefix FROM usuario ORDER BY id;"
+
+# 6. Flyway aplico todas las migraciones
+psql "$DATABASE_URL_DIRECT" -c "SELECT version, description, success, installed_on FROM flyway_schema_history ORDER BY installed_rank;"
+
+# 7. Pre-warm pooled endpoint (el que usa el backend en Render)
+psql "$DATABASE_URL" -c "SELECT 1;"
+```
+
+**Salida esperada**:
+
+| Check | Esperado |
+|---|---|
+| `SELECT 1` directo | `1` |
+| `version()` | `PostgreSQL 15.x ... on x86_64-pc-linux-gnu` |
+| `total_usuarios` | `4` |
+| `total_pqrs` | `3` |
+| `total_tramites` | `1` |
+| `bcrypt_prefix` en todas las filas | `$2a$12$` (NUNCA `$2a$12$Dummy`) |
+| `flyway_schema_history` | 5 filas con `success = true` (V1..V5) |
+| `SELECT 1` pooled | `1` (compute despierto para backend Render) |
+
+**Si algo falla**:
+
+- `password authentication failed` → password rotada despues de tu ultimo `.env`. Pide nuevo `DATABASE_URL` a Brian por WhatsApp.
+- `total_usuarios = 0` → seeds no cargadas. Ejecutar: `psql "$DATABASE_URL_DIRECT" -f seeds/demo.sql`.
+- `bcrypt_prefix` contiene `Dummy...` → seeds tienen hashes placeholder. Recargar con `seeds/demo.sql` actualizado (commit `8f4e51e` ya tiene los hashes reales para clave `Demo2026!`).
+- `total_usuarios > 4` → BD tiene datos previos. Limpiar: `psql "$DATABASE_URL_DIRECT" -c "TRUNCATE auditoria, notificacion, adjunto, tramite, pqrs, usuario CASCADE;"` y recargar seeds.
+- Flyway con `success = false` o filas faltantes → workflow `db-migrate` fallo. Revisar logs en GitHub Actions tab → `db-migrate` → ultima ejecucion.
+
+**Tiempo total**: ~30 segundos cuando compute ya esta despierto, ~1-2 s primera query en cold start.
+
+**Credenciales demo** (seeds `Demo2026!`):
+
+| Email | Rol | Para que sirve |
+|---|---|---|
+| `brian@demo.com` | admin | Acceso completo de administracion |
+| `gestor@demo.com` | gestor | Login App Web → bandeja, tramitar, reportes |
+| `cliente@demo.com` | cliente | Login App Movil → radicar, historial |
+| `maria@demo.com` | cliente | Cliente alternativo con 1 PQRS asociada |
