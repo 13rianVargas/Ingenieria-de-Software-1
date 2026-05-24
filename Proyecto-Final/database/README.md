@@ -194,6 +194,26 @@ Resumen:
 | Workflow `db-migrate` no se dispara al mergear | Verificar que tu PR realmente toco `Proyecto-Final/database/migrations/**`. Si no, lanzar manual con `gh workflow run db-migrate.yml`. |
 | Necesito un cliente Postgres pero no tengo Homebrew/apt | DBeaver (cross-platform GUI) — descarga directa sin package manager. |
 
+## Health checks pre-demo
+
+Ejecutar 5 min antes de la demo para pre-warm + validar:
+
+```bash
+# Conexión
+psql "$DATABASE_URL_DIRECT" -c "SELECT 1;"
+
+# 4 usuarios demo presentes
+psql "$DATABASE_URL_DIRECT" -c "SELECT count(*) FROM usuario;"
+
+# 3 PQRS demo presentes
+psql "$DATABASE_URL_DIRECT" -c "SELECT count(*) FROM pqrs;"
+
+# Flyway aplicado
+psql "$DATABASE_URL_DIRECT" -c "SELECT version, success FROM flyway_schema_history ORDER BY installed_rank;"
+```
+
+Esperado: ≥ 5 versiones Flyway con `success = true`.
+
 ---
 
 ## Decisiones lockeadas
