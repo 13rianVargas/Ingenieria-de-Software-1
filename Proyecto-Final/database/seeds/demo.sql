@@ -2,13 +2,14 @@
 -- Datos demo para desarrollo. NO ejecutar en produccion.
 -- Carga manual (Brian, post-migrate): psql "$DATABASE_URL_DIRECT" < seeds/demo.sql
 
--- Usuarios demo (clave plana de los 3: "Demo2026!" para pruebas)
+-- Usuarios demo (clave plana de los 4: "Demo2026!" para pruebas)
+-- clave plana: Demo2026!  (solo dev/demo, NUNCA en prod)
 -- Hash BCrypt generado con cost 12. Cambiar en cada entorno real.
 INSERT INTO usuario (tipo_doc, num_doc, nombres, apellidos, email, telefono, clave_hash, rol) VALUES
-    ('CC', '1020304050', 'Brian',   'Vargas',  'brian@demo.com',   '3001112233', '$2a$12$DummyHashReplaceWithRealBcryptHashForDevSeed', 'admin'),
-    ('CC', '1020304051', 'Gestor',  'Demo',    'gestor@demo.com',  '3002223344', '$2a$12$DummyHashReplaceWithRealBcryptHashForDevSeed', 'gestor'),
-    ('CC', '1020304052', 'Cliente', 'Demo',    'cliente@demo.com', '3003334455', '$2a$12$DummyHashReplaceWithRealBcryptHashForDevSeed', 'cliente'),
-    ('CE', '9876543210', 'Maria',   'Lopez',   'maria@demo.com',   '3004445566', '$2a$12$DummyHashReplaceWithRealBcryptHashForDevSeed', 'cliente');
+    ('CC', '1020304050', 'Brian',   'Vargas',  'brian@demo.com',   '3001112233', '$2a$12$e0YiC6erKF8262XQZ/fX1.OthlDNkWCZFNF0ZSwo1xjQxccHbK0wO', 'admin'),
+    ('CC', '1020304051', 'Gestor',  'Demo',    'gestor@demo.com',  '3002223344', '$2a$12$e0YiC6erKF8262XQZ/fX1.OthlDNkWCZFNF0ZSwo1xjQxccHbK0wO', 'gestor'),
+    ('CC', '1020304052', 'Cliente', 'Demo',    'cliente@demo.com', '3003334455', '$2a$12$e0YiC6erKF8262XQZ/fX1.OthlDNkWCZFNF0ZSwo1xjQxccHbK0wO', 'cliente'),
+    ('CE', '9876543210', 'Maria',   'Lopez',   'maria@demo.com',   '3004445566', '$2a$12$e0YiC6erKF8262XQZ/fX1.OthlDNkWCZFNF0ZSwo1xjQxccHbK0wO', 'cliente');
 
 -- PQRS demo (cliente_id apunta a 'Cliente Demo' = id 3 y 'Maria Lopez' = id 4)
 INSERT INTO pqrs (radicado, tipo, asunto, descripcion, cliente_id) VALUES
