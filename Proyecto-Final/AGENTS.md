@@ -232,7 +232,7 @@ Los **10 TCs PF-native** sobre HU-01 Radicar PQRS están abiertos como issues #3
 5. Verificar: `git log --all -- "**/.env"` retorna vacío.
 6. Marcar este checklist con timestamp de rotación en este mismo archivo (línea siguiente).
 
-**Timestamp de rotación**: _pendiente — Brian lo registra al ejecutar_.
+**Timestamp de rotación**: 2026-05-24 11:44:37 — leak purgado, contraseñas rotadas en Neon.
 
 ---
 
