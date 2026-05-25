@@ -1,0 +1,44 @@
+name: 🚀 Feature Request
+description: Propuesta de nueva funcionalidad o mejora.
+labels: ["feature-request", "phase-2"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Antes de abrir, verifica que la feature no esté ya cubierta en los `PLAN-*.md` del Proyecto-Final.
+
+  - type: input
+    id: titulo
+    attributes:
+      label: Título breve
+      placeholder: "ej: Agregar filtro por fecha en bandeja"
+    validations:
+      required: true
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción
+      placeholder: "¿Qué problema resuelve? ¿Cómo se ve la solución?"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: modulo
+    attributes:
+      label: Módulo afectado
+      options:
+        - backend
+        - frontend-web
+        - frontend-mobile
+        - database
+        - cicd
+        - docs
+    validations:
+      required: true
+
+  - type: textarea
+    id: criterios
+    attributes:
+      label: Criterios de aceptación
+      placeholder: "Dado X, cuando Y, entonces Z."
