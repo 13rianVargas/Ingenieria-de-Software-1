@@ -1,0 +1,38 @@
+name: 📖 Historia de Usuario
+description: HU formato Connextra para el backlog.
+labels: ["user-story", "phase-2"]
+body:
+  - type: input
+    id: id
+    attributes:
+      label: ID (ej. HU-13)
+    validations:
+      required: true
+
+  - type: textarea
+    id: historia
+    attributes:
+      label: Historia de Usuario
+      value: |
+        **Como** <actor>,
+        **Quiero** <acción>,
+        **Para** <valor de negocio>.
+    validations:
+      required: true
+
+  - type: textarea
+    id: ca
+    attributes:
+      label: Criterios de Aceptación
+      placeholder: |
+        - Dado X, cuando Y, entonces Z.
+        - ...
+    validations:
+      required: true
+
+  - type: input
+    id: sp
+    attributes:
+      label: Estimación (Story Points)
+    validations:
+      required: true

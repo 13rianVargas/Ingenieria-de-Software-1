@@ -1,0 +1,35 @@
+version: 2
+updates:
+  - package-ecosystem: "maven"
+    directory: "/Proyecto-Final/backend/pqrs"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "backend"
+
+  - package-ecosystem: "npm"
+    directory: "/Proyecto-Final/frontend/pqrs-app"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "frontend"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "dependencies"
+      - "cicd"
+
+  - package-ecosystem: "gradle"
+    directory: "/Proyecto-Final/frontend/pqrs-app/android"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "dependencies"
+      - "frontend-mobile"
