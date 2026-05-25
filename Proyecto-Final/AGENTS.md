@@ -234,6 +234,14 @@ Los **10 TCs PF-native** sobre HU-01 Radicar PQRS están abiertos como issues #3
 
 **Timestamp de rotación**: 2026-05-24 11:44:37 — leak purgado, contraseñas rotadas en Neon.
 
+### 10.7 Kanban Fase 2
+
+**Board**: https://github.com/users/13rianVargas/projects/2 (PQRS Fase 2 — MVP Implementation).
+
+**Labels por área**: `phase-2` + uno de `backend`, `frontend-web`, `frontend-mobile`, `database`, `cicd`.
+
+**Issues T-X.Y**: #53–#92 cubren todas las tareas de los 5 planes. Owners en el body de cada issue. Cerrar al completar; PR debe referenciar `Closes #N` para auto-cierre.
+
 ---
 
 ## 11. Plataformas externas (Fase 2)
