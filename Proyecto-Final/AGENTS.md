@@ -236,7 +236,7 @@ Los **10 TCs PF-native** sobre HU-01 Radicar PQRS están abiertos como issues #3
 
 ### 10.7 Kanban Fase 2
 
-**Board**: https://github.com/users/13rianVargas/projects/2 (PQRS Fase 2 — MVP Implementation).
+**Board**: https://github.com/users/13rianVargas/projects/2 (PQRS Backlog) — público, linkeado al repo.
 
 **Labels por área**: `phase-2` + uno de `backend`, `frontend-web`, `frontend-mobile`, `database`, `cicd`.
 
