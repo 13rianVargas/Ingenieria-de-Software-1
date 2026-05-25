@@ -42,3 +42,16 @@ Lee la guia: Proyecto-Final/.github/CONTRIBUTING.md
 ## Notas para el reviewer
 
 <!-- Areas que necesitan atencion especial, decisiones de diseno, trade-offs. -->
+
+---
+
+## Fase 2 — Checklist específico
+
+- [ ] Mi cambio respeta lo definido en mi `PLAN-*.md` (sección referencia: ___).
+- [ ] No introduce hardcode de URLs/secrets (usa `environment.ts` o GH Secrets).
+- [ ] Si toca backend: cobertura JaCoCo ≥ 70 % (CI verifica).
+- [ ] Si toca frontend: build prod corre sin errores.
+- [ ] Si toca mobile: `cap sync android` corre sin errores.
+- [ ] Demo grabado o screenshot si el cambio afecta UI.
+- [ ] Daily WhatsApp avisado del PR.
+
