@@ -67,7 +67,13 @@ Reglas operativas detalladas en [`AGENTS.md`](./AGENTS.md).
    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO pqrs_app;
    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO pqrs_app;
    ```
-4. **Copiar 2 connection strings** desde Neon Dashboard:
+4. **Fijar `search_path = public` a nivel de rol** (evita que devs tengan que prefijar `public.usuario` en cada query):
+   ```sql
+   ALTER ROLE pqrs_app SET search_path TO public;
+   ALTER ROLE neondb_owner SET search_path TO public;
+   ```
+   Persiste en `pg_db_role_setting`. Aplica a TODA sesión nueva del rol, sin importar el cliente (psql, DBeaver, PgAdmin, Spring Boot, GitHub Action). Sin necesidad de `?options=-c%20search_path=public` en la URL.
+5. **Copiar 2 connection strings** desde Neon Dashboard:
    - **Direct** (sin `-pooler`): para Flyway CLI.
    - **Pooled** (`-pooler` en host): para Spring Boot.
 5. **Configurar GitHub Secret:**
@@ -193,6 +199,26 @@ Resumen:
 | Quiero datos aislados sin afectar al equipo | Crear branch Neon propio: Neon UI → Settings → Branches → New branch. Update tu `.env` local con el nuevo connection string. |
 | Workflow `db-migrate` no se dispara al mergear | Verificar que tu PR realmente toco `Proyecto-Final/database/migrations/**`. Si no, lanzar manual con `gh workflow run db-migrate.yml`. |
 | Necesito un cliente Postgres pero no tengo Homebrew/apt | DBeaver (cross-platform GUI) — descarga directa sin package manager. |
+
+## Health checks pre-demo
+
+Ejecutar 5 min antes de la demo para pre-warm + validar:
+
+```bash
+# Conexión
+psql "$DATABASE_URL_DIRECT" -c "SELECT 1;"
+
+# 4 usuarios demo presentes
+psql "$DATABASE_URL_DIRECT" -c "SELECT count(*) FROM usuario;"
+
+# 3 PQRS demo presentes
+psql "$DATABASE_URL_DIRECT" -c "SELECT count(*) FROM pqrs;"
+
+# Flyway aplicado
+psql "$DATABASE_URL_DIRECT" -c "SELECT version, success FROM flyway_schema_history ORDER BY installed_rank;"
+```
+
+Esperado: ≥ 5 versiones Flyway con `success = true`.
 
 ---
 
