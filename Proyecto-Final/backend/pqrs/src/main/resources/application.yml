@@ -1,10 +1,41 @@
 spring:
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
-      - org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration
-      - org.springframework.boot.devtools.autoconfigure.DevToolsDataSourceAutoConfiguration
+  application:
+    name: pqrs
+  datasource:
+    url: ${DATABASE_URL}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      hibernate.jdbc.time_zone: UTC
+    open-in-view: false
+  flyway:
+    enabled: false   # CI (db-migrate.yml) es la unica fuente de verdad
+  servlet:
+    multipart:
+      max-file-size: 6MB
+      max-request-size: 6MB
 
 server:
-  port: 8080
+  port: ${PORT:8080}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
+jwt:
+  secret: ${JWT_SECRET:dev-secret-must-be-overridden-32chars-min}
+  expiration-ms: 28800000   # 8 horas
+
+logging:
+  level:
+    co.edu.konrad: INFO
+    org.springframework.security: WARN
