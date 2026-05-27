@@ -6,31 +6,26 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping("/api/usuarios")
 public class UsuarioControlador {
 
     private final ServicioRegistroUsuario servicioRegistro;
 
     public UsuarioControlador(ServicioRegistroUsuario servicioRegistro) {
-
         this.servicioRegistro = servicioRegistro;
     }
 
     @PostMapping("/registro")
-    public ResponseEntity<RegistroUsuarioResponse> registrar(
-
-
-            @Valid @RequestBody RegistroUsuarioRequest request) {
-
+    public ResponseEntity<RegistroUsuarioResponse> registrar(@Valid @RequestBody RegistroUsuarioRequest request) {
         Usuario usuario = new Usuario(
-
                 request.tipoDoc(), request.numDoc(), request.nombres(),
-
                 request.apellidos(), request.email(), request.telefono(), request.clave()
         );
-
         Usuario registrado = servicioRegistro.registrar(usuario);
-
         return ResponseEntity.ok(RegistroUsuarioResponse.desde(registrado));
     }
 }
