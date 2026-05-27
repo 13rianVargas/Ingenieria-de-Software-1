@@ -28,7 +28,7 @@ public class UsuarioEntidad {
 
 
     @Column(nullable = false, length = 100)
-    public String nombres;
+    private String nombres;
 
 
     @Column(nullable = false, length = 100)
