@@ -5,7 +5,7 @@ import co.edu.konrad.pqrs.domain.model.Usuario;
 
 public record RegistroUsuarioResponse (
 
-        Long id,
+        Integer id,
         String nombres,
         String apellidos,
         String email,
