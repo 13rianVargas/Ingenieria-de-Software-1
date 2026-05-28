@@ -21,7 +21,7 @@ public class DataSourceConfig {
 
     @Bean
     public DataSource dataSource(@Value("${DATABASE_URL}") String rawUrl) throws URISyntaxException {
-        URI uri = new URI(rawUrl);
+        URI uri = new URI(limpiar(rawUrl));
 
         String userInfo = uri.getUserInfo();
         if (userInfo == null || !userInfo.contains(":")) {
@@ -58,5 +58,23 @@ public class DataSourceConfig {
         ds.setMaximumPoolSize(10);
         ds.setMinimumIdle(2);
         return ds;
+    }
+
+    /**
+     * Tolera valores con espacios o comillas envolventes. Render pasa el valor literal,
+     * asi que si en el dashboard se pego con comillas (DATABASE_URL="postgresql://...")
+     * el URI fallaria con "Illegal character in scheme name at index 0".
+     */
+    private String limpiar(String valor) {
+        if (valor == null) {
+            throw new IllegalStateException("DATABASE_URL no definida");
+        }
+        String v = valor.trim();
+        if (v.length() >= 2
+                && ((v.startsWith("\"") && v.endsWith("\""))
+                || (v.startsWith("'") && v.endsWith("'")))) {
+            v = v.substring(1, v.length() - 1).trim();
+        }
+        return v;
     }
 }
