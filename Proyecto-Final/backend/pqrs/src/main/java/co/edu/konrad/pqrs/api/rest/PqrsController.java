@@ -1,19 +1,24 @@
 package co.edu.konrad.pqrs.api.rest;
 
+import co.edu.konrad.pqrs.domain.model.EstadoPqrs;
 import co.edu.konrad.pqrs.domain.model.Pqrs;
+import co.edu.konrad.pqrs.domain.model.TipoPqrs;
 import co.edu.konrad.pqrs.domain.model.Usuario;
+import co.edu.konrad.pqrs.domain.port.PqrsRepositorio;
 import co.edu.konrad.pqrs.domain.port.UsuarioRepositorio;
 import co.edu.konrad.pqrs.domain.service.ServicioRadicarPqrs;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pqrs")
@@ -21,10 +26,14 @@ public class PqrsController {
 
     private final ServicioRadicarPqrs servicioRadicar;
     private final UsuarioRepositorio usuarioRepositorio;
+    private final PqrsRepositorio pqrsRepositorio;
 
-    public PqrsController(ServicioRadicarPqrs servicioRadicar, UsuarioRepositorio usuarioRepositorio) {
+    public PqrsController(ServicioRadicarPqrs servicioRadicar,
+                          UsuarioRepositorio usuarioRepositorio,
+                          PqrsRepositorio pqrsRepositorio) {
         this.servicioRadicar = servicioRadicar;
         this.usuarioRepositorio = usuarioRepositorio;
+        this.pqrsRepositorio = pqrsRepositorio;
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -40,6 +49,32 @@ public class PqrsController {
                 request.tipo(), request.asunto(), request.descripcion(), clienteId, anexoDominio);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(RadicarPqrsResponse.desde(radicada));
+    }
+
+    /** CU-04: PQRS propias del cliente autenticado. Filtro opcional por radicado. */
+    @GetMapping("/mis")
+    @PreAuthorize("hasRole('cliente')")
+    public ResponseEntity<List<PqrsResumenResponse>> misPqrs(
+            @RequestParam(value = "radicado", required = false) String radicado,
+            Authentication auth) {
+        Integer clienteId = resolverClienteId(auth);
+        List<PqrsResumenResponse> resultado = pqrsRepositorio.buscarPorCliente(clienteId, radicado)
+                .stream().map(PqrsResumenResponse::desde).toList();
+        return ResponseEntity.ok(resultado);
+    }
+
+    /** CU-05: bandeja del gestor. Filtros opcionales estado/tipo + paginacion. */
+    @GetMapping
+    @PreAuthorize("hasAnyRole('gestor','admin')")
+    public ResponseEntity<PaginaResponse<PqrsResumenResponse>> bandeja(
+            @RequestParam(value = "estado", required = false) EstadoPqrs estado,
+            @RequestParam(value = "tipo", required = false) TipoPqrs tipo,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "20") int size) {
+        List<PqrsResumenResponse> contenido = pqrsRepositorio.buscarBandeja(estado, tipo, page, size)
+                .stream().map(PqrsResumenResponse::desde).toList();
+        long total = pqrsRepositorio.contarBandeja(estado, tipo);
+        return ResponseEntity.ok(new PaginaResponse<>(contenido, total, page, size));
     }
 
     private Integer resolverClienteId(Authentication auth) {
