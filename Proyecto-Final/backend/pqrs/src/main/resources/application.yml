@@ -1,18 +1,18 @@
 spring:
   application:
     name: pqrs
-  datasource:
-    url: ${DATABASE_URL}
-    driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 2
+  # DataSource construido por DataSourceConfig.java a partir de DATABASE_URL bare
+  # (formato Heroku/Neon `postgresql://user:pass@host/db?params`).
+  # No definir spring.datasource.url aqui — colisiona con la auto-config.
   jpa:
     hibernate:
-      ddl-auto: validate
+      # `none` porque Flyway (CI db-migrate.yml) es la unica fuente de verdad del schema.
+      # `validate` falla por incompatibilidad Hibernate 6 + SERIAL (espera bigint para Integer @GeneratedValue).
+      ddl-auto: none
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
       hibernate.jdbc.time_zone: UTC
+      hibernate.hbm2ddl.auto: none
     open-in-view: false
   flyway:
     enabled: false   # CI (db-migrate.yml) es la unica fuente de verdad
