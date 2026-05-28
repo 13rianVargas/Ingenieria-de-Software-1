@@ -56,12 +56,18 @@
 			<version>${lombok.version}</version>
 			<optional>true</optional>
 		</dependency>
+		<!-- devtools removido temporalmente: DevToolsDataSourceAutoConfiguration interfiere
+		     con DataSourceConfig custom para parsear DATABASE_URL bare. Reintegrar si se necesita
+		     hot-reload, con exclude correcto. -->
+		<!--
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+		-->
+
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
