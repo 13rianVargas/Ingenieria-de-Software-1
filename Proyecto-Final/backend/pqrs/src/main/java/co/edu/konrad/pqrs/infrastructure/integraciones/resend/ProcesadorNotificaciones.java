@@ -1,5 +1,6 @@
 package co.edu.konrad.pqrs.infrastructure.integraciones.resend;
 
+import co.edu.konrad.pqrs.infrastructure.integraciones.correo.CorreoSmtp;
 import co.edu.konrad.pqrs.infrastructure.persistencia.NotificacionEntidad;
 import co.edu.konrad.pqrs.infrastructure.persistencia.NotificacionJpaRepositorio;
 import co.edu.konrad.pqrs.infrastructure.persistencia.UsuarioEntidad;
@@ -25,20 +26,20 @@ public class ProcesadorNotificaciones {
 
     private final NotificacionJpaRepositorio notificaciones;
     private final UsuarioJpaRepositorio usuarios;
-    private final ResendCliente resend;
+    private final CorreoSmtp correo;
 
     public ProcesadorNotificaciones(NotificacionJpaRepositorio notificaciones,
                                     UsuarioJpaRepositorio usuarios,
-                                    ResendCliente resend) {
+                                    CorreoSmtp correo) {
         this.notificaciones = notificaciones;
         this.usuarios = usuarios;
-        this.resend = resend;
+        this.correo = correo;
     }
 
     @Scheduled(fixedDelay = 30000)
     public void procesar() {
-        if (!resend.habilitado()) {
-            return; // sin API key, la cola se acumula hasta que se configure
+        if (!correo.habilitado()) {
+            return; // sin MAIL_USERNAME, la cola se acumula hasta que se configure
         }
 
         List<NotificacionEntidad> pendientes =
@@ -51,7 +52,7 @@ public class ProcesadorNotificaciones {
                     marcarFallida(n, "usuario inexistente");
                     continue;
                 }
-                resend.enviar(usuario.getEmail(), asunto(n.getTipo()), cuerpo(n.getTipo(), usuario.getNombres()));
+                correo.enviar(usuario.getEmail(), asunto(n.getTipo()), cuerpo(n.getTipo(), usuario.getNombres()));
                 n.setEstado("enviada");
                 n.setEnviadoEn(LocalDateTime.now());
                 notificaciones.save(n);

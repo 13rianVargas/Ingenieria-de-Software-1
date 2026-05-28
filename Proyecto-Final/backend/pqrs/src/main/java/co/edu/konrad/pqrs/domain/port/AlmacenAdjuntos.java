@@ -9,4 +9,7 @@ public interface AlmacenAdjuntos {
      * @param tipoMime content-type (solo application/pdf permitido aguas arriba)
      */
     String subir(String ruta, byte[] contenido, String tipoMime);
+
+    /** Descarga el binario dado su URL/identificador almacenado (url_nas). */
+    byte[] descargar(String urlNas);
 }

@@ -51,4 +51,25 @@ public class R2AlmacenAdjuntos implements AlmacenAdjuntos {
                 RequestBody.fromBytes(contenido));
         return publicBase + "/" + ruta;
     }
+
+    @Override
+    public byte[] descargar(String urlNas) {
+        String key = extraerKey(urlNas);
+        return s3.getObjectAsBytes(
+                software.amazon.awssdk.services.s3.model.GetObjectRequest.builder()
+                        .bucket(bucket)
+                        .key(key)
+                        .build()).asByteArray();
+    }
+
+    /** Deriva la key del objeto desde el url_nas (todo lo que sigue a "/<bucket>/"). */
+    private String extraerKey(String urlNas) {
+        String marcador = "/" + bucket + "/";
+        int i = urlNas.indexOf(marcador);
+        if (i >= 0) {
+            return urlNas.substring(i + marcador.length());
+        }
+        // fallback: si ya es una key relativa
+        return urlNas.startsWith("http") ? urlNas.substring(urlNas.indexOf(".com/") + 5) : urlNas;
+    }
 }

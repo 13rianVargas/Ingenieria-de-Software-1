@@ -20,6 +20,14 @@ spring:
     multipart:
       max-file-size: 6MB
       max-request-size: 6MB
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}          # vacio = worker de correos deshabilitado
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
 
 server:
   port: ${PORT:8080}
@@ -35,9 +43,9 @@ jwt:
   secret: ${JWT_SECRET:dev-secret-must-be-overridden-32chars-min}
   expiration-ms: 28800000   # 8 horas
 
-resend:
-  api-key: ${RESEND_API_KEY:}          # vacio = worker de notificaciones deshabilitado
-  from: ${RESEND_FROM:PQRS Konrad <onboarding@resend.dev>}
+correo:
+  from: ${MAIL_FROM:${MAIL_USERNAME:}}   # remitente; por defecto el usuario SMTP
+  from-nombre: ${MAIL_FROM_NOMBRE:PQRS SuperMarket Konrad}
 
 r2:
   enabled: ${R2_ENABLED:false}         # true cuando haya credenciales Cloudflare R2

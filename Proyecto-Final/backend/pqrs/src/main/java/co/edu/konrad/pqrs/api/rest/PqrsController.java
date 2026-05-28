@@ -3,11 +3,15 @@ package co.edu.konrad.pqrs.api.rest;
 import co.edu.konrad.pqrs.domain.model.EstadoPqrs;
 import co.edu.konrad.pqrs.domain.model.Pqrs;
 import co.edu.konrad.pqrs.domain.model.TipoPqrs;
+import co.edu.konrad.pqrs.domain.model.Adjunto;
 import co.edu.konrad.pqrs.domain.model.Usuario;
+import co.edu.konrad.pqrs.domain.port.AdjuntoRepositorio;
+import co.edu.konrad.pqrs.domain.port.AlmacenAdjuntos;
 import co.edu.konrad.pqrs.domain.port.PqrsRepositorio;
 import co.edu.konrad.pqrs.domain.port.UsuarioRepositorio;
 import co.edu.konrad.pqrs.domain.service.ServicioRadicarPqrs;
 import co.edu.konrad.pqrs.domain.service.ServicioTramitar;
+import co.edu.konrad.pqrs.domain.service.ServicioTramitar.PqrsNoEncontradaException;
 import co.edu.konrad.pqrs.infrastructure.reporte.GeneradorReportePdf;
 import jakarta.validation.Valid;
 import org.springframework.http.ContentDisposition;
@@ -33,17 +37,23 @@ public class PqrsController {
     private final UsuarioRepositorio usuarioRepositorio;
     private final PqrsRepositorio pqrsRepositorio;
     private final GeneradorReportePdf generadorReportePdf;
+    private final AdjuntoRepositorio adjuntoRepositorio;
+    private final AlmacenAdjuntos almacenAdjuntos;
 
     public PqrsController(ServicioRadicarPqrs servicioRadicar,
                           ServicioTramitar servicioTramitar,
                           UsuarioRepositorio usuarioRepositorio,
                           PqrsRepositorio pqrsRepositorio,
-                          GeneradorReportePdf generadorReportePdf) {
+                          GeneradorReportePdf generadorReportePdf,
+                          AdjuntoRepositorio adjuntoRepositorio,
+                          AlmacenAdjuntos almacenAdjuntos) {
         this.servicioRadicar = servicioRadicar;
         this.servicioTramitar = servicioTramitar;
         this.usuarioRepositorio = usuarioRepositorio;
         this.pqrsRepositorio = pqrsRepositorio;
         this.generadorReportePdf = generadorReportePdf;
+        this.adjuntoRepositorio = adjuntoRepositorio;
+        this.almacenAdjuntos = almacenAdjuntos;
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -100,6 +110,20 @@ public class PqrsController {
                         ContentDisposition.attachment().filename("reporte-pqrs.pdf").build().toString())
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdf);
+    }
+
+    /** Descarga el PDF adjunto de una PQRS (gestor/admin/cliente autenticado). */
+    @GetMapping("/{id}/anexo")
+    @PreAuthorize("hasAnyRole('gestor','admin','cliente')")
+    public ResponseEntity<byte[]> descargarAnexo(@PathVariable("id") Integer id) {
+        Adjunto adjunto = adjuntoRepositorio.buscarPorPqrs(id).stream().findFirst()
+                .orElseThrow(() -> new PqrsNoEncontradaException("La PQRS " + id + " no tiene adjunto"));
+        byte[] contenido = almacenAdjuntos.descargar(adjunto.getUrlNas());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.attachment().filename(adjunto.getNombreArchivo()).build().toString())
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(contenido);
     }
 
     /** CU-06: gestor cambia el estado de una PQRS con justificacion. Registra tramite + auditoria. */

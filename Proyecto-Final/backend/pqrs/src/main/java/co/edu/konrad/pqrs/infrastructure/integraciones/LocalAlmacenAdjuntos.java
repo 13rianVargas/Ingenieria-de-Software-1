@@ -23,4 +23,9 @@ public class LocalAlmacenAdjuntos implements AlmacenAdjuntos {
                 ruta, contenido.length);
         return "pending-r2://" + ruta;
     }
+
+    @Override
+    public byte[] descargar(String urlNas) {
+        throw new UnsupportedOperationException("Descarga no disponible sin R2 (adjunto no almacenado)");
+    }
 }
