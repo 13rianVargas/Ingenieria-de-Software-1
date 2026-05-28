@@ -16,7 +16,7 @@ public class UsuarioEntidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
 
     @Column(name = "tipo_doc", nullable = false, length = 4)
@@ -28,7 +28,7 @@ public class UsuarioEntidad {
 
 
     @Column(nullable = false, length = 100)
-    public String nombres;
+    private String nombres;
 
 
     @Column(nullable = false, length = 100)

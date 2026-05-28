@@ -3,7 +3,7 @@ package co.edu.konrad.pqrs.domain.model;
 import java.time.LocalDateTime;
 
 public class Usuario {
-    private Long id;
+    private Integer id;
     private TipoDocumento tipoDoc;
     private String numDoc;
     private String nombres;
@@ -27,8 +27,8 @@ public class Usuario {
         this.fechaCreacion = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
     public TipoDocumento getTipoDoc() { return tipoDoc; }
     public String getNumDoc() { return numDoc; }
     public String getNombres() { return nombres; }
@@ -37,6 +37,7 @@ public class Usuario {
     public String getTelefono() { return telefono; }
     public String getClaveHash() { return claveHash; }
     public RolUsuario getRol() { return rol; }
+    public void setRol(RolUsuario rol) { this.rol = rol; }
     public LocalDateTime getFechaCreacion() { return fechaCreacion; }
     public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
 }

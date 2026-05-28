@@ -1,8 +1,11 @@
 package co.edu.konrad.pqrs.domain.service;
 
 import co.edu.konrad.pqrs.domain.model.Usuario;
+import co.edu.konrad.pqrs.domain.port.CodificadorClave;
 import co.edu.konrad.pqrs.domain.port.UsuarioRepositorio;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ServicioRegistroUsuario {
 
     private final UsuarioRepositorio usuarioRepositorio;
@@ -24,9 +27,5 @@ public class ServicioRegistroUsuario {
                 usuario.getApellidos(), usuario.getEmail(), usuario.getTelefono(), hash
         );
         return usuarioRepositorio.guardar(conHash);
-    }
-
-    public interface CodificadorClave {
-        String codificar(String claveRaw);
     }
 }
