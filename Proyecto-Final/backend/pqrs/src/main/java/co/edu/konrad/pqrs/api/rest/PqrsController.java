@@ -8,7 +8,10 @@ import co.edu.konrad.pqrs.domain.port.PqrsRepositorio;
 import co.edu.konrad.pqrs.domain.port.UsuarioRepositorio;
 import co.edu.konrad.pqrs.domain.service.ServicioRadicarPqrs;
 import co.edu.konrad.pqrs.domain.service.ServicioTramitar;
+import co.edu.konrad.pqrs.infrastructure.reporte.GeneradorReportePdf;
 import jakarta.validation.Valid;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,15 +32,18 @@ public class PqrsController {
     private final ServicioTramitar servicioTramitar;
     private final UsuarioRepositorio usuarioRepositorio;
     private final PqrsRepositorio pqrsRepositorio;
+    private final GeneradorReportePdf generadorReportePdf;
 
     public PqrsController(ServicioRadicarPqrs servicioRadicar,
                           ServicioTramitar servicioTramitar,
                           UsuarioRepositorio usuarioRepositorio,
-                          PqrsRepositorio pqrsRepositorio) {
+                          PqrsRepositorio pqrsRepositorio,
+                          GeneradorReportePdf generadorReportePdf) {
         this.servicioRadicar = servicioRadicar;
         this.servicioTramitar = servicioTramitar;
         this.usuarioRepositorio = usuarioRepositorio;
         this.pqrsRepositorio = pqrsRepositorio;
+        this.generadorReportePdf = generadorReportePdf;
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -79,6 +85,21 @@ public class PqrsController {
                 .stream().map(PqrsResumenResponse::desde).toList();
         long total = pqrsRepositorio.contarBandeja(estado, tipo);
         return ResponseEntity.ok(new PaginaResponse<>(contenido, total, page, size));
+    }
+
+    /** CU-07: reporte PDF de la bandeja con filtros opcionales estado/tipo. */
+    @GetMapping("/reporte")
+    @PreAuthorize("hasAnyRole('gestor','admin')")
+    public ResponseEntity<byte[]> reporte(
+            @RequestParam(value = "estado", required = false) EstadoPqrs estado,
+            @RequestParam(value = "tipo", required = false) TipoPqrs tipo) {
+        List<Pqrs> datos = pqrsRepositorio.buscarBandeja(estado, tipo, 0, 10000);
+        byte[] pdf = generadorReportePdf.generar(datos);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.attachment().filename("reporte-pqrs.pdf").build().toString())
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
     }
 
     /** CU-06: gestor cambia el estado de una PQRS con justificacion. Registra tramite + auditoria. */
