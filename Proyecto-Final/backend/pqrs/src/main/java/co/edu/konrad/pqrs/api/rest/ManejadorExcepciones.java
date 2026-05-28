@@ -2,6 +2,7 @@ package co.edu.konrad.pqrs.api.rest;
 
 import co.edu.konrad.pqrs.domain.service.AnexoInvalidoException;
 import co.edu.konrad.pqrs.domain.service.ServicioAutenticacion.CredencialesInvalidasException;
+import co.edu.konrad.pqrs.domain.service.ServicioTramitar.PqrsNoEncontradaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,6 +38,12 @@ public class ManejadorExcepciones {
     public ResponseEntity<ErrorResponse> anexoInvalido(AnexoInvalidoException ex) {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .body(ErrorResponse.de(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage()));
+    }
+
+    @ExceptionHandler(PqrsNoEncontradaException.class)
+    public ResponseEntity<ErrorResponse> pqrsNoEncontrada(PqrsNoEncontradaException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ErrorResponse.de(HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

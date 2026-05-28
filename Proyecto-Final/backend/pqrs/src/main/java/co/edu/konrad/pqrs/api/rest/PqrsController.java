@@ -7,6 +7,7 @@ import co.edu.konrad.pqrs.domain.model.Usuario;
 import co.edu.konrad.pqrs.domain.port.PqrsRepositorio;
 import co.edu.konrad.pqrs.domain.port.UsuarioRepositorio;
 import co.edu.konrad.pqrs.domain.service.ServicioRadicarPqrs;
+import co.edu.konrad.pqrs.domain.service.ServicioTramitar;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,13 +26,16 @@ import java.util.List;
 public class PqrsController {
 
     private final ServicioRadicarPqrs servicioRadicar;
+    private final ServicioTramitar servicioTramitar;
     private final UsuarioRepositorio usuarioRepositorio;
     private final PqrsRepositorio pqrsRepositorio;
 
     public PqrsController(ServicioRadicarPqrs servicioRadicar,
+                          ServicioTramitar servicioTramitar,
                           UsuarioRepositorio usuarioRepositorio,
                           PqrsRepositorio pqrsRepositorio) {
         this.servicioRadicar = servicioRadicar;
+        this.servicioTramitar = servicioTramitar;
         this.usuarioRepositorio = usuarioRepositorio;
         this.pqrsRepositorio = pqrsRepositorio;
     }
@@ -75,6 +79,18 @@ public class PqrsController {
                 .stream().map(PqrsResumenResponse::desde).toList();
         long total = pqrsRepositorio.contarBandeja(estado, tipo);
         return ResponseEntity.ok(new PaginaResponse<>(contenido, total, page, size));
+    }
+
+    /** CU-06: gestor cambia el estado de una PQRS con justificacion. Registra tramite + auditoria. */
+    @PutMapping("/{id}/estado")
+    @PreAuthorize("hasAnyRole('gestor','admin')")
+    public ResponseEntity<PqrsResumenResponse> tramitar(
+            @PathVariable("id") Integer id,
+            @Valid @RequestBody TramitarEstadoRequest request,
+            Authentication auth) {
+        Integer gestorId = resolverClienteId(auth); // resuelve el usuario autenticado (gestor)
+        Pqrs actualizada = servicioTramitar.tramitar(id, gestorId, request.estado(), request.justificacion());
+        return ResponseEntity.ok(PqrsResumenResponse.desde(actualizada));
     }
 
     private Integer resolverClienteId(Authentication auth) {
