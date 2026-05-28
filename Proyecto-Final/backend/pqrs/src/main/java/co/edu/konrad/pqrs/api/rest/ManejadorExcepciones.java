@@ -1,5 +1,6 @@
 package co.edu.konrad.pqrs.api.rest;
 
+import co.edu.konrad.pqrs.domain.service.AnexoInvalidoException;
 import co.edu.konrad.pqrs.domain.service.ServicioAutenticacion.CredencialesInvalidasException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,12 @@ public class ManejadorExcepciones {
     public ResponseEntity<ErrorResponse> argumentoInvalido(IllegalArgumentException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.de(HttpStatus.BAD_REQUEST, ex.getMessage()));
+    }
+
+    @ExceptionHandler(AnexoInvalidoException.class)
+    public ResponseEntity<ErrorResponse> anexoInvalido(AnexoInvalidoException ex) {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .body(ErrorResponse.de(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
