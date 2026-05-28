@@ -8,6 +8,7 @@ import co.edu.konrad.pqrs.domain.model.Usuario;
 import co.edu.konrad.pqrs.domain.port.AdjuntoRepositorio;
 import co.edu.konrad.pqrs.domain.port.AlmacenAdjuntos;
 import co.edu.konrad.pqrs.domain.port.PqrsRepositorio;
+import co.edu.konrad.pqrs.domain.port.TramiteRepositorio;
 import co.edu.konrad.pqrs.domain.port.UsuarioRepositorio;
 import co.edu.konrad.pqrs.domain.service.ServicioRadicarPqrs;
 import co.edu.konrad.pqrs.domain.service.ServicioTramitar;
@@ -39,6 +40,7 @@ public class PqrsController {
     private final GeneradorReportePdf generadorReportePdf;
     private final AdjuntoRepositorio adjuntoRepositorio;
     private final AlmacenAdjuntos almacenAdjuntos;
+    private final TramiteRepositorio tramiteRepositorio;
 
     public PqrsController(ServicioRadicarPqrs servicioRadicar,
                           ServicioTramitar servicioTramitar,
@@ -46,7 +48,8 @@ public class PqrsController {
                           PqrsRepositorio pqrsRepositorio,
                           GeneradorReportePdf generadorReportePdf,
                           AdjuntoRepositorio adjuntoRepositorio,
-                          AlmacenAdjuntos almacenAdjuntos) {
+                          AlmacenAdjuntos almacenAdjuntos,
+                          TramiteRepositorio tramiteRepositorio) {
         this.servicioRadicar = servicioRadicar;
         this.servicioTramitar = servicioTramitar;
         this.usuarioRepositorio = usuarioRepositorio;
@@ -54,6 +57,19 @@ public class PqrsController {
         this.generadorReportePdf = generadorReportePdf;
         this.adjuntoRepositorio = adjuntoRepositorio;
         this.almacenAdjuntos = almacenAdjuntos;
+        this.tramiteRepositorio = tramiteRepositorio;
+    }
+
+    /** Detalle de una PQRS: cabecera + timeline de tramites + adjuntos. */
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('gestor','admin','cliente')")
+    public ResponseEntity<PqrsDetalleResponse> detalle(@PathVariable("id") Integer id) {
+        Pqrs pqrs = pqrsRepositorio.buscarPorId(id)
+                .orElseThrow(() -> new PqrsNoEncontradaException("PQRS no encontrada: " + id));
+        return ResponseEntity.ok(PqrsDetalleResponse.desde(
+                pqrs,
+                tramiteRepositorio.buscarPorPqrs(id),
+                adjuntoRepositorio.buscarPorPqrs(id)));
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
