@@ -37,6 +37,7 @@ public class Usuario {
     public String getTelefono() { return telefono; }
     public String getClaveHash() { return claveHash; }
     public RolUsuario getRol() { return rol; }
+    public void setRol(RolUsuario rol) { this.rol = rol; }
     public LocalDateTime getFechaCreacion() { return fechaCreacion; }
     public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
 }

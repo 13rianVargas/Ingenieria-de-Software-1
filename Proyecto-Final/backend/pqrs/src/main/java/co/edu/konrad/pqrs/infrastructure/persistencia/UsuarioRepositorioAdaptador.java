@@ -53,6 +53,7 @@ public class UsuarioRepositorioAdaptador implements UsuarioRepositorio {
                 e.getApellidos(), e.getEmail(), e.getTelefono(), e.getClaveHash()
         );
         u.setId(e.getId());
+        u.setRol(e.getRol());
         u.setFechaCreacion(e.getFechaCreacion());
         return u;
     }
