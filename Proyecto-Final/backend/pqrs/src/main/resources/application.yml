@@ -55,6 +55,13 @@ r2:
   bucket: ${R2_BUCKET:pqrs-anexos}
   public-base: ${R2_PUBLIC_BASE:}
 
+management:
+  health:
+    mail:
+      # Deshabilitado: MailHealthIndicator abre conexion SMTP en cada /actuator/health
+      # (Gmail tarda >2min) -> el health check de Render se cuelga y el deploy falla.
+      enabled: false
+
 logging:
   level:
     co.edu.konrad: INFO
