@@ -35,6 +35,18 @@ jwt:
   secret: ${JWT_SECRET:dev-secret-must-be-overridden-32chars-min}
   expiration-ms: 28800000   # 8 horas
 
+resend:
+  api-key: ${RESEND_API_KEY:}          # vacio = worker de notificaciones deshabilitado
+  from: ${RESEND_FROM:PQRS Konrad <onboarding@resend.dev>}
+
+r2:
+  enabled: ${R2_ENABLED:false}         # true cuando haya credenciales Cloudflare R2
+  endpoint: ${R2_ENDPOINT:}
+  access-key-id: ${R2_ACCESS_KEY_ID:}
+  secret-access-key: ${R2_SECRET_ACCESS_KEY:}
+  bucket: ${R2_BUCKET:pqrs-anexos}
+  public-base: ${R2_PUBLIC_BASE:}
+
 logging:
   level:
     co.edu.konrad: INFO
