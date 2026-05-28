@@ -130,8 +130,63 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>coverage</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>0.8.12</version>
+						<configuration>
+							<excludes>
+								<!-- Boilerplate sin logica: entidades JPA, DTOs, config de wiring, main -->
+								<exclude>**/PqrsApplication.class</exclude>
+								<exclude>**/infrastructure/persistencia/*Entidad.class</exclude>
+								<exclude>**/api/rest/*Request.class</exclude>
+								<exclude>**/api/rest/*Response.class</exclude>
+								<exclude>**/api/rest/PaginaResponse.class</exclude>
+								<exclude>**/api/rest/ManejadorExcepciones*.class</exclude>
+								<exclude>**/infrastructure/security/SecurityConfig.class</exclude>
+								<exclude>**/infrastructure/persistencia/DataSourceConfig.class</exclude>
+								<!-- Integraciones externas: requieren R2/Resend reales, se prueban E2E -->
+								<exclude>**/infrastructure/integraciones/**</exclude>
+								<exclude>**/infrastructure/reporte/**</exclude>
+							</excludes>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>report</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<!-- ByteBuddy (Mockito) no soporta JDK 25 oficialmente; flag experimental lo habilita -->
+					<systemPropertyVariables>
+						<net.bytebuddy.experimental>true</net.bytebuddy.experimental>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
