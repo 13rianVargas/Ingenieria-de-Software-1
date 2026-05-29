@@ -4,17 +4,17 @@
  */
 
 export enum TipoPQRS {
-  PETICION = 'PETICION',
-  QUEJA = 'QUEJA',
-  RECLAMO = 'RECLAMO',
-  SUGERENCIA = 'SUGERENCIA'
+  PETICION = 'peticion',
+  QUEJA = 'queja',
+  RECLAMO = 'reclamo',
+  SUGERENCIA = 'sugerencia'
 }
 
 export enum EstadoPQRS {
-  NUEVO = 'NUEVO',
-  EN_PROCESO = 'EN_PROCESO',
-  RESUELTO = 'RESUELTO',
-  RECHAZADO = 'RECHAZADO'
+  NUEVO = 'nuevo',
+  EN_PROCESO = 'en_proceso',
+  RESUELTO = 'resuelto',
+  RECHAZADO = 'rechazado'
 }
 
 export interface PQRS {

@@ -64,7 +64,7 @@
                                 <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Tipo de Radicado</label>
                                 <select
                                     [(ngModel)]="filtroTipo"
-                                    class="border border-gray-300 rounded p-2 text-sm min-w-[150px] focus:border-tertiary outline-none bg-white"
+                                    class="border border-gray-300 rounded p-2 text-sm text-gray-900 min-w-[150px] focus:border-tertiary outline-none bg-white"
                                 >
                                     <option *ngFor="let opt of tiposFiltro" [value]="opt.value">{{ opt.label }}</option>
                                 </select>
@@ -73,7 +73,7 @@
                                 <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Estado</label>
                                 <select
                                     [(ngModel)]="filtroEstado"
-                                    class="border border-gray-300 rounded p-2 text-sm min-w-[150px] focus:border-tertiary outline-none bg-white"
+                                    class="border border-gray-300 rounded p-2 text-sm text-gray-900 min-w-[150px] focus:border-tertiary outline-none bg-white"
                                 >
                                     <option *ngFor="let opt of estadosFiltro" [value]="opt.value">{{ opt.label }}</option>
                                 </select>
