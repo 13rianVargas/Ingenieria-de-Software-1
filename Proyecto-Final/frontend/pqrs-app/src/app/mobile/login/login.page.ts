@@ -84,11 +84,11 @@ export class LoginPage implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           this.isLoading = false;
-          if (response.success) {
-            console.log('Login exitoso:', response.data?.user?.nombre);
+          if (response && response.token) {
+            console.log('Login exitoso, rol:', response.rol);
             this.redirectBasedOnRole();
           } else {
-            this.errorMessage = response.message || 'Error desconocido';
+            this.errorMessage = 'Respuesta inesperada del servidor';
           }
         },
         error: (error) => {

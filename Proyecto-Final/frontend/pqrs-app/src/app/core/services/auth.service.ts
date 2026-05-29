@@ -45,9 +45,19 @@ export class AuthService {
       { headers }
     ).pipe(
       tap(response => {
-        if (response.success && response.data) {
-          this.storeSession(response.data);
-          this.currentUserSubject.next(response.data.user as any);
+        if (response && response.token) {
+          // Synthetic user since backend only returns token and role
+          const syntheticUser: User = {
+            id: 'temp-id',
+            identificacion: 'temp-id',
+            nombre: credentials.email.split('@')[0], // derived from email
+            apellido: '',
+            email: credentials.email,
+            rol: response.rol.toUpperCase() as UserRole
+          };
+          
+          this.storeSession({ token: response.token, user: syntheticUser });
+          this.currentUserSubject.next(syntheticUser);
           this.isAuthenticated$.next(true);
         }
       }),

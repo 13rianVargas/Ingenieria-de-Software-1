@@ -4,19 +4,9 @@
  */
 
 export interface AuthResponse {
-  success: boolean;
-  message: string;
-  data?: {
-    user: {
-      id: string;
-      identificacion: string;
-      nombre: string;
-      rol: string;
-    };
-    token: string;
-    expiresIn: number;
-  };
-  error?: string;
+  token: string;
+  rol: string;
+  expiraEn?: string;
 }
 
 export interface TokenPayload {
