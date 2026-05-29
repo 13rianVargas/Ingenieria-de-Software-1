@@ -10,7 +10,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
     <div *ngIf="safeUrl" class="mt-4 border rounded overflow-hidden shadow-sm relative">
       <div class="bg-gray-100 p-2 flex justify-between items-center border-b">
         <span class="text-sm font-bold text-gray-700">Vista Previa Anexo</span>
-        <button (click)="close.emit()" class="text-gray-500 hover:text-gray-700">
+        <button (click)="cerrar.emit()" class="text-gray-500 hover:text-gray-700">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
       </div>
@@ -20,7 +20,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 })
 export class PdfPreviewComponent implements OnChanges {
   @Input() url: string = '';
-  @Output() close = new EventEmitter<void>();
+  @Output() cerrar = new EventEmitter<void>();
   
   safeUrl: SafeResourceUrl | null = null;
   private sanitizer = inject(DomSanitizer);
