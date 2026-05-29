@@ -1,5 +1,7 @@
 ﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { IonicModule, NavController, ToastController } from '@ionic/angular';
 import { of } from 'rxjs';
 import { HistorialPage } from './historial.page';
 import { PQRSService } from '../../core/services/pqrs.service';
@@ -11,26 +13,40 @@ describe('HistorialPage', () => {
 
   const authServiceMock = {
     getCurrentUser: jasmine.createSpy('getCurrentUser').and.returnValue({ id: '1', identificacion: '12345678', nombre: 'Cliente Test', email: 'cliente@test.com', rol: 'CLIENTE' }),
-    hasValidToken: jasmine.createSpy('hasValidToken').and.returnValue(true)
+    hasValidToken: jasmine.createSpy('hasValidToken').and.returnValue(true),
+    logout: jasmine.createSpy('logout')
   };
 
   const pqrsServiceMock = {
-    obtenerHistorial: jasmine.createSpy('obtenerHistorial').and.returnValue(
-      of({ success: true, data: { data: [], total: 0 } })
-    )
+    misRadicados: jasmine.createSpy('misRadicados').and.returnValue(of([]))
   };
 
   const routerMock = {
-    navigate: jasmine.createSpy('navigate')
+    navigate: jasmine.createSpy('navigate'),
+    events: of(),
+    url: '/mobile/historial'
+  };
+
+  const toastControllerMock = {
+    create: jasmine.createSpy('create').and.returnValue(Promise.resolve({ present: jasmine.createSpy('present') }))
+  };
+
+  const navControllerMock = {
+    navigateForward: jasmine.createSpy('navigateForward'),
+    navigateBack: jasmine.createSpy('navigateBack'),
+    navigateRoot: jasmine.createSpy('navigateRoot')
   };
 
   beforeEach(async () => {
     fixture = TestBed.configureTestingModule({
       declarations: [HistorialPage],
+      imports: [IonicModule, FormsModule],
       providers: [
         { provide: AuthService, useValue: authServiceMock },
         { provide: PQRSService, useValue: pqrsServiceMock },
-        { provide: Router, useValue: routerMock }
+        { provide: Router, useValue: routerMock },
+        { provide: ToastController, useValue: toastControllerMock },
+        { provide: NavController, useValue: navControllerMock }
       ]
     }).createComponent(HistorialPage);
     component = fixture.componentInstance;

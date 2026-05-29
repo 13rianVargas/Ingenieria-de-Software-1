@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IonicModule, NavController } from '@ionic/angular';
 import { of } from 'rxjs';
 import { LoginPage } from './login.page';
 import { AuthService } from '../../core/services/auth.service';
@@ -17,16 +18,25 @@ describe('LoginPage', () => {
   };
 
   const routerMock = {
-    navigate: jasmine.createSpy('navigate')
+    navigate: jasmine.createSpy('navigate'),
+    events: of(),
+    url: '/web/login'
+  };
+
+  const navControllerMock = {
+    navigateForward: jasmine.createSpy('navigateForward'),
+    navigateBack: jasmine.createSpy('navigateBack'),
+    navigateRoot: jasmine.createSpy('navigateRoot')
   };
 
   beforeEach(async () => {
     fixture = TestBed.configureTestingModule({
       declarations: [LoginPage],
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, IonicModule],
       providers: [
         { provide: AuthService, useValue: authServiceMock },
-        { provide: Router, useValue: routerMock }
+        { provide: Router, useValue: routerMock },
+        { provide: NavController, useValue: navControllerMock }
       ]
     }).createComponent(LoginPage);
     component = fixture.componentInstance;
