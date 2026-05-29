@@ -1,7 +1,7 @@
 name: backend-ci
 
-# Workflow corre siempre. Detecta si existe pom.xml para decidir.
-# Cuando backend dev cree Proyecto-Final/backend/pom.xml, Maven verify activa.
+# Corre maven verify (tests JUnit + JaCoCo) cuando hay cambios en el backend.
+# Si no hay cambios de backend, sale success rapido (skip).
 
 on:
   pull_request:
@@ -14,32 +14,52 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check:
+  verify:
     name: maven verify
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Proyecto-Final/backend/pqrs
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Detect backend
+      - name: Detect backend changes
         id: detect
+        working-directory: ${{ github.workspace }}
         run: |
-          if [ -f Proyecto-Final/backend/pom.xml ]; then
-            echo "exists=true" >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_SHA=$(git merge-base origin/${{ github.base_ref }} HEAD)
           else
-            echo "exists=false" >> "$GITHUB_OUTPUT"
-            echo "Backend pom.xml not found yet — placeholder success."
+            BASE_SHA=$(git rev-parse HEAD~1 2>/dev/null || git rev-parse HEAD)
+          fi
+          CHANGED=$(git diff --name-only "$BASE_SHA" HEAD)
+          if echo "$CHANGED" | grep -qE '^Proyecto-Final/backend/|^\.github/workflows/backend-ci\.yml$'; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Sin cambios de backend — skip verify."
           fi
 
-      - name: Setup Java
-        if: steps.detect.outputs.exists == 'true'
+      - name: Setup Java 17
+        if: steps.detect.outputs.run == 'true'
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: temurin
           cache: maven
 
-      - name: Maven verify
-        if: steps.detect.outputs.exists == 'true'
-        working-directory: Proyecto-Final/backend
-        run: mvn -B verify
+      - name: Maven verify with coverage
+        if: steps.detect.outputs.run == 'true'
+        run: ./mvnw -B verify -Pcoverage
+
+      - name: Upload JaCoCo report
+        if: steps.detect.outputs.run == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: Proyecto-Final/backend/pqrs/target/site/jacoco/
+          if-no-files-found: ignore
