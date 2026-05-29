@@ -3,6 +3,7 @@ package co.edu.konrad.pqrs.domain.service;
 import co.edu.konrad.pqrs.domain.model.EstadoPqrs;
 import co.edu.konrad.pqrs.domain.model.Pqrs;
 import co.edu.konrad.pqrs.domain.model.TipoPqrs;
+import co.edu.konrad.pqrs.domain.port.NotificadorPort;
 import co.edu.konrad.pqrs.domain.port.PqrsRepositorio;
 import co.edu.konrad.pqrs.domain.port.TramiteRepositorio;
 import co.edu.konrad.pqrs.domain.service.ServicioTramitar.PqrsNoEncontradaException;
@@ -14,19 +15,23 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 class ServicioTramitarTest {
 
     private PqrsRepositorio pqrsRepo;
     private TramiteRepositorio tramiteRepo;
+    private NotificadorPort notificador;
     private ServicioTramitar servicio;
 
     @BeforeEach
     void setup() {
         pqrsRepo = Mockito.mock(PqrsRepositorio.class);
         tramiteRepo = Mockito.mock(TramiteRepositorio.class);
-        servicio = new ServicioTramitar(pqrsRepo, tramiteRepo);
+        notificador = Mockito.mock(NotificadorPort.class);
+        servicio = new ServicioTramitar(pqrsRepo, tramiteRepo, notificador);
         when(pqrsRepo.guardar(any())).thenAnswer(inv -> inv.getArgument(0));
     }
 
@@ -46,6 +51,7 @@ class ServicioTramitarTest {
         assertEquals(2, r.getGestorId());
         assertNull(r.getFechaCierre());
         verify(tramiteRepo).guardar(any());
+        verify(notificador).encolar(eq(3), eq(10), eq("cambio_estado"), anyString());
     }
 
     @Test

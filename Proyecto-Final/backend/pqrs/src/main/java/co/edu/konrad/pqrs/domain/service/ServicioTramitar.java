@@ -3,6 +3,7 @@ package co.edu.konrad.pqrs.domain.service;
 import co.edu.konrad.pqrs.domain.model.EstadoPqrs;
 import co.edu.konrad.pqrs.domain.model.Pqrs;
 import co.edu.konrad.pqrs.domain.model.Tramite;
+import co.edu.konrad.pqrs.domain.port.NotificadorPort;
 import co.edu.konrad.pqrs.domain.port.PqrsRepositorio;
 import co.edu.konrad.pqrs.domain.port.TramiteRepositorio;
 import co.edu.konrad.pqrs.infrastructure.auditoria.Auditable;
@@ -16,10 +17,14 @@ public class ServicioTramitar {
 
     private final PqrsRepositorio pqrsRepositorio;
     private final TramiteRepositorio tramiteRepositorio;
+    private final NotificadorPort notificador;
 
-    public ServicioTramitar(PqrsRepositorio pqrsRepositorio, TramiteRepositorio tramiteRepositorio) {
+    public ServicioTramitar(PqrsRepositorio pqrsRepositorio,
+                            TramiteRepositorio tramiteRepositorio,
+                            NotificadorPort notificador) {
         this.pqrsRepositorio = pqrsRepositorio;
         this.tramiteRepositorio = tramiteRepositorio;
+        this.notificador = notificador;
     }
 
     public static class PqrsNoEncontradaException extends RuntimeException {
@@ -46,6 +51,11 @@ public class ServicioTramitar {
         if (nuevoEstado.esCierre()) {
             pqrs.setFechaCierre(LocalDateTime.now());
         }
-        return pqrsRepositorio.guardar(pqrs);
+        Pqrs guardada = pqrsRepositorio.guardar(pqrs);
+
+        // Notifica al cliente el cambio de estado (worker async lo envia por correo).
+        notificador.encolar(guardada.getClienteId(), guardada.getId(), "cambio_estado", "pqrs-cambio-estado");
+
+        return guardada;
     }
 }
