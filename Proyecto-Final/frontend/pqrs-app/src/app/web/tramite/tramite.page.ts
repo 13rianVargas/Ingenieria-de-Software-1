@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PQRSService } from '../../core/services/pqrs.service';
-import { PQRS, TipoPQRS, EstadoPQRS, ActualizarPQRSRequest } from '../../core/models';
+import { PqrsDetalle, TipoPQRS, EstadoPQRS, ActualizarPQRSRequest } from '../../core/models';
 
 @Component({
   selector: 'app-tramite',
@@ -14,8 +14,7 @@ import { PQRS, TipoPQRS, EstadoPQRS, ActualizarPQRSRequest } from '../../core/mo
 })
 export class TramitePage implements OnInit, OnDestroy {
 
-  pqrs: PQRS | null = null;
-  tramites: any[] = [];
+  pqrs: PqrsDetalle | null = null;
   gestionForm!: FormGroup;
 
   isLoading = false;
@@ -24,7 +23,7 @@ export class TramitePage implements OnInit, OnDestroy {
   errorMessage = '';
   successMessage = '';
 
-  radicado = '';
+  pqrsId: string = '';
   private destroy$ = new Subject<void>();
 
   estadosDisponibles = [
@@ -43,11 +42,14 @@ export class TramitePage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.radicado = this.route.snapshot.paramMap.get('radicado') || '';
-    if (this.radicado) {
+    // The route param is configured as 'radicado' in dashboard-routing.module maybe? 
+    // Wait, let's just grab whatever the first param is. We changed dashboard to pass ID.
+    // The route might be mapped to :radicado in routing. Let's get 'radicado'.
+    this.pqrsId = this.route.snapshot.paramMap.get('radicado') || '';
+    if (this.pqrsId) {
       this.cargarPQRS();
     } else {
-      this.errorMessage = 'Radicado no especificado';
+      this.errorMessage = 'ID no especificado';
     }
   }
 
@@ -67,16 +69,15 @@ export class TramitePage implements OnInit, OnDestroy {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.pqrsService.obtenerPorRadicado(this.radicado)
+    this.pqrsService.obtenerPorId(this.pqrsId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
           this.isLoading = false;
-          if (response.success && response.data) {
-            this.pqrs = response.data;
-            this.cargarTramites();
+          if (response) {
+            this.pqrs = response;
           } else {
-            this.errorMessage = response.message || 'No se encontró la PQRS';
+            this.errorMessage = 'No se encontró la PQRS';
           }
         },
         error: (error) => {
@@ -86,24 +87,11 @@ export class TramitePage implements OnInit, OnDestroy {
       });
   }
 
-  cargarTramites(): void {
-    this.pqrsService.obtenerTramites(this.radicado)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (response: any) => {
-          this.tramites = response;
-        },
-        error: () => {
-          console.error('Error al cargar trámites');
-        }
-      });
-  }
-
   descargarAnexo(): void {
-    if (!this.pqrs?.anexoPdf) return;
+    if (!this.pqrs || !this.pqrs.adjuntos || this.pqrs.adjuntos.length === 0) return;
 
     this.isDownloading = true;
-    this.pqrsService.descargarAnexo(this.radicado)
+    this.pqrsService.descargarAnexo(this.pqrsId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -131,17 +119,17 @@ export class TramitePage implements OnInit, OnDestroy {
       justificacion: formValue.justificacion.trim()
     };
 
-    this.pqrsService.actualizarEstado(this.radicado, actualizar)
+    this.pqrsService.actualizarEstado(this.pqrsId, actualizar)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
           this.isSaving = false;
-          if (response.success) {
+          if (response) {
             this.successMessage = 'Estado actualizado exitosamente. Se notificará al cliente por correo.';
             this.gestionForm.reset();
             this.cargarPQRS();
           } else {
-            this.errorMessage = response.message || 'Error al actualizar el estado';
+            this.errorMessage = 'Error al actualizar el estado';
           }
         },
         error: (error) => {

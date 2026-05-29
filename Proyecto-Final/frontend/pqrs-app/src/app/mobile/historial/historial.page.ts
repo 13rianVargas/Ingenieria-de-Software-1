@@ -47,19 +47,22 @@ export class HistorialPage implements OnInit, OnDestroy {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.pqrsService.obtenerHistorial(
-      this.currentUser.id,
-      this.page,
-      this.pageSize
-    ).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (response) => {
+    this.pqrsService.obtenerHistorial()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+      next: (response: PQRS[]) => {
         this.isLoading = false;
-        if (response.success && response.data) {
-          this.pqrsList = response.data.data;
+        if (response) {
+          // Map to handle old view properties if necessary
+          this.pqrsList = response.map(r => ({
+            ...r,
+            comentarios: r.asunto,
+            fechaCreacion: r.fechaRadicado
+          }));
           this.filteredList = [...this.pqrsList];
         }
       },
-      error: (error) => {
+      error: (error: any) => {
         this.isLoading = false;
         this.errorMessage = error.message || 'Error al cargar el historial';
       }
@@ -126,7 +129,7 @@ export class HistorialPage implements OnInit, OnDestroy {
     return labels[tipo] || tipo;
   }
 
-  formatearFecha(fecha: Date | string): string {
+  formatearFecha(fecha: Date | string | undefined): string {
     if (!fecha) return '';
     const d = new Date(fecha);
     return d.toLocaleDateString('es-CO', {

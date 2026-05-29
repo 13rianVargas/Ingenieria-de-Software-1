@@ -43,18 +43,31 @@ export class DetallePage implements OnInit, OnDestroy {
     this.isLoading = true;
     this.errorMessage = '';
 
-    this.pqrsService.obtenerPorRadicado(this.radicado)
+    this.pqrsService.obtenerPorId(this.radicado)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (response) => {
+        next: (response: any) => {
           this.isLoading = false;
-          if (response.success && response.data) {
-            this.pqrs = response.data;
+          if (response) {
+            // Map PqrsDetalle to legacy PQRS format for mobile view
+            this.pqrs = {
+              id: response.id,
+              radicado: response.radicado,
+              tipo: response.tipo,
+              asunto: response.asunto,
+              estado: response.estado,
+              fechaRadicado: response.fechaRadicado,
+              fechaCierre: response.fechaCierre,
+              comentarios: response.descripcion,
+              fechaCreacion: response.fechaRadicado,
+              anexoPdf: response.adjuntos && response.adjuntos.length > 0 ? response.adjuntos[0].nombreArchivo : undefined,
+              justificacion: response.tramites && response.tramites.length > 0 ? response.tramites[response.tramites.length - 1].justificacion : undefined
+            } as PQRS;
           } else {
-            this.errorMessage = response.message || 'No se encontró la PQRS';
+            this.errorMessage = 'No se encontró la PQRS';
           }
         },
-        error: (error) => {
+        error: (error: any) => {
           this.isLoading = false;
           this.errorMessage = error.message || 'Error al cargar el detalle';
         }
@@ -111,7 +124,7 @@ export class DetallePage implements OnInit, OnDestroy {
     return labels[tipo] || tipo;
   }
 
-  formatearFecha(fecha: Date | string): string {
+  formatearFecha(fecha: Date | string | undefined): string {
     if (!fecha) return '';
     const d = new Date(fecha);
     return d.toLocaleDateString('es-CO', {

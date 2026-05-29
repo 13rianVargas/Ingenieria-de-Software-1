@@ -186,6 +186,8 @@ export class RadicarPage implements OnInit, OnDestroy {
 
     const pqrsData: CrearPQRSRequest = {
       tipo: formData.tipoPQRS,
+      asunto: formData.comentarios.trim().substring(0, 50) + (formData.comentarios.trim().length > 50 ? '...' : ''),
+      descripcion: formData.comentarios.trim(),
       comentarios: formData.comentarios.trim(),
       clienteIdentificacion: formData.numeroIdentificacion.trim(),
       clienteNombre: formData.nombreCompleto.trim(),
@@ -196,29 +198,27 @@ export class RadicarPage implements OnInit, OnDestroy {
     this.pqrsService.crearPQRS(pqrsData, this.selectedFile)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (response) => {
+        next: (response: any) => {
           this.isLoading = false;
-          if (response.success && response.data) {
-            this.successMessage = `PQRS radicada exitosamente. Número de radicado: ${response.data.radicado}`;
+          if (response && response.radicado) {
+            this.successMessage = `PQRS radicada exitosamente. Número de radicado: ${response.radicado}`;
             this.radicacionForm.reset();
             this.clearFile();
 
             setTimeout(() => {
               if (this.currentUser) {
                 this.router.navigate(['/mobile/historial']);
-              } else if (response.data?.radicado) {
-                this.router.navigate(['/mobile/login'], {
-                  queryParams: { radicado: response.data.radicado }
-                });
               } else {
-                this.router.navigate(['/mobile/login']);
+                this.router.navigate(['/mobile/login'], {
+                  queryParams: { radicado: response.radicado }
+                });
               }
             }, 3000);
           } else {
-            this.errorMessage = response.message || 'Error al radicar la PQRS';
+            this.errorMessage = 'Error al radicar la PQRS';
           }
         },
-        error: (error) => {
+        error: (error: any) => {
           this.isLoading = false;
           this.errorMessage = error.message || 'Error de conexión. Intente nuevamente.';
           console.error('Error al radicar PQRS:', error);

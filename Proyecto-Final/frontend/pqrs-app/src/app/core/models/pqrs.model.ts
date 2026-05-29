@@ -3,24 +3,6 @@
  * Define la estructura de datos para las solicitudes del cliente
  */
 
-export interface PQRS {
-  id?: string;
-  radicado: string; // Número único generado por el sistema
-  clienteId: string;
-  clienteIdentificacion: string;
-  clienteNombre: string;
-  clienteEmail: string;
-  clienteTelefono?: string;
-  tipo: TipoPQRS;
-  comentarios: string;
-  estado: EstadoPQRS;
-  justificacion?: string;
-  anexoPdf?: string; // Ruta/nombre del archivo PDF
-  fechaCreacion: Date;
-  fechaUltimaModificacion?: Date;
-  gestorAsignado?: string;
-}
-
 export enum TipoPQRS {
   PETICION = 'PETICION',
   QUEJA = 'QUEJA',
@@ -35,14 +17,68 @@ export enum EstadoPQRS {
   RECHAZADO = 'RECHAZADO'
 }
 
+export interface PQRS {
+  id: number;
+  radicado: string;
+  tipo: TipoPQRS;
+  asunto: string;
+  estado: EstadoPQRS;
+  fechaRadicado: string | Date;
+  fechaCierre?: string | Date;
+  
+  // Mobile app back-compat fields
+  comentarios?: string;
+  fechaCreacion?: string | Date;
+  anexoPdf?: string;
+  clienteId?: string | number;
+  clienteNombre?: string;
+  clienteIdentificacion?: string;
+  clienteEmail?: string;
+  justificacion?: string;
+}
+
+export interface PqrsDetalle {
+  id: number;
+  radicado: string;
+  tipo: TipoPQRS;
+  asunto: string;
+  descripcion: string;
+  estado: EstadoPQRS;
+  clienteId: number;
+  gestorId?: number;
+  fechaRadicado: string | Date;
+  fechaCierre?: string | Date;
+  tramites: TramiteItem[];
+  adjuntos: AdjuntoItem[];
+}
+
+export interface TramiteItem {
+  estadoAnterior: EstadoPQRS;
+  estadoNuevo: EstadoPQRS;
+  justificacion: string;
+  gestorId: number;
+  timestamp: string | Date;
+}
+
+export interface AdjuntoItem {
+  id: number;
+  nombreArchivo: string;
+  tipoMime: string;
+  tamanoBytes: number;
+  fechaSubida: string | Date;
+}
+
 export interface CrearPQRSRequest {
   tipo: TipoPQRS;
-  comentarios: string;
-  clienteIdentificacion: string;
-  clienteNombre: string;
-  clienteEmail: string;
+  asunto: string;
+  descripcion: string;
+
+  // Mobile app back-compat fields
+  comentarios?: string;
+  clienteIdentificacion?: string;
+  clienteNombre?: string;
+  clienteEmail?: string;
   clienteTelefono?: string;
-  anexoPdfBase64?: string; // Base64 del archivo PDF
 }
 
 export interface ActualizarPQRSRequest {

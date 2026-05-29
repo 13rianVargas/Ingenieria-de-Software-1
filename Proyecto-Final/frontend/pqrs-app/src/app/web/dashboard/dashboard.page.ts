@@ -73,9 +73,9 @@ export class DashboardPage implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$)).subscribe({
         next: (response) => {
           this.isLoading = false;
-          if (response.success && response.data) {
-            this.pqrsList = response.data.data;
-            this.totalItems = response.data.total;
+          if (response && response.contenido) {
+            this.pqrsList = response.contenido;
+            this.totalItems = response.total;
             this.totalPages = Math.ceil(this.totalItems / this.pageSize) || 1;
           }
         },
@@ -112,8 +112,8 @@ export class DashboardPage implements OnInit, OnDestroy {
     return paginas;
   }
 
-  tramitar(radicado: string): void {
-    this.router.navigate(['/web/tramite', radicado]);
+  tramitar(id: number): void {
+    this.router.navigate(['/web/tramite', id]);
   }
 
   exportarPDF(): void {
@@ -154,10 +154,6 @@ export class DashboardPage implements OnInit, OnDestroy {
       return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
     }
     return parts[0][0].toUpperCase();
-  }
-
-  getNombreCliente(pqrs: PQRS): string {
-    return `${pqrs.clienteNombre} (${pqrs.clienteIdentificacion})`;
   }
 
   getEstadoLabel(estado: EstadoPQRS): string {

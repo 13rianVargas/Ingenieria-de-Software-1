@@ -271,24 +271,37 @@ export class AuthService {
       // Error del cliente
       errorMessage = error.error.message;
     } else if (error.status) {
-      // Error del servidor
-      switch (error.status) {
-        case 401:
-          errorMessage = 'Credenciales inválidas';
-          this.clearSession();
-          this.isAuthenticated$.next(false);
-          break;
-        case 403:
-          errorMessage = 'Acceso denegado';
-          break;
-        case 404:
-          errorMessage = 'Recurso no encontrado';
-          break;
-        case 500:
-          errorMessage = 'Error del servidor';
-          break;
-        default:
-          errorMessage = error.error?.message || `Error HTTP: ${error.status}`;
+      const detalle = error.error?.detalle || error.error?.error;
+      if (typeof detalle === 'string') {
+        errorMessage = detalle;
+      } else if (typeof detalle === 'object' && detalle !== null) {
+        errorMessage = Object.values(detalle).join(', ');
+      } else {
+        // Fallback default messages
+        switch (error.status) {
+          case 401:
+            errorMessage = 'Credenciales inválidas';
+            this.clearSession();
+            this.isAuthenticated$.next(false);
+            break;
+          case 403:
+            errorMessage = 'Acceso denegado';
+            break;
+          case 404:
+            errorMessage = 'Recurso no encontrado';
+            break;
+          case 500:
+            errorMessage = 'Error del servidor';
+            break;
+          default:
+            errorMessage = `Error HTTP: ${error.status}`;
+        }
+      }
+      
+      // Specifically trigger clear session for 401 even if we got a detail message
+      if (error.status === 401) {
+        this.clearSession();
+        this.isAuthenticated$.next(false);
       }
     }
 

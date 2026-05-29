@@ -26,7 +26,7 @@
             <!-- Top Header -->
             <header class="h-16 bg-white border-b border-gray-200 flex items-center px-6 shadow-sm">
                 <h2 class="text-2xl font-bold text-gray-800">
-                    Tramitar Radicado #{{ pqrs?.radicado || radicado }}
+                    Tramitar Radicado #{{ pqrs?.radicado || pqrsId }}
                 </h2>
             </header>
 
@@ -66,26 +66,15 @@
                                 <div class="flex justify-between items-start mb-4 border-b pb-4">
                                     <div>
                                         <h3 class="text-lg font-bold text-accent mb-1">Detalle de la Solicitud</h3>
-                                        <p class="text-sm text-gray-500">Enviada el {{ formatearFecha(pqrs.fechaCreacion) }}</p>
+                                        <p class="text-sm text-gray-500">Enviada el {{ formatearFecha(pqrs.fechaRadicado) }}</p>
                                     </div>
                                     <app-status-badge [estado]="pqrs.estado"></app-status-badge>
                                 </div>
 
-                                <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                                     <div>
-                                        <p class="text-xs font-bold text-gray-500 uppercase">Cliente</p>
-                                        <p class="text-sm text-gray-900 font-medium">{{ pqrs.clienteNombre }}</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs font-bold text-gray-500 uppercase">Identificación</p>
-                                        <p class="text-sm text-gray-900 font-medium">{{ pqrs.clienteIdentificacion }}</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs font-bold text-gray-500 uppercase">Contacto</p>
-                                        <p class="text-sm text-gray-900 font-medium">
-                                            {{ pqrs.clienteEmail }}
-                                            <span *ngIf="pqrs.clienteTelefono"><br>{{ pqrs.clienteTelefono }}</span>
-                                        </p>
+                                        <p class="text-xs font-bold text-gray-500 uppercase">Asunto</p>
+                                        <p class="text-sm text-gray-900 font-medium">{{ pqrs.asunto }}</p>
                                     </div>
                                     <div>
                                         <p class="text-xs font-bold text-gray-500 uppercase">Tipo</p>
@@ -94,34 +83,34 @@
                                 </div>
 
                                 <div>
-                                    <p class="text-xs font-bold text-gray-500 uppercase mb-2">Comentarios del Cliente</p>
+                                    <p class="text-xs font-bold text-gray-500 uppercase mb-2">Descripción</p>
                                     <div class="bg-gray-50 p-4 rounded text-sm text-gray-700 leading-relaxed border border-gray-100">
-                                        {{ pqrs.comentarios }}
+                                        {{ pqrs.descripcion }}
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Timeline tramites previos -->
-                            <div class="bg-white shadow rounded p-4 mb-4" *ngIf="tramites && tramites.length > 0">
+                            <div class="bg-white shadow rounded p-4 mb-4" *ngIf="pqrs.tramites && pqrs.tramites.length > 0">
                                 <h3 class="font-semibold mb-2">Historial de Trámites</h3>
                                 <ol class="border-l pl-4">
-                                    <li *ngFor="let t of tramites" class="mb-3">
+                                    <li *ngFor="let t of pqrs.tramites" class="mb-3">
                                         <span class="font-medium">{{ t.estadoAnterior || 'NUEVO' }} → {{ t.estadoNuevo }}</span>
-                                        <span class="text-sm text-gray-500"> ({{ t.fechaTramite | date:'short' }})</span>
+                                        <span class="text-sm text-gray-500"> ({{ t.timestamp | date:'short' }})</span>
                                         <p class="text-gray-700 mt-1 text-sm bg-gray-50 p-2 rounded">{{ t.justificacion }}</p>
                                     </li>
                                 </ol>
                             </div>
 
                             <!-- Botón de Descarga (RF-09) -->
-                            <div *ngIf="pqrs.anexoPdf" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                                <h3 class="text-sm font-bold text-gray-500 uppercase mb-3">Documento Anexo</h3>
-                                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-gray-50">
+                            <div *ngIf="pqrs.adjuntos && pqrs.adjuntos.length > 0" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                                <h3 class="text-sm font-bold text-gray-500 uppercase mb-3">Documentos Anexos</h3>
+                                <div *ngFor="let adj of pqrs.adjuntos" class="flex items-center justify-between p-4 mb-3 border border-gray-200 rounded-lg bg-gray-50">
                                     <div class="flex items-center">
                                         <svg class="w-8 h-8 text-danger mr-3" fill="currentColor" viewBox="0 0 20 20" width="24" height="24"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path></svg>
                                         <div>
-                                            <p class="text-sm font-bold text-gray-800">{{ pqrs.anexoPdf }}</p>
-                                            <p class="text-xs text-gray-500">{{ isDownloading ? 'Descargando...' : 'Archivo PDF adjunto' }}</p>
+                                            <p class="text-sm font-bold text-gray-800">{{ adj.nombreArchivo }}</p>
+                                            <p class="text-xs text-gray-500">{{ (adj.tamanoBytes / 1024).toFixed(2) }} KB</p>
                                         </div>
                                     </div>
                                     <button
