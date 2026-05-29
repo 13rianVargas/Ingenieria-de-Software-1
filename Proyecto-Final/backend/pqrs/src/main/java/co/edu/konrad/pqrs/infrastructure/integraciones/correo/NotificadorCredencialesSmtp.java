@@ -17,9 +17,9 @@ public class NotificadorCredencialesSmtp implements NotificadorCredenciales {
 
     private static final Logger log = LoggerFactory.getLogger(NotificadorCredencialesSmtp.class);
 
-    private final CorreoSmtp correo;
+    private final EnviadorCorreo correo;
 
-    public NotificadorCredencialesSmtp(CorreoSmtp correo) {
+    public NotificadorCredencialesSmtp(EnviadorCorreo correo) {
         this.correo = correo;
     }
 
