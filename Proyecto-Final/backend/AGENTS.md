@@ -1,8 +1,64 @@
 # AGENTS.md — Backend (PQRS)
 
-Owner: **Juli Criollo** (`@julianhomezdev`).
+Owner: **Juli Criollo** (`@julianhomezdev`). **Implementado por Brian** (28-may, Juli C no disponible).
 
 Aplica a todo lo que viva en `Proyecto-Final/backend/`. Reglas globales en [`../AGENTS.md`](../AGENTS.md).
+
+---
+
+## ⚠️ ESTADO: IMPLEMENTADO Y DESPLEGADO (28-may-2026)
+
+Backend completo y LIVE. Las secciones de "esqueleto/propuesta" más abajo son históricas.
+
+- **URL producción**: `https://ingenieria-de-software-1-uxxj.onrender.com` (Render, free tier — hiberna 15 min idle, cold start ~50 s).
+- **Código real**: `Proyecto-Final/backend/pqrs/` (NO `backend/` directo).
+- **CU implementados**: CU-01..07 + RF-12. 35 tests JUnit, cobertura JaCoCo ~76%.
+- **Storage adjuntos**: Cloudflare R2 (S3) — funciona. Sin R2 degrada a marcador `pending-r2://` sin romper radicado.
+- **Correos**: **Gmail SMTP** (NO Resend — requería dominio). Worker async cada 30s procesa cola `notificacion`. Entrega a cualquier destinatario.
+
+### Endpoints REALES
+
+| Método | Ruta | Auth |
+|---|---|---|
+| POST | `/api/auth/login` → `{token, rol, expiraEn}` | público |
+| POST | `/api/pqrs` (multipart: `pqrs` JSON + `anexo` PDF opcional) | cliente |
+| GET | `/api/pqrs/mis?radicado=<opt>` → **array** (sin paginación) | cliente |
+| GET | `/api/pqrs` (bandeja, `?estado&tipo&page&size`) → `{contenido,total,page,size}` | gestor/admin |
+| GET | `/api/pqrs/{id}` → detalle + `tramites[]` + `adjuntos[]` | gestor/admin/cliente |
+| GET | `/api/pqrs/{id}/anexo` → PDF bytes | gestor/admin/cliente |
+| PUT | `/api/pqrs/{id}/estado` (`{estado, justificacion}`) | gestor/admin |
+| GET | `/api/pqrs/reporte?estado&tipo` → PDF | gestor/admin |
+| GET | `/swagger-ui.html`, `/v3/api-docs`, `/actuator/health` | público |
+
+Demo users (pass `Demo2026!`): `cliente@demo.com`, `gestor@demo.com`, `brian@demo.com` (admin).
+
+### Variables de entorno (Render dashboard)
+
+| Var | Uso |
+|---|---|
+| `DATABASE_URL` | Neon pooled, formato bare `postgresql://user:pass@host/db?...` (DataSourceConfig lo parsea a JDBC) |
+| `JWT_SECRET` | firma HS256 (≥32 chars) |
+| `MAIL_USERNAME` / `MAIL_PASSWORD` | Gmail + App Password (vacío = worker correos off) |
+| `MAIL_FROM_NOMBRE` | nombre remitente |
+| `R2_ENABLED` `R2_ENDPOINT` `R2_ACCESS_KEY_ID` `R2_SECRET_ACCESS_KEY` `R2_BUCKET` | Cloudflare R2 (vacío/false = LocalAlmacen marcador) |
+| `MANAGEMENT_HEALTH_MAIL_ENABLED=false` | OBLIGATORIA: MailHealthIndicator cuelga `/actuator/health` (>2min) y tumba el deploy |
+
+### Correr local
+
+```bash
+cd Proyecto-Final/backend/pqrs
+set -a && source ../.env && set +a   # .env con DATABASE_URL (+ MAIL_*/R2_* opcional)
+./mvnw spring-boot:run               # :8080
+./mvnw verify -Pcoverage             # tests + JaCoCo (target/site/jacoco/)
+```
+
+### Gotchas (resueltos — no re-romper)
+
+1. **JDK 25**: Lombok ≥1.18.42 obligatorio (1.18.32 → `TypeTag UNKNOWN`). Mockito de clases concretas → surefire `net.bytebuddy.experimental=true`.
+2. **DATABASE_URL bare**: `DataSourceConfig.java` parsea URI → JDBC + filtra `options=search_path` (Neon pooler lo rechaza). search_path pin a nivel rol.
+3. **ddl-auto=none** (+ `hibernate.hbm2ddl.auto=none`): Flyway es source of truth. `validate` falla con SERIAL (Hibernate 6 espera bigint). IDs de entidades = `Integer` (schema es SERIAL).
+4. **devtools removido**: interfería con DataSource bean custom.
+5. **Render healthCheckPath** debe ser `/actuator/health` (no `/actuator/`).
 
 ---
 

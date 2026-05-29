@@ -249,12 +249,11 @@ Los **10 TCs PF-native** sobre HU-01 Radicar PQRS están abiertos como issues #3
 | Servicio | Uso | Tier | Owner |
 |---|---|---|---|
 | **Neon** | PostgreSQL gestionado | Free (compartido 4 devs) | Brian |
-| **Render / Railway / Fly.io** | Hosting backend Spring Boot | Free | Juli C |
-| **Cloudflare R2** | Bucket S3-compatible para PDFs adjuntos | Free (10 GB) | Juli C + Brian |
-| **Resend** | API HTTP envío correos | Free (100/día) | Juli C |
-| **GitHub Actions** | CI (commitlint, frontend-ci, backend-ci, db-migrate, mobile-ci) | Free (2 000 min/mes) | Brian |
-| **GitHub Releases** | Distribución APK Android | Free | Juli A |
-| **GitHub Projects** | Kanban Fase 2 | Free | Brian |
+| **Render** | Hosting backend Spring Boot — LIVE `ingenieria-de-software-1-uxxj.onrender.com` | Free (hiberna 15min) | Brian |
+| **Cloudflare R2** | Bucket S3 `pqrs-anexos` para PDFs adjuntos | Free (10 GB) | Brian |
+| **Gmail SMTP** | Envío correos (reemplazó Resend — no requiere dominio) | Free (~500/día) | Brian |
+| **GitHub Actions** | CI (commitlint, frontend-ci, backend-ci, db-migrate) | Free (2 000 min/mes) | Brian |
+| **GitHub Projects** | Kanban Fase 2 ("PQRS Backlog") | Free | Brian |
 
 ---
 
