@@ -1,9 +1,7 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+﻿import { Component, OnInit, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { PQRSService } from '../../core/services/pqrs.service';
-import { PQRS, TipoPQRS, EstadoPQRS } from '../../core/models';
+import { PqrsDetalle } from '../../core/models';
 
 @Component({
   selector: 'app-detalle',
@@ -11,114 +9,57 @@ import { PQRS, TipoPQRS, EstadoPQRS } from '../../core/models';
   styleUrls: ['./detalle.page.scss'],
   standalone: false,
 })
-export class DetallePage implements OnInit, OnDestroy {
-
-  pqrs: PQRS | null = null;
-  isLoading = false;
-  errorMessage = '';
+export class DetallePage implements OnInit {
+  pqrs: PqrsDetalle | null = null;
+  loading = false;
+  error = false;
   isDownloading = false;
-
-  private radicado = '';
-  private destroy$ = new Subject<void>();
-
+  
   private route = inject(ActivatedRoute);
   private pqrsService = inject(PQRSService);
-  private router = inject(Router);
 
   ngOnInit() {
-    this.radicado = this.route.snapshot.paramMap.get('radicado') || '';
-    if (this.radicado) {
-      this.cargarDetalle();
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.cargarDetalle(parseInt(idParam, 10));
     } else {
-      this.errorMessage = 'Radicado no especificado';
+      this.error = true;
     }
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+  cargarDetalle(id: number) {
+    this.loading = true;
+    this.pqrsService.detalle(id).subscribe({
+      next: (data) => {
+        this.pqrs = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error cargando detalle:', err);
+        this.error = true;
+        this.loading = false;
+      }
+    });
   }
 
-  cargarDetalle(): void {
-    this.isLoading = true;
-    this.errorMessage = '';
-
-    this.pqrsService.obtenerPorRadicado(this.radicado)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (response) => {
-          this.isLoading = false;
-          if (response.success && response.data) {
-            this.pqrs = response.data;
-          } else {
-            this.errorMessage = response.message || 'No se encontró la PQRS';
-          }
-        },
-        error: (error) => {
-          this.isLoading = false;
-          this.errorMessage = error.message || 'Error al cargar el detalle';
-        }
-      });
-  }
-
-  descargarAnexo(): void {
-    if (!this.pqrs?.anexoPdf) return;
-
+  descargar() {
+    if (!this.pqrs || this.isDownloading) return;
+    
     this.isDownloading = true;
-    this.pqrsService.descargarAnexo(this.radicado)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.isDownloading = false;
-        },
-        error: () => {
-          this.isDownloading = false;
-        }
-      });
+    this.pqrsService.descargarAnexo(this.pqrs.id).subscribe({
+      next: (blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = \\-anexo.pdf\;
+        a.click();
+        URL.revokeObjectURL(url);
+        this.isDownloading = false;
+      },
+      error: (err) => {
+        console.error('Error descargando anexo:', err);
+        this.isDownloading = false;
+      }
+    });
   }
-
-  volver(): void {
-    this.router.navigate(['/mobile/historial']);
-  }
-
-  getEstadoLabel(estado: EstadoPQRS): string {
-    const labels: Record<string, string> = {
-      [EstadoPQRS.NUEVO]: 'Nuevo',
-      [EstadoPQRS.EN_PROCESO]: 'En Proceso',
-      [EstadoPQRS.RESUELTO]: 'Resuelto',
-      [EstadoPQRS.RECHAZADO]: 'Rechazado'
-    };
-    return labels[estado] || estado;
-  }
-
-  getEstadoClass(estado: EstadoPQRS): string {
-    const classes: Record<string, string> = {
-      [EstadoPQRS.NUEVO]: 'bg-blue-100 text-blue-800 border-blue-200',
-      [EstadoPQRS.EN_PROCESO]: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      [EstadoPQRS.RESUELTO]: 'bg-green-100 text-green-800 border-green-200',
-      [EstadoPQRS.RECHAZADO]: 'bg-red-100 text-red-800 border-red-200'
-    };
-    return classes[estado] || 'bg-gray-100 text-gray-800 border-gray-200';
-  }
-
-  getTipoLabel(tipo: TipoPQRS): string {
-    const labels: Record<string, string> = {
-      [TipoPQRS.PETICION]: 'Petición',
-      [TipoPQRS.QUEJA]: 'Queja',
-      [TipoPQRS.RECLAMO]: 'Reclamo',
-      [TipoPQRS.SUGERENCIA]: 'Sugerencia'
-    };
-    return labels[tipo] || tipo;
-  }
-
-  formatearFecha(fecha: Date | string): string {
-    if (!fecha) return '';
-    const d = new Date(fecha);
-    return d.toLocaleDateString('es-CO', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
-    }).replace('.', '');
-  }
-
 }
