@@ -28,6 +28,10 @@ spring:
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
+      # Timeouts cortos: Render free bloquea SMTP saliente; sin esto el envio cuelga ~138s.
+      mail.smtp.connectiontimeout: 7000
+      mail.smtp.timeout: 7000
+      mail.smtp.writetimeout: 7000
 
 server:
   port: ${PORT:8080}
