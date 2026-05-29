@@ -1,4 +1,8 @@
 ﻿export enum TipoPQRS {
+  PETICION = 'PETICION',
+  QUEJA = 'QUEJA',
+  RECLAMO = 'RECLAMO',
+  SUGERENCIA = 'SUGERENCIA',
   peticion = 'peticion',
   queja = 'queja',
   reclamo = 'reclamo',
@@ -10,6 +14,38 @@ export enum EstadoPQRS {
   EN_PROCESO = 'EN_PROCESO',
   RESUELTO = 'RESUELTO',
   RECHAZADO = 'RECHAZADO'
+}
+
+export interface PQRS {
+  id?: string;
+  radicado: string;
+  clienteId: string;
+  clienteIdentificacion: string;
+  clienteNombre: string;
+  clienteEmail: string;
+  clienteTelefono?: string;
+  tipo: TipoPQRS;
+  comentarios: string;
+  estado: EstadoPQRS;
+  justificacion?: string;
+  anexoPdf?: string;
+  fechaCreacion: Date;
+  fechaUltimaModificacion?: Date;
+  gestorAsignado?: string;
+}
+
+export interface PQRSFilter {
+  tipo?: TipoPQRS;
+  estado?: EstadoPQRS;
+  radicado?: string;
+  clienteIdentificacion?: string;
+}
+
+export interface PQRSResponse {
+  data: PQRS[];
+  total: number;
+  page?: number;
+  pageSize?: number;
 }
 
 export interface PqrsResumen {

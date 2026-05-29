@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -32,7 +32,7 @@ export class LoginPage implements OnInit, OnDestroy {
   ngOnInit() {
     const radicado = this.route.snapshot.queryParamMap.get('radicado');
     if (radicado) {
-      this.successMessage = `PQRS radicada exitosamente. Número de radicado: ${radicado}. Revisa tu correo para las credenciales de acceso.`;
+      this.successMessage = 'PQRS radicada exitosamente. Número de radicado: ' + radicado + '. Revisa tu correo para las credenciales de acceso.';
     }
 
     if (this.authService.hasValidToken()) {
@@ -152,16 +152,16 @@ export class LoginPage implements OnInit, OnDestroy {
     if (!field || !field.errors || !field.touched) return '';
 
     if (field.errors['required']) {
-      return `${this.getFieldLabel(fieldName)} es requerido`;
+      return this.getFieldLabel(fieldName) + ' es requerido';
     }
     if (field.errors['email']) {
       return 'Correo electrónico inválido';
     }
     if (field.errors['minlength']) {
-      return `${this.getFieldLabel(fieldName)} debe tener al menos ${field.errors['minlength'].requiredLength} caracteres`;
+      return this.getFieldLabel(fieldName) + ' debe tener al menos ' + field.errors['minlength'].requiredLength + ' caracteres';
     }
     if (field.errors['maxlength']) {
-      return `${this.getFieldLabel(fieldName)} no puede exceder ${field.errors['maxlength'].requiredLength} caracteres`;
+      return this.getFieldLabel(fieldName) + ' no puede exceder ' + field.errors['maxlength'].requiredLength + ' caracteres';
     }
 
     return 'Campo inválido';
@@ -178,26 +178,3 @@ export class LoginPage implements OnInit, OnDestroy {
     return labels[fieldName] || fieldName;
   }
 }
-    if (field.errors['minlength']) {
-      return `${this.getFieldLabel(fieldName)} debe tener al menos ${field.errors['minlength'].requiredLength} caracteres`;
-    }
-    if (field.errors['maxlength']) {
-      return `${this.getFieldLabel(fieldName)} no puede exceder ${field.errors['maxlength'].requiredLength} caracteres`;
-    }
-
-    return 'Campo inválido';
-  }
-
-  /**
-   * Obtiene la etiqueta legible para un campo
-   */
-  private getFieldLabel(fieldName: string): string {
-    const labels: { [key: string]: string } = {
-      identificacion: 'Número de identificación',
-      password: 'Contraseña'
-    };
-    return labels[fieldName] || fieldName;
-  }
-}
-
-

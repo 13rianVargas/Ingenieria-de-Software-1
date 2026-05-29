@@ -69,13 +69,12 @@ export class RadicarPage {
       descripcion: this.radicacionForm.value.descripcion.trim()
     };
 
-    // Usamos any para file porque el mtodo permite null/undefined
     this.pqrsService.crearPQRS(pqrsData, this.archivo || undefined).subscribe({
       next: async (response) => {
         this.isLoading = false;
         
         const toast = await this.toastController.create({
-          message: \PQRS radicada exitosamente: \\,
+          message: 'PQRS radicada exitosamente: ' + response.radicado,
           duration: 3000,
           color: 'success',
           position: 'top'

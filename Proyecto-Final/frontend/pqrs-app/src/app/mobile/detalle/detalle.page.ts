@@ -51,7 +51,7 @@ export class DetallePage implements OnInit {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = \\-anexo.pdf\;
+        a.download = this.pqrs!.radicado + '-anexo.pdf';
         a.click();
         URL.revokeObjectURL(url);
         this.isDownloading = false;
