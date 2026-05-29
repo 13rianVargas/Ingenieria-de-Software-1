@@ -88,6 +88,19 @@ export interface CrearPQRSRequest {
   descripcion: string;
 }
 
+/** Radicacion anonima: incluye datos del cliente para el registro automatico. */
+export interface CrearPQRSAnonimoRequest {
+  tipoDoc: string;   // CC | CE | TI | PP
+  numDoc: string;
+  nombres: string;
+  apellidos: string;
+  email: string;
+  telefono?: string;
+  tipo: string;      // peticion | queja | reclamo | sugerencia
+  asunto: string;
+  descripcion: string;
+}
+
 export interface ActualizarPQRSRequest {
   estado: string;
   justificacion: string;

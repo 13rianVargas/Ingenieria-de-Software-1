@@ -1,9 +1,10 @@
-﻿import { Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { PQRSService } from '../../core/services/pqrs.service';
-import { CrearPQRSRequest } from '../../core/models';
+import { AuthService } from '../../core/services/auth.service';
+import { CrearPQRSRequest, CrearPQRSAnonimoRequest } from '../../core/models';
 
 @Component({
   selector: 'app-radicar',
@@ -16,18 +17,34 @@ export class RadicarPage {
   isLoading = false;
   errorMessage = '';
   archivo: File | null = null;
+  esAnonimo = false;
 
   private formBuilder = inject(FormBuilder);
   private pqrsService = inject(PQRSService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   private toastController = inject(ToastController);
 
   constructor() {
-    this.radicacionForm = this.formBuilder.group({
+    // Sin sesion -> radicacion anonima: pedimos tambien los datos del cliente.
+    this.esAnonimo = !this.authService.hasValidToken();
+
+    const grupo: Record<string, unknown> = {
       tipo: ['', [Validators.required]],
       asunto: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200)]],
       descripcion: ['', [Validators.required, Validators.minLength(20)]]
-    });
+    };
+
+    if (this.esAnonimo) {
+      grupo['tipoDoc'] = ['CC', [Validators.required]];
+      grupo['numDoc'] = ['', [Validators.required, Validators.maxLength(20)]];
+      grupo['nombres'] = ['', [Validators.required, Validators.maxLength(100)]];
+      grupo['apellidos'] = ['', [Validators.required, Validators.maxLength(100)]];
+      grupo['email'] = ['', [Validators.required, Validators.email]];
+      grupo['telefono'] = ['', [Validators.maxLength(20)]];
+    }
+
+    this.radicacionForm = this.formBuilder.group(grupo);
   }
 
   onArchivo(ev: Event) {
@@ -63,33 +80,59 @@ export class RadicarPage {
     this.isLoading = true;
     this.errorMessage = '';
 
-    const pqrsData: CrearPQRSRequest = {
-      tipo: this.radicacionForm.value.tipo,
-      asunto: this.radicacionForm.value.asunto.trim(),
-      descripcion: this.radicacionForm.value.descripcion.trim()
-    };
+    const peticion$ = this.esAnonimo
+      ? this.pqrsService.crearPQRSAnonimo(this.construirPayloadAnonimo(), this.archivo || undefined)
+      : this.pqrsService.crearPQRS(this.construirPayload(), this.archivo || undefined);
 
-    this.pqrsService.crearPQRS(pqrsData, this.archivo || undefined).subscribe({
+    peticion$.subscribe({
       next: async (response) => {
         this.isLoading = false;
-        
+        const mensaje = this.esAnonimo
+          ? 'PQRS radicada: ' + response.radicado + '. Te enviamos las credenciales al correo.'
+          : 'PQRS radicada exitosamente: ' + response.radicado;
         const toast = await this.toastController.create({
-          message: 'PQRS radicada exitosamente: ' + response.radicado,
-          duration: 3000,
+          message: mensaje,
+          duration: 4000,
           color: 'success',
           position: 'top'
         });
         await toast.present();
-        
+
         this.radicacionForm.reset();
         this.archivo = null;
-        this.router.navigate(['/mobile/historial']);
+        // Anonimo va a login (a usar sus nuevas credenciales); con sesion al historial.
+        this.router.navigate([this.esAnonimo ? '/mobile/login' : '/mobile/historial'],
+          this.esAnonimo ? { queryParams: { radicado: response.radicado } } : {});
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.error?.message || 'Error al radicar la PQRS.';
+        this.errorMessage = err.error?.detalle || err.error?.message || 'Error al radicar la PQRS.';
         console.error('Error radicando PQRS:', err);
       }
     });
+  }
+
+  private construirPayload(): CrearPQRSRequest {
+    const v = this.radicacionForm.value;
+    return {
+      tipo: v.tipo,
+      asunto: v.asunto.trim(),
+      descripcion: v.descripcion.trim()
+    };
+  }
+
+  private construirPayloadAnonimo(): CrearPQRSAnonimoRequest {
+    const v = this.radicacionForm.value;
+    return {
+      tipoDoc: v.tipoDoc,
+      numDoc: v.numDoc.trim(),
+      nombres: v.nombres.trim(),
+      apellidos: v.apellidos.trim(),
+      email: v.email.trim(),
+      telefono: v.telefono?.trim() || undefined,
+      tipo: v.tipo,
+      asunto: v.asunto.trim(),
+      descripcion: v.descripcion.trim()
+    };
   }
 }

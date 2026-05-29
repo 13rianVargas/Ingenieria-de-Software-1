@@ -13,7 +13,45 @@
   </div>
 
   <form [formGroup]="radicacionForm" (ngSubmit)="onSubmit()">
-    
+
+    <div *ngIf="esAnonimo" class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+      Radicas sin cuenta. Con tus datos crearemos un acceso y te enviaremos las credenciales al correo.
+    </div>
+
+    <ng-container *ngIf="esAnonimo">
+      <ion-item class="mb-4 rounded-lg border">
+        <ion-select formControlName="tipoDoc" label="Tipo de documento" label-placement="floating">
+          <ion-select-option value="CC">Cédula de ciudadanía</ion-select-option>
+          <ion-select-option value="CE">Cédula de extranjería</ion-select-option>
+          <ion-select-option value="TI">Tarjeta de identidad</ion-select-option>
+          <ion-select-option value="PP">Pasaporte</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item class="mb-4 rounded-lg border">
+        <ion-input formControlName="numDoc" label="Número de documento" label-placement="floating"></ion-input>
+      </ion-item>
+
+      <ion-item class="mb-4 rounded-lg border">
+        <ion-input formControlName="nombres" label="Nombres" label-placement="floating"></ion-input>
+      </ion-item>
+
+      <ion-item class="mb-4 rounded-lg border">
+        <ion-input formControlName="apellidos" label="Apellidos" label-placement="floating"></ion-input>
+      </ion-item>
+
+      <ion-item class="mb-4 rounded-lg border">
+        <ion-input type="email" formControlName="email" label="Correo electrónico" label-placement="floating" placeholder="tucorreo@ejemplo.com"></ion-input>
+      </ion-item>
+      <div *ngIf="radicacionForm.get('email')?.invalid && radicacionForm.get('email')?.touched" class="text-red-600 text-sm mb-4 px-2">
+        Ingresa un correo válido (ahí recibirás tus credenciales y el radicado).
+      </div>
+
+      <ion-item class="mb-4 rounded-lg border">
+        <ion-input formControlName="telefono" label="Teléfono (opcional)" label-placement="floating"></ion-input>
+      </ion-item>
+    </ng-container>
+
     <ion-item class="mb-4 rounded-lg border">
       <ion-select formControlName="tipo" label="Tipo de Radicado" label-placement="floating">
         <ion-select-option value="peticion">Petición</ion-select-option>
