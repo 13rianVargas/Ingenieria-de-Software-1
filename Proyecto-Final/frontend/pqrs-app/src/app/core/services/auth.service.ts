@@ -16,7 +16,7 @@ import {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl = environment.apiBaseUrl;
   private tokenKey = 'pqrs_token';
   private userKey = 'pqrs_user';
   private currentUserSubject = new BehaviorSubject<User | null>(this.getUserFromStorage());

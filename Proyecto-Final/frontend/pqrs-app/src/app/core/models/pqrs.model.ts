@@ -1,31 +1,12 @@
-/**
- * Modelo de PQRS (Peticiones, Quejas, Reclamos, Sugerencias)
- * Define la estructura de datos para las solicitudes del cliente
- */
-
-export interface PQRS {
-  id?: string;
-  radicado: string; // Número único generado por el sistema
-  clienteId: string;
-  clienteIdentificacion: string;
-  clienteNombre: string;
-  clienteEmail: string;
-  clienteTelefono?: string;
-  tipo: TipoPQRS;
-  comentarios: string;
-  estado: EstadoPQRS;
-  justificacion?: string;
-  anexoPdf?: string; // Ruta/nombre del archivo PDF
-  fechaCreacion: Date;
-  fechaUltimaModificacion?: Date;
-  gestorAsignado?: string;
-}
-
-export enum TipoPQRS {
+﻿export enum TipoPQRS {
   PETICION = 'PETICION',
   QUEJA = 'QUEJA',
   RECLAMO = 'RECLAMO',
-  SUGERENCIA = 'SUGERENCIA'
+  SUGERENCIA = 'SUGERENCIA',
+  peticion = 'peticion',
+  queja = 'queja',
+  reclamo = 'reclamo',
+  sugerencia = 'sugerencia'
 }
 
 export enum EstadoPQRS {
@@ -35,19 +16,22 @@ export enum EstadoPQRS {
   RECHAZADO = 'RECHAZADO'
 }
 
-export interface CrearPQRSRequest {
-  tipo: TipoPQRS;
-  comentarios: string;
+export interface PQRS {
+  id?: string;
+  radicado: string;
+  clienteId: string;
   clienteIdentificacion: string;
   clienteNombre: string;
   clienteEmail: string;
   clienteTelefono?: string;
-  anexoPdfBase64?: string; // Base64 del archivo PDF
-}
-
-export interface ActualizarPQRSRequest {
+  tipo: TipoPQRS;
+  comentarios: string;
   estado: EstadoPQRS;
-  justificacion: string;
+  justificacion?: string;
+  anexoPdf?: string;
+  fechaCreacion: Date;
+  fechaUltimaModificacion?: Date;
+  gestorAsignado?: string;
 }
 
 export interface PQRSFilter {
@@ -64,9 +48,47 @@ export interface PQRSResponse {
   pageSize?: number;
 }
 
-export interface ReportePQRS {
-  radicados: PQRS[];
-  generadoEn: Date;
-  generadoPor: string;
-  filtrosAplicados?: PQRSFilter;
+export interface PqrsResumen {
+  id: number;
+  radicado: string;
+  tipo: string;
+  asunto: string;
+  estado: string;
+  fechaRadicado: Date;
+  fechaCierre?: Date;
+}
+
+export interface PqrsDetalle extends PqrsResumen {
+  descripcion: string;
+  clienteId: number;
+  gestorId?: number;
+  tramites: Tramite[];
+  adjuntos: Adjunto[];
+}
+
+export interface Tramite {
+  estadoAnterior: string;
+  estadoNuevo: string;
+  justificacion: string;
+  gestorId: number;
+  timestamp: Date;
+}
+
+export interface Adjunto {
+  id: number;
+  nombreArchivo: string;
+  tipoMime: string;
+  tamanoBytes: number;
+  fechaSubida: Date;
+}
+
+export interface CrearPQRSRequest {
+  tipo: string;
+  asunto: string;
+  descripcion: string;
+}
+
+export interface ActualizarPQRSRequest {
+  estado: string;
+  justificacion: string;
 }

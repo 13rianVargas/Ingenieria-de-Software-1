@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -32,7 +32,7 @@ export class LoginPage implements OnInit, OnDestroy {
   ngOnInit() {
     const radicado = this.route.snapshot.queryParamMap.get('radicado');
     if (radicado) {
-      this.successMessage = `PQRS radicada exitosamente. Número de radicado: ${radicado}. Revisa tu correo para las credenciales de acceso.`;
+      this.successMessage = 'PQRS radicada exitosamente. Número de radicado: ' + radicado + '. Revisa tu correo para las credenciales de acceso.';
     }
 
     if (this.authService.hasValidToken()) {
@@ -50,13 +50,11 @@ export class LoginPage implements OnInit, OnDestroy {
    */
   private initializeForm(): void {
     this.loginForm = this.formBuilder.group({
-      identificacion: ['', [
+      email: ['', [
         Validators.required,
-        Validators.pattern(/^[0-9]{8,12}$/), // Solo números, 8-12 dígitos
-        Validators.minLength(8),
-        Validators.maxLength(12)
+        Validators.email
       ]],
-      password: ['', [
+      clave: ['', [
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(50)
@@ -77,8 +75,8 @@ export class LoginPage implements OnInit, OnDestroy {
     this.errorMessage = '';
 
     const credentials: LoginCredentials = {
-      identificacion: this.loginForm.value.identificacion.trim(),
-      password: this.loginForm.value.password
+      email: this.loginForm.value.email.trim(),
+      clave: this.loginForm.value.clave
     };
 
     this.authService.login(credentials)
@@ -135,8 +133,8 @@ export class LoginPage implements OnInit, OnDestroy {
   /**
    * Getters para facilitar el acceso a los controles del formulario
    */
-  get identificacion() { return this.loginForm.get('identificacion'); }
-  get password() { return this.loginForm.get('password'); }
+  get email() { return this.loginForm.get('email'); }
+  get clave() { return this.loginForm.get('clave'); }
 
   /**
    * Verifica si un campo tiene errores y ha sido tocado
@@ -154,16 +152,16 @@ export class LoginPage implements OnInit, OnDestroy {
     if (!field || !field.errors || !field.touched) return '';
 
     if (field.errors['required']) {
-      return `${this.getFieldLabel(fieldName)} es requerido`;
+      return this.getFieldLabel(fieldName) + ' es requerido';
     }
-    if (field.errors['pattern']) {
-      return 'Solo se permiten números';
+    if (field.errors['email']) {
+      return 'Correo electrónico inválido';
     }
     if (field.errors['minlength']) {
-      return `${this.getFieldLabel(fieldName)} debe tener al menos ${field.errors['minlength'].requiredLength} caracteres`;
+      return this.getFieldLabel(fieldName) + ' debe tener al menos ' + field.errors['minlength'].requiredLength + ' caracteres';
     }
     if (field.errors['maxlength']) {
-      return `${this.getFieldLabel(fieldName)} no puede exceder ${field.errors['maxlength'].requiredLength} caracteres`;
+      return this.getFieldLabel(fieldName) + ' no puede exceder ' + field.errors['maxlength'].requiredLength + ' caracteres';
     }
 
     return 'Campo inválido';
@@ -174,11 +172,9 @@ export class LoginPage implements OnInit, OnDestroy {
    */
   private getFieldLabel(fieldName: string): string {
     const labels: { [key: string]: string } = {
-      identificacion: 'Número de identificación',
-      password: 'Contraseña'
+      email: 'Correo electrónico',
+      clave: 'Contraseña'
     };
     return labels[fieldName] || fieldName;
   }
 }
-
-

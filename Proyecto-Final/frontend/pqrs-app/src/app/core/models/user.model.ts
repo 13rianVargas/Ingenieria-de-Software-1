@@ -22,8 +22,8 @@ export enum UserRole {
 }
 
 export interface LoginCredentials {
-  identificacion: string;
-  password: string;
+  email: string;
+  clave: string;
 }
 
 export interface RegistroCliente {

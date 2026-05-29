@@ -3,6 +3,12 @@
 packages:
   - .
 
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  lmdb: true
+  msgpackr-extract: true
+
 # Dependencias nativas autorizadas a correr build scripts
 # Doc: https://pnpm.io/settings#onlybuiltdependencies
 onlyBuiltDependencies:

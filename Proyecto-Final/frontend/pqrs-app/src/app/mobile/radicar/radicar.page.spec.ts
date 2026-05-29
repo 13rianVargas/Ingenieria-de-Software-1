@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IonicModule, NavController, ToastController } from '@ionic/angular';
 import { of } from 'rxjs';
 import { RadicarPage } from './radicar.page';
 import { AuthService } from '../../core/services/auth.service';
@@ -16,22 +17,37 @@ describe('RadicarPage', () => {
   };
 
   const pqrsServiceMock = {
-    crearPQRS: jasmine.createSpy('crearPQRS').and.returnValue(of({ success: true, data: { radicado: '12345' } })),
-    validarPDF: jasmine.createSpy('validarPDF').and.returnValue(true)
+    crearPQRS: jasmine.createSpy('crearPQRS').and.returnValue(
+      of({ radicado: '12345', fechaRadicado: new Date(), estado: 'NUEVO' })
+    )
   };
 
   const routerMock = {
-    navigate: jasmine.createSpy('navigate')
+    navigate: jasmine.createSpy('navigate'),
+    events: of(),
+    url: '/mobile/radicar'
+  };
+
+  const toastControllerMock = {
+    create: jasmine.createSpy('create').and.returnValue(Promise.resolve({ present: jasmine.createSpy('present') }))
+  };
+
+  const navControllerMock = {
+    navigateForward: jasmine.createSpy('navigateForward'),
+    navigateBack: jasmine.createSpy('navigateBack'),
+    navigateRoot: jasmine.createSpy('navigateRoot')
   };
 
   beforeEach(async () => {
     fixture = TestBed.configureTestingModule({
       declarations: [RadicarPage],
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, IonicModule],
       providers: [
         { provide: AuthService, useValue: authServiceMock },
         { provide: PQRSService, useValue: pqrsServiceMock },
-        { provide: Router, useValue: routerMock }
+        { provide: Router, useValue: routerMock },
+        { provide: ToastController, useValue: toastControllerMock },
+        { provide: NavController, useValue: navControllerMock }
       ]
     }).createComponent(RadicarPage);
     component = fixture.componentInstance;
