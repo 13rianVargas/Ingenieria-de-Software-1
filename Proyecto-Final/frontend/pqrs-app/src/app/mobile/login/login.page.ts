@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -32,7 +32,7 @@ export class LoginPage implements OnInit, OnDestroy {
   ngOnInit() {
     const radicado = this.route.snapshot.queryParamMap.get('radicado');
     if (radicado) {
-      this.successMessage = `PQRS radicada exitosamente. Número de radicado: ${radicado}. Revisa tu correo para las credenciales de acceso.`;
+      this.successMessage = 'PQRS radicada exitosamente. Número de radicado: ' + radicado + '. Revisa tu correo para las credenciales de acceso.';
     }
 
     if (this.authService.hasValidToken()) {
@@ -84,11 +84,11 @@ export class LoginPage implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           this.isLoading = false;
-          if (response && response.token) {
-            console.log('Login exitoso, rol:', response.rol);
+          if (response.success) {
+            console.log('Login exitoso:', response.data?.user?.nombre);
             this.redirectBasedOnRole();
           } else {
-            this.errorMessage = 'Respuesta inesperada del servidor';
+            this.errorMessage = response.message || 'Error desconocido';
           }
         },
         error: (error) => {
@@ -152,16 +152,16 @@ export class LoginPage implements OnInit, OnDestroy {
     if (!field || !field.errors || !field.touched) return '';
 
     if (field.errors['required']) {
-      return `${this.getFieldLabel(fieldName)} es requerido`;
+      return this.getFieldLabel(fieldName) + ' es requerido';
     }
     if (field.errors['email']) {
-      return 'Formato de correo inválido';
+      return 'Correo electrónico inválido';
     }
     if (field.errors['minlength']) {
-      return `${this.getFieldLabel(fieldName)} debe tener al menos ${field.errors['minlength'].requiredLength} caracteres`;
+      return this.getFieldLabel(fieldName) + ' debe tener al menos ' + field.errors['minlength'].requiredLength + ' caracteres';
     }
     if (field.errors['maxlength']) {
-      return `${this.getFieldLabel(fieldName)} no puede exceder ${field.errors['maxlength'].requiredLength} caracteres`;
+      return this.getFieldLabel(fieldName) + ' no puede exceder ' + field.errors['maxlength'].requiredLength + ' caracteres';
     }
 
     return 'Campo inválido';
@@ -172,11 +172,9 @@ export class LoginPage implements OnInit, OnDestroy {
    */
   private getFieldLabel(fieldName: string): string {
     const labels: { [key: string]: string } = {
-      email: 'Correo Electrónico',
+      email: 'Correo electrónico',
       clave: 'Contraseña'
     };
     return labels[fieldName] || fieldName;
   }
 }
-
-

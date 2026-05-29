@@ -22,11 +22,11 @@ Sin estos 3 documentos leídos, **no toques código**.
 
 | Plan | Owner | Estado | Branch | Descripción corta |
 |---|---|---|---|---|
-| [`PLAN-DB.md`](./PLAN-DB.md) | Brian | 🟢 Listo para ejecutar | `feature/database-seeds` | Cargar seeds, V6 si aplica, health checks. |
-| [`PLAN-BACK.md`](./PLAN-BACK.md) | Juli Criollo | 🔴 Bloquea web/mobile | `feature/backend-core` | Fix scaffold roto + CU-01..07 + RF-12 + deploy. |
-| [`PLAN-WEB.md`](./PLAN-WEB.md) | Santi | 🟡 Avanzado (~70 %) | `feature/frontend-web-core` | Completar tramite + reportes + shared components + build prod. |
-| [`PLAN-MOBILE.md`](./PLAN-MOBILE.md) | Juli Avila | 🟡 Avanzado (~60 %) | `feature/frontend-mobile-core` | Capacitor + historial + detalle + build APK + GH Release. |
-| [`PLAN-CICD.md`](./PLAN-CICD.md) | Brian | 🟢 Listo para ejecutar | `feature/cicd-improvements` | backend-ci real + mobile-ci + deploy + Kanban. |
+| [`PLAN-DB.md`](./PLAN-DB.md) | Brian | ✅ Completado | merged | Seeds + V6 secuencia radicado + health checks. |
+| [`PLAN-BACK.md`](./PLAN-BACK.md) | Brian (impl) | ✅ Completado + LIVE | merged | CU-01..07 + RF-12. Render: `ingenieria-de-software-1-uxxj.onrender.com`. R2 + Gmail SMTP. 76% cobertura. |
+| [`PLAN-WEB.md`](./PLAN-WEB.md) | Santi | 🟡 En progreso | `feature/frontend-web-core` | Completar tramite + reportes + shared + build prod. Backend LIVE disponible. |
+| [`PLAN-MOBILE.md`](./PLAN-MOBILE.md) | Juli Avila | 🟡 En progreso (rescoped) | `feature/frontend-mobile-core` | **Web localhost (sin APK)**. Login + radicar + historial + detalle vs Render. |
+| [`PLAN-CICD.md`](./PLAN-CICD.md) | Brian | ✅ Casi completo | merged | backend-ci activo + Kanban + Dependabot + templates. mobile-ci cancelado (redundante). |
 
 **Convención de estado**: 🔴 bloqueado / bloquea | 🟡 en progreso | 🟢 listo | ✅ completado.
 
@@ -136,11 +136,11 @@ Para cada CU del MVP (CU-01..CU-07):
 
 | Plan | Última actualización | Tareas completadas | Bloqueos actuales |
 |---|---|---|---|
-| PLAN-DB | (pendiente Brian) | 0 / 4 | — |
-| PLAN-BACK | (pendiente Juli C) | 0 / 10 | scaffold roto, sin pom dependencies completas |
-| PLAN-WEB | (pendiente Santi) | 0 / 7 | espera contrato endpoints backend |
-| PLAN-MOBILE | (pendiente Juli A) | 0 / 9 | Capacitor no instalado |
-| PLAN-CICD | (pendiente Brian) | 0 / 7 | backend-ci placeholder hasta que exista código |
+| PLAN-DB | 28-may | 7 / 7 ✅ | — |
+| PLAN-BACK | 28-may | 10 / 10 ✅ + LIVE | — (Brian implementó; Juli C no disponible) |
+| PLAN-WEB | (Santi) | en progreso | ninguno — backend LIVE disponible |
+| PLAN-MOBILE | 28-may (rescoped) | en progreso | ninguno — web localhost vs Render, sin APK |
+| PLAN-CICD | 28-may | 6 / 7 ✅ | mobile-ci cancelado (redundante con frontend-ci) |
 
 ---
 

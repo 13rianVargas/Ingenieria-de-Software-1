@@ -4,9 +4,23 @@
  */
 
 export interface AuthResponse {
-  token: string;
-  rol: string;
+  // Forma plana del backend (consumida por el login web).
+  token?: string;
+  rol?: string;
   expiraEn?: string;
+  // Forma envuelta que arma auth.service.mapLoginResponse (consumida por el login mobile).
+  success?: boolean;
+  message?: string;
+  data?: {
+    user: {
+      id: string;
+      identificacion: string;
+      nombre: string;
+      rol: string;
+    };
+    token: string;
+    expiresIn: number;
+  };
 }
 
 export interface TokenPayload {

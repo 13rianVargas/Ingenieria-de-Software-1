@@ -81,6 +81,30 @@ export interface CrearPQRSRequest {
   clienteTelefono?: string;
 }
 
+/** Resumen de PQRS para listados (lo que devuelve GET /pqrs/mis). */
+export interface PqrsResumen {
+  id: number;
+  radicado: string;
+  tipo: TipoPQRS;
+  asunto: string;
+  estado: EstadoPQRS;
+  fechaRadicado: string | Date;
+  fechaCierre?: string | Date;
+}
+
+/** Radicacion anonima (mobile): incluye datos del cliente para el registro automatico. */
+export interface CrearPQRSAnonimoRequest {
+  tipoDoc: string;   // CC | CE | TI | PP
+  numDoc: string;
+  nombres: string;
+  apellidos: string;
+  email: string;
+  telefono?: string;
+  tipo: string;      // peticion | queja | reclamo | sugerencia
+  asunto: string;
+  descripcion: string;
+}
+
 export interface ActualizarPQRSRequest {
   estado: EstadoPQRS;
   justificacion: string;

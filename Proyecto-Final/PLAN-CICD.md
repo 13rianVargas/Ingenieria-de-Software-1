@@ -533,15 +533,15 @@ Settings → Security & analysis → Dependency alerts: Enable. Code scanning: E
 
 ## 5. Definition of Done
 
-- [ ] T-5.1 backend-ci ejecuta maven verify real con JaCoCo + Testcontainers.
-- [ ] T-5.2 mobile-ci workflow operativo.
-- [ ] T-5.3 `DEPLOY.md` documentado + Render configurado.
-- [ ] T-5.4 GitHub Project Kanban Fase 2 con ~30 issues T-X.Y.
-- [ ] T-5.5 templates feature-request + user-story creados.
-- [ ] T-5.6 PR template actualizado con checklist Fase 2.
-- [ ] T-5.7 Dependabot config + alerts habilitados.
-- [ ] Branch protection actualizada con nuevos check names si aplica.
-- [ ] PR `feature/cicd-improvements` mergeado a `develop`.
+- [x] T-5.1 backend-ci ejecuta `mvnw verify -Pcoverage` (JaCoCo). Sin Testcontainers (tests unit, sin Docker). PR #100.
+- [~] T-5.2 mobile-ci **CANCELADO**: mobile se entrega como web; `frontend-ci` (lint+test+ng build) ya cubre el bundle Angular. Issue #87 cerrado not-planned.
+- [x] T-5.3 `DEPLOY.md` documentado + Render configurado + LIVE.
+- [x] T-5.4 GitHub Project Kanban Fase 2 ("PQRS Backlog", público) con 40 issues.
+- [x] T-5.5 templates feature-request + user-story creados.
+- [x] T-5.6 PR template actualizado con checklist Fase 2.
+- [x] T-5.7 Dependabot config.
+- [ ] Branch protection: sumar `maven verify` (backend-ci) como required check si se desea.
+- [x] PRs CICD mergeados a `develop`.
 
 ---
 

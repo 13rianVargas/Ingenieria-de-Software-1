@@ -3,12 +3,14 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { 
-  PQRS, 
+import {
+  PQRS,
   PqrsDetalle,
-  CrearPQRSRequest, 
-  ActualizarPQRSRequest, 
-  PQRSFilter 
+  PqrsResumen,
+  CrearPQRSRequest,
+  CrearPQRSAnonimoRequest,
+  ActualizarPQRSRequest,
+  PQRSFilter
 } from '../models';
 import { PaginaResponse } from '../models/api-response.model';
 
@@ -32,6 +34,39 @@ export class PQRSService {
       `${this.apiUrl}/pqrs`,
       formData
     ).pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  /**
+   * Radicacion anonima (sin login, mobile): el payload incluye los datos del cliente.
+   * El backend crea la cuenta si no existe y envia credenciales por correo.
+   */
+  crearPQRSAnonimo(payload: CrearPQRSAnonimoRequest, archivo?: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('pqrs', new Blob([JSON.stringify(payload)], { type: 'application/json' }));
+    if (archivo) {
+      formData.append('anexo', archivo, archivo.name);
+    }
+    return this.http.post<any>(`${this.apiUrl}/pqrs/anonimo`, formData).pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  /** Mobile: PQRS propias del cliente autenticado. Filtro opcional por radicado. */
+  misRadicados(radicado?: string): Observable<PqrsResumen[]> {
+    let params = new HttpParams();
+    if (radicado) {
+      params = params.set('radicado', radicado);
+    }
+    return this.http.get<PqrsResumen[]>(`${this.apiUrl}/pqrs/mis`, { params }).pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  /** Mobile: detalle de una PQRS por id (cabecera + timeline + adjuntos). */
+  detalle(id: number | string): Observable<PqrsDetalle> {
+    return this.http.get<PqrsDetalle>(`${this.apiUrl}/pqrs/${id}`).pipe(
       catchError(error => this.handleError(error))
     );
   }

@@ -1,5 +1,14 @@
 # PLAN-BACK — Backend Spring Boot (Fase 2)
 
+> ## ✅ COMPLETADO Y DESPLEGADO (28-may-2026)
+> Implementado por **Brian** (Juli C no disponible). LIVE: `https://ingenieria-de-software-1-uxxj.onrender.com`.
+> CU-01..07 + RF-12. 35 tests, 76% cobertura. Código en `backend/pqrs/`.
+> **Cambios vs plan original**:
+> - **T-2.9 usa Gmail SMTP**, no Resend (Resend exigía dominio verificado; SMTP entrega a cualquiera sin dominio).
+> - **T-2.4** anon path no implementado (solo autenticado); radicación anónima = follow-up.
+> - **+ extras**: `GET /api/pqrs/{id}` (detalle+timeline) y `GET /api/pqrs/{id}/anexo` (descarga PDF), no en plan original pero requeridos por front.
+> - Gotchas + env vars: ver [`backend/AGENTS.md`](./backend/AGENTS.md) §"ESTADO".
+
 ## 0. Contexto rápido
 
 - **Owner**: Juli Criollo (`@julianhomezdev`).

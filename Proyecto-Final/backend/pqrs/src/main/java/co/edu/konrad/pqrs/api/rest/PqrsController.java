@@ -10,6 +10,7 @@ import co.edu.konrad.pqrs.domain.port.AlmacenAdjuntos;
 import co.edu.konrad.pqrs.domain.port.PqrsRepositorio;
 import co.edu.konrad.pqrs.domain.port.TramiteRepositorio;
 import co.edu.konrad.pqrs.domain.port.UsuarioRepositorio;
+import co.edu.konrad.pqrs.domain.service.ServicioRadicarAnonimo;
 import co.edu.konrad.pqrs.domain.service.ServicioRadicarPqrs;
 import co.edu.konrad.pqrs.domain.service.ServicioTramitar;
 import co.edu.konrad.pqrs.domain.service.ServicioTramitar.PqrsNoEncontradaException;
@@ -34,6 +35,7 @@ import java.util.List;
 public class PqrsController {
 
     private final ServicioRadicarPqrs servicioRadicar;
+    private final ServicioRadicarAnonimo servicioRadicarAnonimo;
     private final ServicioTramitar servicioTramitar;
     private final UsuarioRepositorio usuarioRepositorio;
     private final PqrsRepositorio pqrsRepositorio;
@@ -43,6 +45,7 @@ public class PqrsController {
     private final TramiteRepositorio tramiteRepositorio;
 
     public PqrsController(ServicioRadicarPqrs servicioRadicar,
+                          ServicioRadicarAnonimo servicioRadicarAnonimo,
                           ServicioTramitar servicioTramitar,
                           UsuarioRepositorio usuarioRepositorio,
                           PqrsRepositorio pqrsRepositorio,
@@ -51,6 +54,7 @@ public class PqrsController {
                           AlmacenAdjuntos almacenAdjuntos,
                           TramiteRepositorio tramiteRepositorio) {
         this.servicioRadicar = servicioRadicar;
+        this.servicioRadicarAnonimo = servicioRadicarAnonimo;
         this.servicioTramitar = servicioTramitar;
         this.usuarioRepositorio = usuarioRepositorio;
         this.pqrsRepositorio = pqrsRepositorio;
@@ -58,6 +62,19 @@ public class PqrsController {
         this.adjuntoRepositorio = adjuntoRepositorio;
         this.almacenAdjuntos = almacenAdjuntos;
         this.tramiteRepositorio = tramiteRepositorio;
+    }
+
+    /** CU-03 anonimo + CU-01: radicar sin login. Crea cuenta cliente y envia credenciales. */
+    @PostMapping(value = "/anonimo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<RadicarPqrsResponse> radicarAnonimo(
+            @Valid @RequestPart("pqrs") RadicarAnonimoRequest request,
+            @RequestPart(value = "anexo", required = false) MultipartFile anexo) {
+        ServicioRadicarAnonimo.DatosCliente cliente = new ServicioRadicarAnonimo.DatosCliente(
+                request.tipoDoc(), request.numDoc(), request.nombres(),
+                request.apellidos(), request.email(), request.telefono());
+        Pqrs radicada = servicioRadicarAnonimo.radicar(
+                cliente, request.tipo(), request.asunto(), request.descripcion(), aAnexo(anexo));
+        return ResponseEntity.status(HttpStatus.CREATED).body(RadicarPqrsResponse.desde(radicada));
     }
 
     /** Detalle de una PQRS: cabecera + timeline de tramites + adjuntos. */

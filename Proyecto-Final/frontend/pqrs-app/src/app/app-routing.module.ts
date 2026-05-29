@@ -25,7 +25,7 @@ const routes: Routes = [
     loadChildren: () => import('./mobile/historial/historial.module').then( m => m.HistorialPageModule)
   },
   {
-    path: 'mobile/detalle/:radicado',
+    path: 'mobile/detalle/:id',
     canActivate: [AuthGuard, RoleGuard],
     data: { role: UserRole.CLIENTE },
     loadChildren: () => import('./mobile/detalle/detalle.module').then( m => m.DetallePageModule)

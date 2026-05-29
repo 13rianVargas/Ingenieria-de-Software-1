@@ -1,6 +1,6 @@
 package co.edu.konrad.pqrs.infrastructure.integraciones.resend;
 
-import co.edu.konrad.pqrs.infrastructure.integraciones.correo.CorreoSmtp;
+import co.edu.konrad.pqrs.infrastructure.integraciones.correo.EnviadorCorreo;
 import co.edu.konrad.pqrs.infrastructure.persistencia.NotificacionEntidad;
 import co.edu.konrad.pqrs.infrastructure.persistencia.NotificacionJpaRepositorio;
 import co.edu.konrad.pqrs.infrastructure.persistencia.UsuarioEntidad;
@@ -26,11 +26,11 @@ public class ProcesadorNotificaciones {
 
     private final NotificacionJpaRepositorio notificaciones;
     private final UsuarioJpaRepositorio usuarios;
-    private final CorreoSmtp correo;
+    private final EnviadorCorreo correo;
 
     public ProcesadorNotificaciones(NotificacionJpaRepositorio notificaciones,
                                     UsuarioJpaRepositorio usuarios,
-                                    CorreoSmtp correo) {
+                                    EnviadorCorreo correo) {
         this.notificaciones = notificaciones;
         this.usuarios = usuarios;
         this.correo = correo;

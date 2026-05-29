@@ -28,6 +28,10 @@ spring:
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
+      # Timeouts cortos: Render free bloquea SMTP saliente; sin esto el envio cuelga ~138s.
+      mail.smtp.connectiontimeout: 7000
+      mail.smtp.timeout: 7000
+      mail.smtp.writetimeout: 7000
 
 server:
   port: ${PORT:8080}
@@ -44,8 +48,14 @@ jwt:
   expiration-ms: 28800000   # 8 horas
 
 correo:
-  from: ${MAIL_FROM:${MAIL_USERNAME:}}   # remitente; por defecto el usuario SMTP
+  provider: ${CORREO_PROVIDER:smtp}      # smtp (local) | brevo (prod, HTTP API)
+  from: ${MAIL_FROM:${MAIL_USERNAME:}}   # remitente SMTP; por defecto el usuario SMTP
   from-nombre: ${MAIL_FROM_NOMBRE:PQRS SuperMarket Konrad}
+
+brevo:
+  api-key: ${BREVO_API_KEY:}             # API key Brevo (HTTP, no bloqueado por Render)
+  from-email: ${BREVO_FROM_EMAIL:}       # sender verificado en Brevo
+  from-nombre: ${BREVO_FROM_NOMBRE:PQRS SuperMarket Konrad}
 
 r2:
   enabled: ${R2_ENABLED:false}         # true cuando haya credenciales Cloudflare R2
