@@ -50,13 +50,11 @@ export class LoginPage implements OnInit, OnDestroy {
    */
   private initializeForm(): void {
     this.loginForm = this.formBuilder.group({
-      identificacion: ['', [
+      email: ['', [
         Validators.required,
-        Validators.pattern(/^[0-9]{8,12}$/), // Solo números, 8-12 dígitos
-        Validators.minLength(8),
-        Validators.maxLength(12)
+        Validators.email
       ]],
-      password: ['', [
+      clave: ['', [
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(50)
@@ -77,8 +75,8 @@ export class LoginPage implements OnInit, OnDestroy {
     this.errorMessage = '';
 
     const credentials: LoginCredentials = {
-      identificacion: this.loginForm.value.identificacion.trim(),
-      password: this.loginForm.value.password
+      email: this.loginForm.value.email.trim(),
+      clave: this.loginForm.value.clave
     };
 
     this.authService.login(credentials)
@@ -135,8 +133,8 @@ export class LoginPage implements OnInit, OnDestroy {
   /**
    * Getters para facilitar el acceso a los controles del formulario
    */
-  get identificacion() { return this.loginForm.get('identificacion'); }
-  get password() { return this.loginForm.get('password'); }
+  get email() { return this.loginForm.get('email'); }
+  get clave() { return this.loginForm.get('clave'); }
 
   /**
    * Verifica si un campo tiene errores y ha sido tocado
@@ -156,8 +154,8 @@ export class LoginPage implements OnInit, OnDestroy {
     if (field.errors['required']) {
       return `${this.getFieldLabel(fieldName)} es requerido`;
     }
-    if (field.errors['pattern']) {
-      return 'Solo se permiten números';
+    if (field.errors['email']) {
+      return 'Formato de correo inválido';
     }
     if (field.errors['minlength']) {
       return `${this.getFieldLabel(fieldName)} debe tener al menos ${field.errors['minlength'].requiredLength} caracteres`;
@@ -174,8 +172,8 @@ export class LoginPage implements OnInit, OnDestroy {
    */
   private getFieldLabel(fieldName: string): string {
     const labels: { [key: string]: string } = {
-      identificacion: 'Número de identificación',
-      password: 'Contraseña'
+      email: 'Correo Electrónico',
+      clave: 'Contraseña'
     };
     return labels[fieldName] || fieldName;
   }
