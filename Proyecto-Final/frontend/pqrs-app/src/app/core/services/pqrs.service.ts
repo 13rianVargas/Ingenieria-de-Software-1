@@ -2,8 +2,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { 
+import {
   CrearPQRSRequest,
+  CrearPQRSAnonimoRequest,
   PqrsResumen,
   PqrsDetalle,
   ActualizarPQRSRequest,
@@ -30,6 +31,19 @@ export class PQRSService {
     }
 
     return this.http.post<any>(this.apiUrl + '/pqrs', formData);
+  }
+
+  /**
+   * Radicacion anonima (sin login): el payload incluye los datos del cliente.
+   * El backend crea la cuenta si no existe y envia credenciales por correo.
+   */
+  crearPQRSAnonimo(payload: CrearPQRSAnonimoRequest, archivo?: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('pqrs', new Blob([JSON.stringify(payload)], { type: 'application/json' }));
+    if (archivo) {
+      formData.append('anexo', archivo, archivo.name);
+    }
+    return this.http.post<any>(this.apiUrl + '/pqrs/anonimo', formData);
   }
 
   misRadicados(radicado?: string): Observable<PqrsResumen[]> {
