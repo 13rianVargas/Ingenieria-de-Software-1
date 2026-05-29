@@ -16,7 +16,7 @@ import {
   providedIn: 'root'
 })
 export class PQRSService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl = environment.apiBaseUrl;
   private http = inject(HttpClient);
 
   /**
