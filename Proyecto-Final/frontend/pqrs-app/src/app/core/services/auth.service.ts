@@ -12,6 +12,13 @@ import {
   UserRole 
 } from '../models';
 
+/** Respuesta cruda del endpoint POST /api/auth/login del backend. */
+interface BackendLoginResponse {
+  token: string;
+  rol: string;
+  expiraEn: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -38,12 +45,15 @@ export class AuthService {
    */
   login(credentials: LoginCredentials): Observable<AuthResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    
-    return this.http.post<AuthResponse>(
+
+    // El backend responde plano: { token, rol, expiraEn }. Lo mapeamos a la
+    // estructura AuthResponse que el resto del front espera.
+    return this.http.post<BackendLoginResponse>(
       `${this.apiUrl}/auth/login`,
       credentials,
       { headers }
     ).pipe(
+      map(raw => this.mapLoginResponse(raw, credentials.email)),
       tap(response => {
         if (response.success && response.data) {
           this.storeSession(response.data);
@@ -53,6 +63,39 @@ export class AuthService {
       }),
       catchError(error => this.handleError(error))
     );
+  }
+
+  /**
+   * Adapta la respuesta plana del backend ({ token, rol, expiraEn }) a la
+   * estructura AuthResponse interna. El backend NO envia nombre ni id; se
+   * derivan del token/email. El rol se normaliza a UserRole (enum mayuscula).
+   */
+  private mapLoginResponse(raw: BackendLoginResponse, email: string): AuthResponse {
+    const payload = this.parseToken(raw.token);
+    const expiresIn = payload?.exp
+      ? Math.max(0, payload.exp * 1000 - Date.now())
+      : 0;
+    return {
+      success: true,
+      message: 'OK',
+      data: {
+        user: {
+          id: payload?.sub ?? email,
+          identificacion: payload?.sub ?? email,
+          nombre: email.split('@')[0],
+          rol: this.normalizarRol(raw.rol),
+        },
+        token: raw.token,
+        expiresIn,
+      },
+    };
+  }
+
+  /** Normaliza el rol del backend (cliente/gestor/admin, minuscula) a UserRole. */
+  private normalizarRol(rolBackend: string): UserRole {
+    return (rolBackend || '').toLowerCase() === 'cliente'
+      ? UserRole.CLIENTE
+      : UserRole.GESTOR; // gestor y admin usan la vista web
   }
 
   /**
