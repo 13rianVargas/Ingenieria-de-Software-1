@@ -1,278 +1,61 @@
+﻿<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/mobile/historial"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Radicar PQRS</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-<ion-content [fullscreen]="true" style="--background: #f3f4f6;">
+<ion-content class="ion-padding">
+  <div *ngIf="errorMessage" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+    <p class="text-red-700 text-sm">{{ errorMessage }}</p>
+  </div>
 
-    <div class="mobile-container flex flex-col">
-
-        <!-- App Bar -->
-        <div class="bg-primary text-white p-4 flex items-center shadow-md sticky top-0 z-10">
-            <button (click)="goBack()" class="mr-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-            </button>
-            <h1 class="text-xl font-bold">Nueva PQRS</h1>
-        </div>
-
-        <div class="p-5 space-y-6">
-
-            <!-- Mensaje Informativo -->
-            <div class="bg-blue-50 border-l-4 border-tertiary p-4 rounded text-sm text-gray-700">
-                Al enviar este formulario, si no tienes cuenta, te crearemos una automáticamente para hacer seguimiento.
-            </div>
-
-            <!-- Mensaje de Error -->
-            <div *ngIf="errorMessage" class="bg-red-50 border border-red-200 rounded-lg p-4">
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                    </svg>
-                    <p class="text-red-700 text-sm">{{ errorMessage }}</p>
-                </div>
-            </div>
-
-            <!-- Mensaje de Éxito -->
-            <div *ngIf="successMessage" class="bg-green-50 border border-green-200 rounded-lg p-4">
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                    </svg>
-                    <p class="text-green-700 text-sm font-medium">{{ successMessage }}</p>
-                </div>
-            </div>
-
-            <form [formGroup]="radicacionForm" (ngSubmit)="onSubmit()" class="space-y-5">
-
-                <!-- Sección Datos Personales -->
-                <div>
-                    <h2 class="text-accent font-bold mb-3 border-b pb-1">Datos Personales</h2>
-
-                    <div class="space-y-4">
-                        <div class="flex gap-3">
-                            <div class="w-1/3">
-                                <label class="block text-xs text-gray-600 mb-1">Tipo ID</label>
-                                <select
-                                    formControlName="tipoDocumento"
-                                    class="w-full p-2 border rounded focus:outline-none text-sm bg-white"
-                                    [class.border-red-300]="hasError('tipoDocumento')"
-                                    [class.border-gray-300]="!hasError('tipoDocumento')"
-                                    [class.focus:ring-red-500]="hasError('tipoDocumento')"
-                                    [class.focus:ring-tertiary]="!hasError('tipoDocumento')"
-                                    [class.focus:ring-2]="true"
-                                    [disabled]="isLoading"
-                                >
-                                    <option *ngFor="let tipo of tiposDocumento" [value]="tipo.value">
-                                        {{ tipo.label }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="w-2/3">
-                                <label class="block text-xs text-gray-600 mb-1">Número ID</label>
-                                <input
-                                    type="text"
-                                    formControlName="numeroIdentificacion"
-                                    placeholder="Ej: 1010202030"
-                                    class="w-full p-2 border rounded focus:outline-none text-sm"
-                                    [class.border-red-300]="hasError('numeroIdentificacion')"
-                                    [class.border-gray-300]="!hasError('numeroIdentificacion')"
-                                    [class.focus:ring-red-500]="hasError('numeroIdentificacion')"
-                                    [class.focus:ring-tertiary]="!hasError('numeroIdentificacion')"
-                                    [class.focus:ring-2]="true"
-                                    [disabled]="isLoading"
-                                >
-                                <div *ngIf="hasError('numeroIdentificacion')" class="mt-1 text-xs text-red-600">
-                                    {{ getErrorMessage('numeroIdentificacion') }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs text-gray-600 mb-1">Nombre Completo</label>
-                            <input
-                                type="text"
-                                formControlName="nombreCompleto"
-                                placeholder="Ej: Juan Pérez"
-                                class="w-full p-2 border rounded focus:outline-none text-sm"
-                                [class.border-red-300]="hasError('nombreCompleto')"
-                                [class.border-gray-300]="!hasError('nombreCompleto')"
-                                [class.focus:ring-red-500]="hasError('nombreCompleto')"
-                                [class.focus:ring-tertiary]="!hasError('nombreCompleto')"
-                                [class.focus:ring-2]="true"
-                                [disabled]="isLoading"
-                            >
-                            <div *ngIf="hasError('nombreCompleto')" class="mt-1 text-xs text-red-600">
-                                {{ getErrorMessage('nombreCompleto') }}
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs text-gray-600 mb-1">Correo Electrónico</label>
-                            <input
-                                type="email"
-                                formControlName="email"
-                                placeholder="correo@ejemplo.com"
-                                class="w-full p-2 border rounded focus:outline-none text-sm"
-                                [class.border-red-300]="hasError('email')"
-                                [class.border-gray-300]="!hasError('email')"
-                                [class.focus:ring-red-500]="hasError('email')"
-                                [class.focus:ring-tertiary]="!hasError('email')"
-                                [class.focus:ring-2]="true"
-                                [disabled]="isLoading"
-                            >
-                            <div *ngIf="hasError('email')" class="mt-1 text-xs text-red-600">
-                                {{ getErrorMessage('email') }}
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs text-gray-600 mb-1">Teléfono Móvil <span class="text-gray-400">(Opcional)</span></label>
-                            <input
-                                type="tel"
-                                formControlName="telefono"
-                                placeholder="Ej: 3001234567"
-                                class="w-full p-2 border rounded focus:outline-none text-sm"
-                                [class.border-red-300]="hasError('telefono')"
-                                [class.border-gray-300]="!hasError('telefono')"
-                                [class.focus:ring-red-500]="hasError('telefono')"
-                                [class.focus:ring-tertiary]="!hasError('telefono')"
-                                [class.focus:ring-2]="true"
-                                [disabled]="isLoading"
-                            >
-                            <div *ngIf="hasError('telefono')" class="mt-1 text-xs text-red-600">
-                                {{ getErrorMessage('telefono') }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sección PQRS -->
-                <div class="pt-2">
-                    <h2 class="text-accent font-bold mb-3 border-b pb-1">Detalle de la Solicitud</h2>
-
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-xs text-gray-600 mb-1">Tipo de Radicado</label>
-                            <select
-                                formControlName="tipoPQRS"
-                                class="w-full p-2 border rounded focus:outline-none text-sm bg-white"
-                                [class.border-red-300]="hasError('tipoPQRS')"
-                                [class.border-gray-300]="!hasError('tipoPQRS')"
-                                [class.focus:ring-red-500]="hasError('tipoPQRS')"
-                                [class.focus:ring-tertiary]="!hasError('tipoPQRS')"
-                                [class.focus:ring-2]="true"
-                                [disabled]="isLoading"
-                            >
-                                <option value="">Seleccione...</option>
-                                <option *ngFor="let tipo of tiposPQRS" [value]="tipo.value">
-                                    {{ tipo.label }}
-                                </option>
-                            </select>
-                            <div *ngIf="hasError('tipoPQRS')" class="mt-1 text-xs text-red-600">
-                                {{ getErrorMessage('tipoPQRS') }}
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs text-gray-600 mb-1">Comentarios</label>
-                            <textarea
-                                rows="4"
-                                formControlName="comentarios"
-                                placeholder="Describa el motivo de su solicitud aquí..."
-                                class="w-full p-2 border rounded focus:outline-none text-sm resize-none"
-                                [class.border-red-300]="hasError('comentarios')"
-                                [class.border-gray-300]="!hasError('comentarios')"
-                                [class.focus:ring-red-500]="hasError('comentarios')"
-                                [class.focus:ring-tertiary]="!hasError('comentarios')"
-                                [class.focus:ring-2]="true"
-                                [disabled]="isLoading"
-                            ></textarea>
-                            <div *ngIf="hasError('comentarios')" class="mt-1 text-xs text-red-600">
-                                {{ getErrorMessage('comentarios') }}
-                            </div>
-                        </div>
-
-                        <!-- Subida PDF -->
-                        <div>
-                            <label class="block text-xs text-gray-600 mb-1">Anexo <span class="text-gray-400">(Opcional - Solo PDF)</span></label>
-
-                            <!-- Archivo seleccionado -->
-                            <div *ngIf="selectedFile" class="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center">
-                                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
-                                        </svg>
-                                        <span class="text-sm text-green-700 font-medium">{{ fileName }}</span>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        (click)="removeFile()"
-                                        class="text-red-500 hover:text-red-700"
-                                        [disabled]="isLoading"
-                                    >
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Área de subida -->
-                            <div
-                                class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-md transition cursor-pointer"
-                                [class.border-gray-300]="!selectedFile"
-                                [class.border-green-300]="selectedFile"
-                                [class.bg-gray-50]="!selectedFile"
-                                [class.bg-green-25]="selectedFile"
-                                [class.hover:bg-gray-100]="!selectedFile && !isLoading"
-                                [class.cursor-not-allowed]="isLoading"
-                            >
-                                <div class="space-y-1 text-center">
-                                    <svg class="mx-auto h-10 w-10 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true" width="24" height="24">
-                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                    <div class="flex text-sm text-gray-600 justify-center">
-                                        <label
-                                            for="file-upload"
-                                            class="relative cursor-pointer rounded-md font-medium text-tertiary hover:text-accent focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-tertiary"
-                                            [class.cursor-not-allowed]="isLoading"
-                                        >
-                                            <span *ngIf="!selectedFile">Subir un archivo</span>
-                                            <span *ngIf="selectedFile">Cambiar archivo</span>
-                                            <input
-                                                id="file-upload"
-                                                name="file-upload"
-                                                type="file"
-                                                class="sr-only"
-                                                accept="application/pdf"
-                                                (change)="onFileSelected($event)"
-                                                [disabled]="isLoading"
-                                            >
-                                        </label>
-                                    </div>
-                                    <p class="text-xs text-gray-500">PDF hasta 5MB</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="pt-6">
-                    <button
-                        type="submit"
-                        class="w-full bg-primary text-white font-bold py-3 rounded-lg shadow-md transition active:scale-95 text-lg flex items-center justify-center"
-                        [class.hover:bg-opacity-90]="!isLoading"
-                        [class.bg-gray-400]="isLoading"
-                        [disabled]="isLoading || radicacionForm.invalid"
-                    >
-                        <!-- Loading Spinner -->
-                        <svg *ngIf="isLoading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-
-                        {{ isLoading ? 'Radicando...' : 'Radicar Solicitud' }}
-                    </button>
-                </div>
-            </form>
-        </div>
+  <form [formGroup]="radicacionForm" (ngSubmit)="onSubmit()">
+    
+    <ion-item class="mb-4 rounded-lg border">
+      <ion-select formControlName="tipo" label="Tipo de Radicado" label-placement="floating">
+        <ion-select-option value="peticion">Petición</ion-select-option>
+        <ion-select-option value="queja">Queja</ion-select-option>
+        <ion-select-option value="reclamo">Reclamo</ion-select-option>
+        <ion-select-option value="sugerencia">Sugerencia</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngIf="radicacionForm.get('tipo')?.invalid && radicacionForm.get('tipo')?.touched" class="text-red-600 text-sm mb-4 px-2">
+      Seleccione el tipo de radicado.
     </div>
 
+    <ion-item class="mb-4 rounded-lg border">
+      <ion-input formControlName="asunto" label="Asunto" label-placement="floating" placeholder="Resumen breve"></ion-input>
+    </ion-item>
+    <div *ngIf="radicacionForm.get('asunto')?.invalid && radicacionForm.get('asunto')?.touched" class="text-red-600 text-sm mb-4 px-2">
+      El asunto debe tener entre 5 y 200 caracteres.
+    </div>
+
+    <ion-item class="mb-4 rounded-lg border">
+      <ion-textarea formControlName="descripcion" label="Descripción" label-placement="floating" placeholder="Detalle su solicitud..." [autoGrow]="true" rows="4"></ion-textarea>
+    </ion-item>
+    <div *ngIf="radicacionForm.get('descripcion')?.invalid && radicacionForm.get('descripcion')?.touched" class="text-red-600 text-sm mb-4 px-2">
+      La descripción debe tener al menos 20 caracteres.
+    </div>
+
+    <div class="mb-6 p-4 bg-gray-50 rounded-lg border">
+      <label class="block text-sm font-medium text-gray-700 mb-2">Anexo (Opcional - Solo PDF max 5MB)</label>
+      
+      <input type="file" accept="application/pdf" (change)="onArchivo($event)" class="w-full text-sm text-gray-500
+        file:mr-4 file:py-2 file:px-4
+        file:rounded-full file:border-0
+        file:text-sm file:font-semibold
+        file:bg-primary file:text-white
+        hover:file:bg-blue-600
+      "/>
+    </div>
+
+    <ion-button expand="block" type="submit" [disabled]="radicacionForm.invalid || isLoading" class="mt-4 font-bold">
+      <ion-spinner *ngIf="isLoading" name="crescent" class="mr-2"></ion-spinner>
+      {{ isLoading ? 'Radicando...' : 'Radicar PQRS' }}
+    </ion-button>
+    
+  </form>
 </ion-content>

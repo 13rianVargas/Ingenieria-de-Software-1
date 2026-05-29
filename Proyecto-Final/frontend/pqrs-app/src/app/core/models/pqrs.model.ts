@@ -1,31 +1,8 @@
-/**
- * Modelo de PQRS (Peticiones, Quejas, Reclamos, Sugerencias)
- * Define la estructura de datos para las solicitudes del cliente
- */
-
-export interface PQRS {
-  id?: string;
-  radicado: string; // Número único generado por el sistema
-  clienteId: string;
-  clienteIdentificacion: string;
-  clienteNombre: string;
-  clienteEmail: string;
-  clienteTelefono?: string;
-  tipo: TipoPQRS;
-  comentarios: string;
-  estado: EstadoPQRS;
-  justificacion?: string;
-  anexoPdf?: string; // Ruta/nombre del archivo PDF
-  fechaCreacion: Date;
-  fechaUltimaModificacion?: Date;
-  gestorAsignado?: string;
-}
-
-export enum TipoPQRS {
-  PETICION = 'PETICION',
-  QUEJA = 'QUEJA',
-  RECLAMO = 'RECLAMO',
-  SUGERENCIA = 'SUGERENCIA'
+﻿export enum TipoPQRS {
+  peticion = 'peticion',
+  queja = 'queja',
+  reclamo = 'reclamo',
+  sugerencia = 'sugerencia'
 }
 
 export enum EstadoPQRS {
@@ -35,38 +12,47 @@ export enum EstadoPQRS {
   RECHAZADO = 'RECHAZADO'
 }
 
+export interface PqrsResumen {
+  id: number;
+  radicado: string;
+  tipo: string;
+  asunto: string;
+  estado: string;
+  fechaRadicado: Date;
+  fechaCierre?: Date;
+}
+
+export interface PqrsDetalle extends PqrsResumen {
+  descripcion: string;
+  clienteId: number;
+  gestorId?: number;
+  tramites: Tramite[];
+  adjuntos: Adjunto[];
+}
+
+export interface Tramite {
+  estadoAnterior: string;
+  estadoNuevo: string;
+  justificacion: string;
+  gestorId: number;
+  timestamp: Date;
+}
+
+export interface Adjunto {
+  id: number;
+  nombreArchivo: string;
+  tipoMime: string;
+  tamanoBytes: number;
+  fechaSubida: Date;
+}
+
 export interface CrearPQRSRequest {
-  tipo: TipoPQRS;
-  comentarios: string;
-  clienteIdentificacion: string;
-  clienteNombre: string;
-  clienteEmail: string;
-  clienteTelefono?: string;
-  anexoPdfBase64?: string; // Base64 del archivo PDF
+  tipo: string;
+  asunto: string;
+  descripcion: string;
 }
 
 export interface ActualizarPQRSRequest {
-  estado: EstadoPQRS;
+  estado: string;
   justificacion: string;
-}
-
-export interface PQRSFilter {
-  tipo?: TipoPQRS;
-  estado?: EstadoPQRS;
-  radicado?: string;
-  clienteIdentificacion?: string;
-}
-
-export interface PQRSResponse {
-  data: PQRS[];
-  total: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface ReportePQRS {
-  radicados: PQRS[];
-  generadoEn: Date;
-  generadoPor: string;
-  filtrosAplicados?: PQRSFilter;
 }
