@@ -5,6 +5,7 @@ import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -13,12 +14,13 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Envia correos via SMTP (Gmail). Si MAIL_USERNAME esta ausente, queda deshabilitado
- * y el worker no procesa la cola. Sustituye a Resend (no requiere dominio verificado:
- * Gmail SMTP entrega a cualquier destinatario).
+ * Envia correos via SMTP (Gmail). Util en local; en Render free el SMTP saliente
+ * esta bloqueado, alli se usa CorreoBrevo (HTTP). Activo con correo.provider=smtp
+ * (por defecto) y si MAIL_USERNAME esta presente.
  */
 @Component
-public class CorreoSmtp {
+@ConditionalOnProperty(name = "correo.provider", havingValue = "smtp", matchIfMissing = true)
+public class CorreoSmtp implements EnviadorCorreo {
 
     private static final Logger log = LoggerFactory.getLogger(CorreoSmtp.class);
 
@@ -37,11 +39,12 @@ public class CorreoSmtp {
         this.fromNombre = fromNombre;
     }
 
+    @Override
     public boolean habilitado() {
         return username != null && !username.isBlank();
     }
 
-    /** Envia HTML. Lanza excepcion si falla (el scheduler cuenta el intento). */
+    @Override
     public void enviar(String destinatario, String asunto, String htmlBody) {
         try {
             MimeMessage msg = mailSender.createMimeMessage();
