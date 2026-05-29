@@ -15,6 +15,7 @@ import { PQRS, TipoPQRS, EstadoPQRS, ActualizarPQRSRequest } from '../../core/mo
 export class TramitePage implements OnInit, OnDestroy {
 
   pqrs: PQRS | null = null;
+  tramites: any[] = [];
   gestionForm!: FormGroup;
 
   isLoading = false;
@@ -58,7 +59,7 @@ export class TramitePage implements OnInit, OnDestroy {
   private initForm(): void {
     this.gestionForm = this.formBuilder.group({
       nuevoEstado: ['', [Validators.required]],
-      justificacion: ['', [Validators.required, Validators.pattern(/\S/)]]
+      justificacion: ['', [Validators.required, Validators.minLength(10)]]
     });
   }
 
@@ -73,6 +74,7 @@ export class TramitePage implements OnInit, OnDestroy {
           this.isLoading = false;
           if (response.success && response.data) {
             this.pqrs = response.data;
+            this.cargarTramites();
           } else {
             this.errorMessage = response.message || 'No se encontró la PQRS';
           }
@@ -80,6 +82,19 @@ export class TramitePage implements OnInit, OnDestroy {
         error: (error) => {
           this.isLoading = false;
           this.errorMessage = error.message || 'Error al cargar la PQRS';
+        }
+      });
+  }
+
+  cargarTramites(): void {
+    this.pqrsService.obtenerTramites(this.radicado)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: any) => {
+          this.tramites = response;
+        },
+        error: () => {
+          console.error('Error al cargar trámites');
         }
       });
   }

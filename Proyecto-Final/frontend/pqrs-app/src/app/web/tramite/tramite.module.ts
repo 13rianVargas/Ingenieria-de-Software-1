@@ -7,6 +7,9 @@ import { IonicModule } from '@ionic/angular';
 import { TramitePageRoutingModule } from './tramite-routing.module';
 
 import { TramitePage } from './tramite.page';
+import { StatusBadgeComponent } from '../../shared/components/status-badge/status-badge.component';
+import { LoadingSpinnerComponent } from '../../shared/components/loading-spinner/loading-spinner.component';
+import { ErrorAlertComponent } from '../../shared/components/error-alert/error-alert.component';
 
 @NgModule({
   imports: [
@@ -14,7 +17,10 @@ import { TramitePage } from './tramite.page';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    TramitePageRoutingModule
+    TramitePageRoutingModule,
+    StatusBadgeComponent,
+    LoadingSpinnerComponent,
+    ErrorAlertComponent
   ],
   declarations: [TramitePage]
 })

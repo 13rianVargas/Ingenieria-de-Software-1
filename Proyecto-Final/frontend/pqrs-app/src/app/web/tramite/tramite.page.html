@@ -34,24 +34,11 @@
             <div class="flex-1 overflow-y-auto p-6">
 
                 <!-- Loading State -->
-                <div *ngIf="isLoading" class="flex items-center justify-center py-20">
-                    <div class="text-center">
-                        <ion-spinner name="crescent" color="primary"></ion-spinner>
-                        <p class="text-gray-500 mt-3 text-sm">Cargando detalle de la PQRS...</p>
-                    </div>
-                </div>
+                <app-loading-spinner [show]="isLoading" message="Cargando detalle de la PQRS..."></app-loading-spinner>
 
                 <!-- Error State (carga) -->
                 <div *ngIf="!isLoading && errorMessage && !pqrs" class="mb-6">
-                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start">
-                        <svg class="w-5 h-5 text-red-400 mr-2 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                        </svg>
-                        <div>
-                            <p class="text-red-700 text-sm font-medium">{{ errorMessage }}</p>
-                            <button (click)="volver()" class="mt-2 text-red-600 text-sm underline hover:no-underline">Volver a la bandeja</button>
-                        </div>
-                    </div>
+                    <app-error-alert [message]="errorMessage" (retry)="volver()"></app-error-alert>
                 </div>
 
                 <!-- Data Content -->
@@ -66,11 +53,8 @@
                     </div>
 
                     <!-- Error Message (save) -->
-                    <div *ngIf="errorMessage && pqrs" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start">
-                        <svg class="w-5 h-5 text-red-400 mr-2 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                        </svg>
-                        <p class="text-red-700 text-sm font-medium">{{ errorMessage }}</p>
+                    <div *ngIf="errorMessage && pqrs" class="mb-6">
+                        <app-error-alert [message]="errorMessage" [dismissible]="true" (dismiss)="errorMessage = ''"></app-error-alert>
                     </div>
 
                     <div class="flex flex-col lg:flex-row gap-6">
@@ -84,9 +68,7 @@
                                         <h3 class="text-lg font-bold text-accent mb-1">Detalle de la Solicitud</h3>
                                         <p class="text-sm text-gray-500">Enviada el {{ formatearFecha(pqrs.fechaCreacion) }}</p>
                                     </div>
-                                    <span class="px-3 py-1 inline-flex text-sm leading-5 font-bold rounded-full border {{ getEstadoClass(pqrs.estado) }}">
-                                        {{ getEstadoLabel(pqrs.estado) }}
-                                    </span>
+                                    <app-status-badge [estado]="pqrs.estado"></app-status-badge>
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-4 mb-6">
@@ -117,6 +99,18 @@
                                         {{ pqrs.comentarios }}
                                     </div>
                                 </div>
+                            </div>
+
+                            <!-- Timeline tramites previos -->
+                            <div class="bg-white shadow rounded p-4 mb-4" *ngIf="tramites && tramites.length > 0">
+                                <h3 class="font-semibold mb-2">Historial de Trámites</h3>
+                                <ol class="border-l pl-4">
+                                    <li *ngFor="let t of tramites" class="mb-3">
+                                        <span class="font-medium">{{ t.estadoAnterior || 'NUEVO' }} → {{ t.estadoNuevo }}</span>
+                                        <span class="text-sm text-gray-500"> ({{ t.fechaTramite | date:'short' }})</span>
+                                        <p class="text-gray-700 mt-1 text-sm bg-gray-50 p-2 rounded">{{ t.justificacion }}</p>
+                                    </li>
+                                </ol>
                             </div>
 
                             <!-- Botón de Descarga (RF-09) -->

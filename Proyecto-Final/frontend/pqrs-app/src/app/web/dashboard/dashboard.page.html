@@ -49,25 +49,10 @@
             <div class="flex-1 overflow-y-auto p-6">
 
                 <!-- Loading State -->
-                <div *ngIf="isLoading" class="flex items-center justify-center py-20">
-                    <div class="text-center">
-                        <ion-spinner name="crescent" color="primary"></ion-spinner>
-                        <p class="text-gray-500 mt-3 text-sm">Cargando bandeja...</p>
-                    </div>
-                </div>
+                <app-loading-spinner [show]="isLoading" message="Cargando bandeja..."></app-loading-spinner>
 
                 <!-- Error State -->
-                <div *ngIf="!isLoading && errorMessage" class="mb-6">
-                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start">
-                        <svg class="w-5 h-5 text-red-400 mr-2 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                        </svg>
-                        <div>
-                            <p class="text-red-700 text-sm font-medium">{{ errorMessage }}</p>
-                            <button (click)="cargarBandeja()" class="mt-2 text-red-600 text-sm underline hover:no-underline">Intentar de nuevo</button>
-                        </div>
-                    </div>
-                </div>
+                <app-error-alert [message]="errorMessage" (retry)="cargarBandeja()"></app-error-alert>
 
                 <!-- Data Content -->
                 <ng-container *ngIf="!isLoading && !errorMessage">
@@ -150,9 +135,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ getTipoLabel(pqrs.tipo) }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ getNombreCliente(pqrs) }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ getEstadoClass(pqrs.estado) }}">
-                                            {{ getEstadoLabel(pqrs.estado) }}
-                                        </span>
+                                        <app-status-badge [estado]="pqrs.estado"></app-status-badge>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <button

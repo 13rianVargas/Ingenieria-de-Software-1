@@ -119,6 +119,16 @@ export class PQRSService {
   }
 
   /**
+   * Obtiene los trámites de una PQRS
+   * @param radicado - Número de radicado
+   */
+  obtenerTramites(radicado: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/pqrs/${radicado}/tramites`).pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  /**
    * Filtra PQRS según criterios
    * @param filtros - Criterios de filtro
    * @param page - Número de página
@@ -205,7 +215,7 @@ export class PQRSService {
     }
 
     return this.http.get(
-      `${this.apiUrl}/pqrs/reportes/generar`,
+      `${this.apiUrl}/pqrs/reporte`,
       { params, responseType: 'blob' }
     ).pipe(
       tap(blob => {
