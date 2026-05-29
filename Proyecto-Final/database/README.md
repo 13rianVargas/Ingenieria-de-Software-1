@@ -141,7 +141,8 @@ database/
 │   ├── V2__pqrs.sql
 │   ├── V3__tramites_adjuntos.sql
 │   ├── V4__notificaciones.sql
-│   └── V5__auditoria.sql
+│   ├── V5__auditoria.sql
+│   └── V6__pqrs_radicado_sequence.sql   # secuencia consecutivo radicado (backend)
 ├── seeds/                    # datos demo dev only (manual, no via Flyway)
 │   └── demo.sql
 ├── schema/                   # referencia humana (no ejecutable)
