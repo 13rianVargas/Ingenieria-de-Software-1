@@ -16,10 +16,10 @@
     
     <ion-item class="mb-4 rounded-lg border">
       <ion-select formControlName="tipo" label="Tipo de Radicado" label-placement="floating">
-        <ion-select-option value="PETICION">Petición</ion-select-option>
-        <ion-select-option value="QUEJA">Queja</ion-select-option>
-        <ion-select-option value="RECLAMO">Reclamo</ion-select-option>
-        <ion-select-option value="SUGERENCIA">Sugerencia</ion-select-option>
+        <ion-select-option value="peticion">Petición</ion-select-option>
+        <ion-select-option value="queja">Queja</ion-select-option>
+        <ion-select-option value="reclamo">Reclamo</ion-select-option>
+        <ion-select-option value="sugerencia">Sugerencia</ion-select-option>
       </ion-select>
     </ion-item>
     <div *ngIf="radicacionForm.get('tipo')?.invalid && radicacionForm.get('tipo')?.touched" class="text-red-600 text-sm mb-4 px-2">
