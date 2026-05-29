@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api'
+  apiBaseUrl: 'https://ingenieria-de-software-1-uxxj.onrender.com/api',
+  apiUrl: 'https://ingenieria-de-software-1-uxxj.onrender.com/api' // Keeping this for backwards compatibility if needed
 };
 
 /*
