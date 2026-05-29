@@ -18,12 +18,9 @@ export interface ApiError {
   details?: any;
 }
 
-export interface PaginatedResponse<T> {
-  data: T[];
-  pagination: {
-    page: number;
-    pageSize: number;
-    total: number;
-    totalPages: number;
-  };
+export interface PaginaResponse<T> {
+  contenido: T[];
+  total: number;
+  page: number;
+  size: number;
 }

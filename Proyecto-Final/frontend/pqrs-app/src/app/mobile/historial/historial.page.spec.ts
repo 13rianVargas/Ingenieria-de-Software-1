@@ -1,3 +1,4 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 ﻿import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -39,6 +40,7 @@ describe('HistorialPage', () => {
 
   beforeEach(async () => {
     fixture = TestBed.configureTestingModule({
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [HistorialPage],
       imports: [IonicModule, FormsModule],
       providers: [

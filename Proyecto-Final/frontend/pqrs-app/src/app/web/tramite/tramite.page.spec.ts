@@ -1,3 +1,4 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,6 +12,9 @@ describe('TramitePage', () => {
   let fixture: ComponentFixture<TramitePage>;
 
   const pqrsServiceMock = {
+    obtenerPorId: jasmine.createSpy('obtenerPorId').and.returnValue(
+      of({ id: 10, radicado: '10025', tipo: 'reclamo', asunto: 'Test', descripcion: 'descripcion de prueba larga', estado: 'nuevo', clienteId: 1, fechaRadicado: new Date(), tramites: [], adjuntos: [] })
+    ),
     obtenerPorRadicado: jasmine.createSpy('obtenerPorRadicado').and.returnValue(
       of({ success: true, data: { radicado: '10025', tipo: 'RECLAMO', estado: 'NUEVO', comentarios: 'Test', fecha: new Date(), clienteNombre: 'Test', clienteIdentificacion: '12345678', clienteEmail: 'test@test.com', clienteTelefono: '3001234567' } })
     ),
@@ -40,6 +44,7 @@ describe('TramitePage', () => {
 
   beforeEach(async () => {
     fixture = TestBed.configureTestingModule({
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [TramitePage],
       imports: [ReactiveFormsModule, IonicModule],
       providers: [

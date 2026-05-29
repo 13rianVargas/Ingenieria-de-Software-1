@@ -78,11 +78,11 @@ export class LoginPage implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           this.isLoading = false;
-          if (response.success) {
-            console.log('Login exitoso:', response.data?.user?.nombre);
+          if (response && response.token) {
+            console.log('Login exitoso, rol:', response.rol);
             this.redirectBasedOnRole();
           } else {
-            this.errorMessage = response.message || 'Error desconocido';
+            this.errorMessage = 'Respuesta inesperada del servidor';
           }
         },
         error: (error) => {
@@ -142,7 +142,7 @@ export class LoginPage implements OnInit, OnDestroy {
       return `${this.getFieldLabel(fieldName)} es requerido`;
     }
     if (field.errors['email']) {
-      return 'Debe ser un correo electrónico válido';
+      return 'Debe ser un correo válido';
     }
     if (field.errors['minlength']) {
       return `${this.getFieldLabel(fieldName)} debe tener al menos ${field.errors['minlength'].requiredLength} caracteres`;
@@ -159,9 +159,11 @@ export class LoginPage implements OnInit, OnDestroy {
    */
   private getFieldLabel(fieldName: string): string {
     const labels: { [key: string]: string } = {
-      email: 'Correo Electrónico',
+      email: 'Correo electrónico',
       clave: 'Contraseña'
     };
     return labels[fieldName] || fieldName;
   }
 }
+
+

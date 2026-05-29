@@ -1,40 +1,45 @@
-﻿import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import {
+  PQRS,
+  PqrsDetalle,
+  PqrsResumen,
   CrearPQRSRequest,
   CrearPQRSAnonimoRequest,
-  PqrsResumen,
-  PqrsDetalle,
   ActualizarPQRSRequest,
-  PQRSFilter,
-  PQRSResponse,
-  ApiResponse,
-  PQRS
+  PQRSFilter
 } from '../models';
+import { PaginaResponse } from '../models/api-response.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PQRSService {
-  private apiUrl = environment.apiBaseUrl;
+  private apiUrl = environment.apiUrl;
   private http = inject(HttpClient);
 
-  // MOBILE METHODS
   crearPQRS(pqrs: CrearPQRSRequest, archivo?: File): Observable<any> {
     const formData = new FormData();
+    // backend espera @RequestPart("pqrs") RadicarPqrsRequest
     formData.append('pqrs', new Blob([JSON.stringify(pqrs)], { type: 'application/json' }));
-    
+
     if (archivo) {
-      formData.append('anexo', archivo, archivo.name);
+      formData.append('anexo', archivo);
     }
 
-    return this.http.post<any>(this.apiUrl + '/pqrs', formData);
+    return this.http.post<any>(
+      `${this.apiUrl}/pqrs`,
+      formData
+    ).pipe(
+      catchError(error => this.handleError(error))
+    );
   }
 
   /**
-   * Radicacion anonima (sin login): el payload incluye los datos del cliente.
+   * Radicacion anonima (sin login, mobile): el payload incluye los datos del cliente.
    * El backend crea la cuenta si no existe y envia credenciales por correo.
    */
   crearPQRSAnonimo(payload: CrearPQRSAnonimoRequest, archivo?: File): Observable<any> {
@@ -43,64 +48,158 @@ export class PQRSService {
     if (archivo) {
       formData.append('anexo', archivo, archivo.name);
     }
-    return this.http.post<any>(this.apiUrl + '/pqrs/anonimo', formData);
+    return this.http.post<any>(`${this.apiUrl}/pqrs/anonimo`, formData).pipe(
+      catchError(error => this.handleError(error))
+    );
   }
 
+  /** Mobile: PQRS propias del cliente autenticado. Filtro opcional por radicado. */
   misRadicados(radicado?: string): Observable<PqrsResumen[]> {
     let params = new HttpParams();
     if (radicado) {
       params = params.set('radicado', radicado);
     }
-    return this.http.get<PqrsResumen[]>(this.apiUrl + '/pqrs/mis', { params });
+    return this.http.get<PqrsResumen[]>(`${this.apiUrl}/pqrs/mis`, { params }).pipe(
+      catchError(error => this.handleError(error))
+    );
   }
 
-  detalle(id: number): Observable<PqrsDetalle> {
-    return this.http.get<PqrsDetalle>(this.apiUrl + '/pqrs/' + id);
+  /** Mobile: detalle de una PQRS por id (cabecera + timeline + adjuntos). */
+  detalle(id: number | string): Observable<PqrsDetalle> {
+    return this.http.get<PqrsDetalle>(`${this.apiUrl}/pqrs/${id}`).pipe(
+      catchError(error => this.handleError(error))
+    );
   }
 
-  descargarAnexo(id: string | number): Observable<Blob> {
-    return this.http.get(this.apiUrl + '/pqrs/' + id + '/anexo', { responseType: 'blob' });
-  }
-
-  tramitar(id: number, data: ActualizarPQRSRequest): Observable<any> {
-    return this.http.post<any>(this.apiUrl + '/pqrs/' + id + '/tramitar', data);
-  }
-
-  // WEB METHODS COMPATIBILITY
-  obtenerBandeja(filtros?: PQRSFilter, page: number = 1, pageSize: number = 10): Observable<ApiResponse<PQRSResponse>> {
+  obtenerBandeja(
+    filtros?: PQRSFilter,
+    page: number = 1,
+    pageSize: number = 10
+  ): Observable<PaginaResponse<PQRS>> {
+    // El backend espera page desde 0
     let params = new HttpParams()
-      .set('page', page.toString())
-      .set('pageSize', pageSize.toString());
+      .set('page', (page - 1).toString())
+      .set('size', pageSize.toString());
 
     if (filtros) {
       if (filtros.tipo) params = params.set('tipo', filtros.tipo);
       if (filtros.estado) params = params.set('estado', filtros.estado);
-      if (filtros.radicado) params = params.set('radicado', filtros.radicado);
-      if (filtros.clienteIdentificacion) params = params.set('clienteIdentificacion', filtros.clienteIdentificacion);
     }
 
-    return this.http.get<ApiResponse<PQRSResponse>>(this.apiUrl + '/pqrs/bandeja', { params });
+    return this.http.get<PaginaResponse<PQRS>>(
+      `${this.apiUrl}/pqrs`,
+      { params }
+    ).pipe(
+      catchError(error => this.handleError(error))
+    );
   }
 
-  obtenerPorRadicado(radicado: string): Observable<ApiResponse<PQRS>> {
-    return this.http.get<ApiResponse<PQRS>>(this.apiUrl + '/pqrs/detalle/' + radicado);
+  obtenerHistorial(
+    radicado?: string
+  ): Observable<PQRS[]> {
+    let params = new HttpParams();
+    if (radicado) {
+      params = params.set('radicado', radicado);
+    }
+
+    return this.http.get<PQRS[]>(
+      `${this.apiUrl}/pqrs/mis`,
+      { params }
+    ).pipe(
+      catchError(error => this.handleError(error))
+    );
   }
 
-  actualizarEstado(id: string, request: ActualizarPQRSRequest): Observable<ApiResponse<PQRS>> {
-    return this.http.put<ApiResponse<PQRS>>(this.apiUrl + '/pqrs/' + id + '/estado', request);
+  obtenerPorId(id: number | string): Observable<PqrsDetalle> {
+    return this.http.get<PqrsDetalle>(
+      `${this.apiUrl}/pqrs/${id}`
+    ).pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  actualizarEstado(
+    id: number | string,
+    actualizar: ActualizarPQRSRequest
+  ): Observable<PQRS> {
+    return this.http.put<PQRS>(
+      `${this.apiUrl}/pqrs/${id}/estado`,
+      actualizar
+    ).pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  descargarAnexo(id: number | string): Observable<Blob> {
+    return this.http.get(
+      `${this.apiUrl}/pqrs/${id}/anexo`,
+      { responseType: 'blob' }
+    ).pipe(
+      tap(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `Anexo_${id}.pdf`;
+        link.click();
+        window.URL.revokeObjectURL(url);
+      }),
+      catchError(error => this.handleError(error))
+    );
   }
 
   generarReporte(filtros?: PQRSFilter): Observable<Blob> {
     let params = new HttpParams();
+
     if (filtros) {
       if (filtros.tipo) params = params.set('tipo', filtros.tipo);
       if (filtros.estado) params = params.set('estado', filtros.estado);
-      if (filtros.radicado) params = params.set('radicado', filtros.radicado);
     }
 
-    return this.http.get(this.apiUrl + '/pqrs/reporte', {
-      params,
-      responseType: 'blob'
-    });
+    return this.http.get(
+      `${this.apiUrl}/pqrs/reporte`,
+      { params, responseType: 'blob' }
+    ).pipe(
+      tap(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `Reporte_Bandeja_PQRS_${new Date().getTime()}.pdf`;
+        link.click();
+        window.URL.revokeObjectURL(url);
+      }),
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  validarPDF(archivo: File): boolean {
+    const validMimeType = archivo.type === 'application/pdf';
+    const validExtension = archivo.name.toLowerCase().endsWith('.pdf');
+    return validMimeType && validExtension;
+  }
+
+  private handleError(error: any): Observable<never> {
+    let errorMessage = 'Error al procesar la solicitud';
+
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = error.error.message;
+    } else if (error.status) {
+      const detalle = error.error?.detalle || error.error?.error;
+      if (typeof detalle === 'string') {
+        errorMessage = detalle;
+      } else if (typeof detalle === 'object' && detalle !== null) {
+        errorMessage = Object.values(detalle).join(', ');
+      } else {
+        switch (error.status) {
+          case 400: errorMessage = 'Datos inválidos'; break;
+          case 401: errorMessage = 'No autenticado'; break;
+          case 403: errorMessage = 'Acceso denegado'; break;
+          case 404: errorMessage = 'Recurso no encontrado'; break;
+          case 500: errorMessage = 'Error del servidor'; break;
+        }
+      }
+    }
+
+    console.error('Error PQRS:', errorMessage);
+    return throwError(() => new Error(errorMessage));
   }
 }

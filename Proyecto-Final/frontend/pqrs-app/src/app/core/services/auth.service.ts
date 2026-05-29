@@ -55,9 +55,20 @@ export class AuthService {
     ).pipe(
       map(raw => this.mapLoginResponse(raw, credentials.email)),
       tap(response => {
-        if (response.success && response.data) {
-          this.storeSession(response.data);
-          this.currentUserSubject.next(response.data.user as any);
+        if (response && response.token) {
+          // Synthetic user since backend only returns token and role
+          const syntheticUser: User = {
+            id: 'temp-id',
+            identificacion: 'temp-id',
+            nombre: credentials.email.split('@')[0], // derived from email
+            apellido: '',
+            email: credentials.email,
+            // rol ya viene normalizado a UserRole por mapLoginResponse
+            rol: (response.rol as UserRole) ?? UserRole.CLIENTE
+          };
+          
+          this.storeSession({ token: response.token, user: syntheticUser });
+          this.currentUserSubject.next(syntheticUser);
           this.isAuthenticated$.next(true);
         }
       }),
@@ -76,6 +87,11 @@ export class AuthService {
       ? Math.max(0, payload.exp * 1000 - Date.now())
       : 0;
     return {
+      // Forma plana (login web usa response.token / response.rol).
+      token: raw.token,
+      rol: this.normalizarRol(raw.rol),
+      expiraEn: raw.expiraEn,
+      // Forma envuelta (login mobile usa response.success / response.data).
       success: true,
       message: 'OK',
       data: {
@@ -304,24 +320,37 @@ export class AuthService {
       // Error del cliente
       errorMessage = error.error.message;
     } else if (error.status) {
-      // Error del servidor
-      switch (error.status) {
-        case 401:
-          errorMessage = 'Credenciales inválidas';
-          this.clearSession();
-          this.isAuthenticated$.next(false);
-          break;
-        case 403:
-          errorMessage = 'Acceso denegado';
-          break;
-        case 404:
-          errorMessage = 'Recurso no encontrado';
-          break;
-        case 500:
-          errorMessage = 'Error del servidor';
-          break;
-        default:
-          errorMessage = error.error?.message || `Error HTTP: ${error.status}`;
+      const detalle = error.error?.detalle || error.error?.error;
+      if (typeof detalle === 'string') {
+        errorMessage = detalle;
+      } else if (typeof detalle === 'object' && detalle !== null) {
+        errorMessage = Object.values(detalle).join(', ');
+      } else {
+        // Fallback default messages
+        switch (error.status) {
+          case 401:
+            errorMessage = 'Credenciales inválidas';
+            this.clearSession();
+            this.isAuthenticated$.next(false);
+            break;
+          case 403:
+            errorMessage = 'Acceso denegado';
+            break;
+          case 404:
+            errorMessage = 'Recurso no encontrado';
+            break;
+          case 500:
+            errorMessage = 'Error del servidor';
+            break;
+          default:
+            errorMessage = `Error HTTP: ${error.status}`;
+        }
+      }
+      
+      // Specifically trigger clear session for 401 even if we got a detail message
+      if (error.status === 401) {
+        this.clearSession();
+        this.isAuthenticated$.next(false);
       }
     }
 
