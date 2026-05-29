@@ -1,3 +1,4 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -40,6 +41,7 @@ describe('RadicarPage', () => {
 
   beforeEach(async () => {
     fixture = TestBed.configureTestingModule({
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [RadicarPage],
       imports: [ReactiveFormsModule, IonicModule],
       providers: [
